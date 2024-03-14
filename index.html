@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Project Name: Creative Educational Website
+Youtube: https://youtube.com/@devRasen
+Copyright: ©MdRasen -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Creative Educational Website | devRasen</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.png" />
+    <!-- FontAwesome CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header section -->
+      <section id="header-section">
+        <!-- Header top -->
+        <div class="header-top">
+          <div class="notice">
+            <a href="#">Notice: All class will be remain close...</a>
+          </div>
+          <div class="menu">
+            <a href="#">Login</a>
+            <a href="#">Register</a>
+            <a href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
+          </div>
+        </div>
+        <!-- Header bottom -->
+        <div class="header-bottom">
+          <div class="logo">
+            <img src="assets/logo.png" alt="logo" />
+          </div>
+          <div class="nav-menu">
+            <ul id="sidemenu">
+              <li><a href="#">Home</a></li>
+              <li><a href="#hero-section">About</a></li>
+              <li><a href="#department-section">Academic</a></li>
+              <li><a href="#course-section">Course</a></li>
+              <li><a href="#">Blog</a></li>
+              <li><a href="#footer-section">Contact</a></li>
+              <i class="fa-solid fa-xmark" onclick="closeMenu()"></i>
+            </ul>
+            <i class="fa-solid fa-bars" onclick="openMenu()"></i>
+          </div>
+        </div>
+      </section>
+      <!-- Hero section -->
+      <section id="hero-section">
+        <div class="hero-main">
+          <div class="hero-left">
+            <img src="assets/graduate-cap.png" alt="graduate-cap" />
+            <h1 class="title">Build Your Future, Choose your Course</h1>
+            <p class="short-desc">
+              Amet minim mollit non deserunt ullamco est sit aliqua dolor do
+              amet sint. <b>Velitofficia consequat.</b>
+            </p>
+            <a href="#" class="btn">Get Started</a>
+          </div>
+          <div class="hero-right">
+            <img src="assets/hero-img.png" alt="hero-img" />
+          </div>
+        </div>
+      </section>
+      <!-- Notice & Social Media section -->
+      <section id="notice-social-section">
+        <div class="notices">
+          <div class="head-title">
+            <h2>Notices</h2>
+            <div class="line"></div>
+          </div>
+          <div class="notice-headings">
+            <a href="#"><span>12 Oct</span>21st Convocation Notice</a>
+            <a href="#"><span>05 Sep</span>Adding Dropping Notice - FST</a>
+            <a href="#"><span>26 Jul</span>Dropping Procedure for Students</a>
+            <a href="#"><span>24 Jul</span>Adding & dropping of Spring 22-23</a>
+            <a href="#"><span>28 Jun</span>Notice for Academic Scholarship</a>
+            <a href="#"><span>03 Jun</span>Admission Result Spring 22-23</a>
+          </div>
+          <a href="#" class="archive"
+            ><i class="fa-solid fa-box-archive"></i> Archive</a
+          >
+        </div>
+        <div class="social-media">
+          <div class="head-title">
+            <h2>In Social Media</h2>
+            <div class="line"></div>
+          </div>
+          <iframe
+            src="https://www.youtube.com/embed/6kmWq-yosoE?si=Mzm9WkCw524PtE0G"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+          <div class="social-icons">
+            <a href="#"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="#"><i class="fa-brands fa-youtube"></i></a>
+            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+          </div>
+        </div>
+      </section>
+      <!-- Department section -->
+      <section id="department-section">
+        <div class="head-title">
+          <h2>Departments</h2>
+          <div class="line"></div>
+        </div>
+        <div class="department-content">
+          <a href="#">
+            <img src="assets/social-science.png" alt="social-science" />
+            <h2 class="title">Department of Art And Social Sciences</h2>
+          </a>
+          <a href="#">
+            <img src="assets/business.png" alt="business" />
+            <h2 class="title">Department of Business Administration</h2>
+          </a>
+          <a href="#">
+            <img src="assets/engineering.png" alt="engineering" />
+            <h2 class="title">Department of Engineering</h2>
+          </a>
+          <a href="#">
+            <img src="assets/technology.png" alt="technology" />
+            <h2 class="title">Department of Science And Technology</h2>
+          </a>
+        </div>
+      </section>
+      <!-- CTA section -->
+      <section id="cta-section">
+        <h2 class="title">We're motivated by the desire to achieve.</h2>
+        <a href="#" class="btn">Find out more</a>
+      </section>
+      <!-- Course section -->
+      <section id="course-section">
+        <!-- Course header -->
+        <div class="course-header">
+          <div class="header-left">
+            <img src="assets/course-header.png" alt="course-header" />
+          </div>
+          <div class="header-right">
+            <h2 class="title">Improve your Knowledge with our Course</h2>
+            <p class="short-desc">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo nam,
+              quidem fugit excepturi doloribus totam illum, enim minima dolore
+              dicta praesentium nulla vel molestiae!
+            </p>
+            <div class="cards">
+              <!-- Card 01 -->
+              <div class="card">
+                <div class="img">
+                  <img src="assets/teacher-icon.svg" alt="teacher-icon" />
+                </div>
+                <div class="contents">
+                  <h3 class="card-title">Experts Teacher</h3>
+                  <p class="card-desc">
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                  </p>
+                </div>
+              </div>
+              <!-- Card 02 -->
+              <div class="card">
+                <div class="img">
+                  <img src="assets/note-icon.svg" alt="note-icon" />
+                </div>
+                <div class="contents">
+                  <h3 class="card-title">Skill Based Scholarships</h3>
+                  <p class="card-desc">
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Head title -->
+        <div class="head-title">
+          <h2>Courses</h2>
+          <div class="line"></div>
+        </div>
+        <!-- Course list -->
+        <div class="courses-list">
+          <!-- Course 01 -->
+          <div class="course">
+            <a href="#"
+              ><img src="assets/course-grid1.jpeg" alt="course-grid1"
+            /></a>
+            <div class="contents">
+              <h5 class="category"># Arts & Design</h5>
+              <a href="#"
+                ><h3 class="title">Advanced Drawing & Sketch System</h3></a
+              >
+              <div class="duration-price">
+                <p class="duration">Duration: 04 Years</p>
+                <p class="price">Fee: $4000</p>
+              </div>
+              <hr />
+              <div class="rating-detail">
+                <p class="rating">Rating: 4.6/5</p>
+                <a href="#">Details <i class="fa-solid fa-arrow-right"></i></a>
+              </div>
+            </div>
+          </div>
+          <!-- Course 02 -->
+          <div class="course">
+            <a href="#"
+              ><img src="assets/course-grid2.jpeg" alt="course-grid2"
+            /></a>
+            <div class="contents">
+              <h5 class="category"># Biology</h5>
+              <a href="#"
+                ><h3 class="title">Bachelor of Applied Mathematics</h3></a
+              >
+              <div class="duration-price">
+                <p class="duration">Duration: 04 Years</p>
+                <p class="price">Fee: $4000</p>
+              </div>
+              <hr />
+              <div class="rating-detail">
+                <p class="rating">Rating: 4.4/5</p>
+                <a href="#">Details <i class="fa-solid fa-arrow-right"></i></a>
+              </div>
+            </div>
+          </div>
+          <!-- Course 03 -->
+          <div class="course">
+            <a href="#"
+              ><img src="assets/course-grid3.jpeg" alt="course-grid3"
+            /></a>
+            <div class="contents">
+              <h5 class="category"># Diploma</h5>
+              <a href="#"
+                ><h3 class="title">
+                  Diploma in CrossFit Trainer Certification
+                </h3></a
+              >
+              <div class="duration-price">
+                <p class="duration">Duration: 04 Years</p>
+                <p class="price">Fee: $4000</p>
+              </div>
+              <hr />
+              <div class="rating-detail">
+                <p class="rating">Rating: 4.7/5</p>
+                <a href="#">Details <i class="fa-solid fa-arrow-right"></i></a>
+              </div>
+            </div>
+          </div>
+          <!-- Course 04 -->
+          <div class="course">
+            <a href="#"
+              ><img src="assets/course-grid4.jpeg" alt="course-grid4"
+            /></a>
+            <div class="contents">
+              <h5 class="category"># Economics</h5>
+              <a href="#"
+                ><h3 class="title">Bachelor of Business Administration</h3></a
+              >
+              <div class="duration-price">
+                <p class="duration">Duration: 04 Years</p>
+                <p class="price">Fee: $4000</p>
+              </div>
+              <hr />
+              <div class="rating-detail">
+                <p class="rating">Rating: 4.3/5</p>
+                <a href="#">Details <i class="fa-solid fa-arrow-right"></i></a>
+              </div>
+            </div>
+          </div>
+          <!-- Course 05 -->
+          <div class="course">
+            <a href="#"
+              ><img src="assets/course-grid5.jpeg" alt="course-grid5"
+            /></a>
+            <div class="contents">
+              <h5 class="category"># Engineering</h5>
+              <a href="#"
+                ><h3 class="title">
+                  Artificial Intelligence & Information System
+                </h3></a
+              >
+              <div class="duration-price">
+                <p class="duration">Duration: 04 Years</p>
+                <p class="price">Fee: $4000</p>
+              </div>
+              <hr />
+              <div class="rating-detail">
+                <p class="rating">Rating: 4.8/5</p>
+                <a href="#">Details <i class="fa-solid fa-arrow-right"></i></a>
+              </div>
+            </div>
+          </div>
+          <!-- Course 06 -->
+          <div class="course">
+            <a href="#"
+              ><img src="assets/course-grid6.jpeg" alt="course-grid6"
+            /></a>
+            <div class="contents">
+              <h5 class="category"># Medical</h5>
+              <a href="#"
+                ><h3 class="title">Diploma in Mechanical Engineering</h3></a
+              >
+              <div class="duration-price">
+                <p class="duration">Duration: 04 Years</p>
+                <p class="price">Fee: $4000</p>
+              </div>
+              <hr />
+              <div class="rating-detail">
+                <p class="rating">Rating: 4.6/5</p>
+                <a href="#">Details <i class="fa-solid fa-arrow-right"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- All course btn -->
+        <div class="all-course-btn">
+          <a href="#" class="btn">View All Courses</a>
+        </div>
+      </section>
+      <!-- Footer section -->
+      <section id="footer-section">
+        <div class="footer-top">
+          <div class="footer-contents">
+            <div class="col">
+              <img src="assets/logo.png" alt="logo" />
+              <h6>Make better future for your Career</h6>
+              <p>
+                <i class="fa-solid fa-location-dot"></i> Moghbazar Wireless,
+                Dhaka: 1217, Bangladesh
+              </p>
+              <p><i class="fa-solid fa-envelope"></i> info@domain.edu</p>
+            </div>
+            <div class="col">
+              <div class="head-title">
+                <h2>Be With Us</h2>
+                <div class="line"></div>
+              </div>
+              <ul>
+                <li><a href="#">Future Students</a></li>
+                <li><a href="#">On Campus</a></li>
+                <li><a href="#">Admission</a></li>
+                <li><a href="#">Tuition Fees</a></li>
+                <li><a href="#">Scholarships</a></li>
+                <li><a href="#">Apply Now</a></li>
+              </ul>
+            </div>
+            <div class="col">
+              <div class="head-title">
+                <h2>Academics</h2>
+                <div class="line"></div>
+              </div>
+              <ul>
+                <li><a href="#">Academic Calendar</a></li>
+                <li><a href="#">Academic Regulations</a></li>
+                <li><a href="#">Faculty of Arts & Social Sciences</a></li>
+                <li><a href="#">Faculty of Business Administration</a></li>
+                <li><a href="#">Faculty of Engineering</a></li>
+                <li><a href="#">Faculty of Science & Technology</a></li>
+              </ul>
+            </div>
+            <div class="col">
+              <div class="head-title">
+                <h2>Research</h2>
+                <div class="line"></div>
+              </div>
+              <ul>
+                <li><a href="#">AJBE</a></li>
+                <li><a href="#">AJSE</a></li>
+                <li><a href="#">Past Conferences</a></li>
+                <li><a href="#">Upcoming Conferences</a></li>
+                <li><a href="#">Collaborating Institutes</a></li>
+                <li><a href="#">Innovations</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>
+            Copyright &copy;2023 All rights reserved | Developed by
+            <a href="#">devRasen</a>
+          </p>
+        </div>
+      </section>
+    </div>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+  </body>
+</html>
