@@ -39,6 +39,11 @@ html {
   justify-content: space-between;
   align-items: center;
   padding: 15px 12%;
+  transition: .5s;
+}
+
+#header-section .header-top.hidden{
+  margin-top: -48px;
 }
 
 .header-top .notice a {
