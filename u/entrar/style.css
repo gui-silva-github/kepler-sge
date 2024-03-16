@@ -33,6 +33,13 @@ h2 {
 	font-size: 42px;
 	font-weight: 900;
 	margin-bottom: 1rem;
+	position: relative;
+}
+h2::before{
+	content: "↩";
+	position: absolute;
+	left: -30%;
+	cursor: pointer;
 }
 
 p {

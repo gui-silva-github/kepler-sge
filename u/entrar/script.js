@@ -9,3 +9,13 @@ signUpButton.addEventListener('click', () => {
 signInButton.addEventListener('click', () => {
 	container.classList.remove("right-panel-active");
 });
+
+// return history btn function
+
+const historyBackBtn = document.querySelector('h2::before');
+
+console.log(historyBackBtn)
+historyBackBtn.addEventListener('click', () => {
+	console('clicou')
+    history.back();
+});
