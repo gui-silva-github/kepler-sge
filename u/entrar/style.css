@@ -1,18 +1,26 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap");
 
 * {
 	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+}
+
+:root{
+	--bg-color: #f5f2ed;
+	--primary: #07294d;
+	--secondary: #0c8b51;
 }
 
 body {
-	background: #f6f5f7;
+	background: var(--bg-color);
+	color: var(--primary);
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
-	font-family: 'Montserrat', sans-serif;
-	height: 100vh;
-	margin: -20px 0 50px;
+	font-family: 'Plus Jakarta Sans', sans-serif;
+	height: calc( 100vh - 40px)
 }
 
 h1 {
@@ -22,6 +30,9 @@ h1 {
 
 h2 {
 	text-align: center;
+	font-size: 42px;
+	font-weight: 900;
+	margin-bottom: 1rem;
 }
 
 p {
@@ -37,7 +48,7 @@ span {
 }
 
 a {
-	color: #333;
+	color: var(--primary);
 	font-size: 14px;
 	text-decoration: none;
 	margin: 15px 0;
@@ -45,8 +56,8 @@ a {
 
 button {
 	border-radius: 20px;
-	border: 1px solid #FF4B2B;
-	background-color: #FF4B2B;
+	border: 1px solid var(--secondary);
+	background-color: var(--secondary);
 	color: #FFFFFF;
 	font-size: 12px;
 	font-weight: bold;
@@ -92,12 +103,12 @@ input {
 	background-color: #fff;
 	border-radius: 10px;
   	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 
-			0 10px 10px rgba(0,0,0,0.22);
+				0 10px 10px rgba(0,0,0,0.22);
 	position: relative;
 	overflow: hidden;
+	height: 78%;
 	width: 768px;
 	max-width: 100%;
-	min-height: 480px;
 }
 
 .form-container {
@@ -159,9 +170,8 @@ input {
 }
 
 .overlay {
-	background: #FF416C;
-	background: -webkit-linear-gradient(to right, #FF4B2B, #FF416C);
-	background: linear-gradient(to right, #FF4B2B, #FF416C);
+	background: -webkit-linear-gradient(to right, var(--secondary), var(--primary));
+	background: linear-gradient(to right, var(--secondary), var(--primary));
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: 0 0;
