@@ -26,6 +26,7 @@ body {
 h1 {
 	font-weight: bold;
 	margin: 0;
+	font-size: 1.5em;
 }
 
 h2 {
@@ -240,6 +241,11 @@ input {
 	margin: 0 5px;
 	height: 40px;
 	width: 40px;
+}
+
+.social-container a i{
+	color: var(--secondary);
+	font-size: 32px;
 }
 
 footer {
