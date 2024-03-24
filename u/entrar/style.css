@@ -29,18 +29,31 @@ h1 {
 	font-size: 1.5em;
 }
 
+header{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+}
+
+.return-page-btn{
+    font-size: 42px;
+    font-weight: 900;
+	position: absolute;
+	left: -130px;
+    cursor: pointer;
+	user-select: none;
+}
+
 h2 {
 	text-align: center;
 	font-size: 42px;
 	font-weight: 900;
 	margin-bottom: 1rem;
-	position: relative;
 }
-h2::before{
-	content: "↩";
-	position: absolute;
-	left: -30%;
-	cursor: pointer;
+
+#logo{
+	width: 200px;
 }
 
 p {
@@ -53,6 +66,7 @@ p {
 
 span {
 	font-size: 12px;
+	margin: 10px 0;
 }
 
 a {
@@ -62,7 +76,7 @@ a {
 	margin: 15px 0;
 }
 
-button {
+.submit-btn{
 	border-radius: 20px;
 	border: 1px solid var(--secondary);
 	background-color: var(--secondary);
@@ -75,15 +89,15 @@ button {
 	transition: transform 80ms ease-in;
 }
 
-button:active {
+.submit-btn:active{
 	transform: scale(0.95);
 }
 
-button:focus {
+.submit-btn:focus{
 	outline: none;
 }
 
-button.ghost {
+.submit-btn.ghost{
 	background-color: transparent;
 	border-color: #FFFFFF;
 }

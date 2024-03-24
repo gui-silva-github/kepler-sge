@@ -1,23 +1,25 @@
 <?php
+    include('../../php/ConexaoDB.php');
+
     // se for um cadastro
     if (isset($_POST['cadastarSubmit'])){
         $nome = $_POST['cadastrarNome'];
         $cnpj = $_POST['cadastrarCNPJ'];
         $email = $_POST['cadastrarEmail'];
         $senha = $_POST['cadastarSenha'];
+        $sql = "INSERT INTO instituicoes(nome, cnpj, email, senha) VALUES (:nome, :cnpj, :email, :senha)";
+        $resultado = false;
 
         try{
-            $con = new PDO('mysql:host=db4free.net;dbname=keplerbd', 'keplerbd', 'M+-6Xb%m');
-            $sql = "INSERT INTO instituicoes(cnpj, nome, email, senha) VALUES (:cnpj, :nome, :email, :senha)";
             
             $stm = $con->prepare($sql);
-            $stm->bindParam(':cnpj', $cnpj);
             $stm->bindParam(':nome', $nome);
+            $stm->bindParam(':cnpj', $cnpj);
             $stm->bindParam(':email', $email);
             $stm->bindParam(':senha', $senha);
 
             if ($stm->execute()){
-                echo "<strong>Instituição cadastrada com sucesso!</strong>";
+                $resultado = true;
             }
 
         } catch(PDOException $e){
@@ -29,12 +31,11 @@
 
     // se for um login
     if (isset($_POST['entrarSubmit'])){
-        $user = $_POST['user'];
-        $senha = $_POST['senha'];
+        $user = $_POST['entrarEmail'];
+        $senha = $_POST['entrarSenha'];
 
         try{
-            $con = new PDO('mysql:host=localhost;dbname=testephp', 'root', '');
-            $sql = "INSERT INTO usuario (nome, idade) VALUES (:user, :senha)";
+            $sql = "SELECT";
             
             $stm = $con->prepare($sql);
             $stm->bindParam(':user', $user);
@@ -62,30 +63,31 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
-    <h2>Vem para a Kepler!</h2>
+    <header>
+        <div class="return-page-btn">↩</div>
+        <h2>Vem para a &nbsp</h2>
+        <img id="logo" src="../../assets/logo.png" alt="logo do kepler">
+    </header>
     <div class="container" id="container">
         <div class="form-container sign-up-container">
-            <form action="/loginPHP.php" method="POST">
+            <form action="../entrar/" method="POST">
                 <h1>Cadastar Instituição:</h1>
+                <span>Utilize um email e CNPJ para se registrar:</span>
                 <input type="text" name="cadastrarNome" placeholder="Nome da Instituição" required/>
                 <input type="text" name="cadastrarCNPJ" placeholder="CNPJ" required>
                 <input type="email" name="cadastrarEmail" placeholder="Email" required/>
-                <input type="password" name='cadastarSenha' placeholder="Senha" require/>
-                <input type="submit" value="Cadastrar" name='cadastarSubmit'>
+                <input type="password" name='cadastarSenha' placeholder="Senha" required/>
+                <input type="submit" class="submit-btn" value="Cadastrar" name='cadastarSubmit'>
             </form>
         </div>
         <div class="form-container sign-in-container">
-            <form action="/loginPHP.php" method="POST">
+            <form action="../entrar/" method="POST">
                 <h1>Entrar:</h1>
-                <div class="social-container">
-                    <a href="#" class="social"><i class='bx bxl-facebook-circle'></i></a>
-                    <a href="#" class="social"><i class='bx bxl-google'></i></a>
-                </div>
-                <span>ou use sua conta:</span>
+                <span>Entre com sua conta pessoal:</span>
                 <input type="email" name='entrarEmail' placeholder="Email" required/>
                 <input type="password" name='entrarSenha' placeholder="Senha" required/>
                 <a href="#">Esqueceu sua senha?</a>
-                <input type="submit" value="Entrar" name='entrarSubmit'>
+                <input type="submit" class="submit-btn" value="Entrar" name='entrarSubmit'>
             </form>
         </div>
         <div class="overlay-container">

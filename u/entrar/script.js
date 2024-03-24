@@ -12,10 +12,5 @@ signInButton.addEventListener('click', () => {
 
 // return history btn function
 
-const historyBackBtn = document.querySelector('h2::before');
-
-console.log(historyBackBtn)
-historyBackBtn.addEventListener('click', () => {
-	console('clicou')
-    history.back();
-});
+const historyBackBtn = document.querySelector('.return-page-btn');
+historyBackBtn.addEventListener('click', () => history.back());
