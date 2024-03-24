@@ -68,7 +68,7 @@ html {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 12%;
+  padding: 8px 12%;
 }
 
 .header-bottom .logo img {
