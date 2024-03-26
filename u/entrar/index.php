@@ -7,7 +7,7 @@
         $cnpj = $_POST['cadastrarCNPJ'];
         $email = $_POST['cadastrarEmail'];
         $senha = $_POST['cadastarSenha'];
-        $sql = "INSERT INTO instituicoes(nome, cnpj, email, senha) VALUES (:nome, :cnpj, :email, :senha)";
+        $sql = "INSERT INTO instituicoes (nome, cnpj, email, senha) VALUES (:nome, :cnpj, :email, :senha)";
         $resultado = false;
 
         try{
@@ -31,24 +31,34 @@
 
     // se for um login
     if (isset($_POST['entrarSubmit'])){
-        $user = $_POST['entrarEmail'];
+        $email = $_POST['entrarEmail'];
         $senha = $_POST['entrarSenha'];
+        $userType = $_POST['entrarUserType'];
+        $foiCadastrado = false;
 
-        try{
-            $sql = "SELECT";
-            
+        if ($userType == 'Aluno'){
+            $sql = "SELECT * FROM alunos WHERE email=:email";
+        }else if($userType == 'Professor'){
+            $sql = "SELECT * FROM professores WHERE email=:email";
+        }else{
+            $sql = "SELECT * FROM instituicoes WHERE email=:email";
+        }
+
+        try{      
             $stm = $con->prepare($sql);
-            $stm->bindParam(':user', $user);
-            $stm->bindParam(':senha', $senha);
+            $stm->bindParam(':email', $email);
 
-            if ($stm->execute()){
-                echo "<strong>Inserção realizada com sucesso!</strong>";
+            $rs = $stmt->fetch();
+            if($senha == $rs['senha']){
+                $foiCadastrado = true;
             }
 
         } catch(PDOException $e){
             echo "<strong>Inserção não realizada!</strong><br>" . $e->getMessage();
+            $foiCadastrado = false;
         } catch (Exception $e) {
             echo "Não foi possível inserir!<br>".$e->getMessage();
+            $foiCadastrado = false;
         }
     }
 ?>
@@ -74,7 +84,7 @@
                 <h1>Cadastar Instituição:</h1>
                 <span>Utilize um email e CNPJ para se registrar:</span>
                 <input type="text" name="cadastrarNome" placeholder="Nome da Instituição" required/>
-                <input type="text" name="cadastrarCNPJ" placeholder="CNPJ" required>
+                <input type="text" name="cadastrarCNPJ" placeholder="CNPJ" required/>
                 <input type="email" name="cadastrarEmail" placeholder="Email" required/>
                 <input type="password" name='cadastarSenha' placeholder="Senha" required/>
                 <input type="submit" class="submit-btn" value="Cadastrar" name='cadastarSubmit'>
@@ -84,9 +94,15 @@
             <form action="../entrar/" method="POST">
                 <h1>Entrar:</h1>
                 <span>Entre com sua conta pessoal:</span>
-                <input type="email" name='entrarEmail' placeholder="Email" required/>
-                <input type="password" name='entrarSenha' placeholder="Senha" required/>
+                <input type="email" name="entrarEmail" placeholder="Email" required/>
+                <input type="password" name="entrarSenha" placeholder="Senha" required/>
+                <input type="radio" name="entrarUserType" value="Aluno" required/>
+                <input type="radio" name="entrarUserType" value="Professor" required/>
+                <input type="radio" name="entrarUserType" value="Instituição" required/>
                 <a href="#">Esqueceu sua senha?</a>
+                <?php if(isset($_POST['entrarSubmit']) && !$foiCadastrado){
+                    echo "Usuário ou senha incorretos";
+                } ?>
                 <input type="submit" class="submit-btn" value="Entrar" name='entrarSubmit'>
             </form>
         </div>
