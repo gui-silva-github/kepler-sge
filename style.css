@@ -26,8 +26,8 @@ html {
 
 .card {
   overflow: visible;
-  width: 190px;
-  height: 254px;
+  width: 260px;
+  height: 340px;
 }
 
 .card .content {
@@ -59,7 +59,7 @@ html {
   width: 160px;
   height: 160%;
   background: linear-gradient(90deg, transparent, #0c8b51, #07294d, transparent);
-  animation: rotation_481 5s infinite linear;
+  
 }
 
 .card .back-content {
@@ -161,7 +161,7 @@ html {
 /* Hero section */
 #hero-section .hero-main {
   background-color: #f5f2ed;
-  padding: 160px 10% 60px;
+  padding: 160px 10%;
   display: flex;
   gap: 40px;
   justify-content: space-between;
@@ -222,7 +222,7 @@ html {
   position: absolute;
   min-width: 100%;
   min-height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.6);
   z-index: 1;
   display: flex;
   align-items: center;
@@ -332,13 +332,16 @@ html {
 
 /* Department section */
 #why-us {
-  padding: 40px 8% 60px;
+  padding: 40px;
+}
+#why-us .head-title{
+  padding: 0 4%;
 }
 
 #why-us .flex-cards {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
 }
 
@@ -361,6 +364,9 @@ html {
 
 .flex-cards a:hover {
   transform: scale(1.01) translateY(-5px);
+}
+.flex-cards a:hover .card .back::before{
+  animation: rotation_481 9s infinite linear;
 }
 
 .flex-cards a:hover h2 {
