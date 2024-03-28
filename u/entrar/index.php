@@ -1,5 +1,6 @@
 <?php
     include('../../php/ConexaoDB.php');
+    include('../../php/SessionManager.php');
 
     // se for um cadastro
     if (isset($_POST['cadastarSubmit'])){
@@ -8,24 +9,22 @@
         $email = $_POST['cadastrarEmail'];
         $senha = $_POST['cadastarSenha'];
         $sql = "INSERT INTO instituicoes (nome, cnpj, email, senha) VALUES (:nome, :cnpj, :email, :senha)";
-        $resultado = false;
+        $foiCadastrado = false;
 
         try{
             
-            $stm = $con->prepare($sql);
-            $stm->bindParam(':nome', $nome);
-            $stm->bindParam(':cnpj', $cnpj);
-            $stm->bindParam(':email', $email);
-            $stm->bindParam(':senha', $senha);
+            $stmt = $con->prepare($sql);
+            $stmt->bindParam(':nome', $nome);
+            $stmt->bindParam(':cnpj', $cnpj);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':senha', $senha);
 
-            if ($stm->execute()){
-                $resultado = true;
+            if ($stmt->execute()){
+                $foiCadastrado = true;
             }
 
         } catch(PDOException $e){
             echo "<strong>Inserção não realizada!</strong><br>" . $e->getMessage();
-        } catch (Exception $e) {
-            echo "Não foi possível inserir!<br>".$e->getMessage();
         }
     }
 
@@ -34,31 +33,36 @@
         $email = $_POST['entrarEmail'];
         $senha = $_POST['entrarSenha'];
         $userType = $_POST['entrarUserType'];
-        $foiCadastrado = false;
+        $usuarioExiste = false;
+        $urlToRedirect;
 
-        if ($userType == 'Aluno'){
-            $sql = "SELECT * FROM alunos WHERE email=:email";
-        }else if($userType == 'Professor'){
-            $sql = "SELECT * FROM professores WHERE email=:email";
+        if ($userType == 'aluno'){
+            $sql = "SELECT * FROM alunos WHERE email=:email limit 1";
+            $urlToRedirect = '../aluno/';
+        }else if($userType == 'professor'){
+            $sql = "SELECT * FROM professores WHERE email=:email limit 1";
+            $urlToRedirect = '../professor/';
         }else{
-            $sql = "SELECT * FROM instituicoes WHERE email=:email";
+            $sql = "SELECT * FROM instituicoes WHERE email=:email limit 1";
+            $urlToRedirect = '../instituicao/';
         }
 
         try{      
-            $stm = $con->prepare($sql);
-            $stm->bindParam(':email', $email);
+            $stmt = $con->prepare($sql);
+            $stmt->bindParam(':email', $email);
 
+            $stmt->execute();
             $rs = $stmt->fetch();
-            if($senha == $rs['senha']){
-                $foiCadastrado = true;
+            if($rs != false){
+                if($senha == $rs['senha']){
+                    $usuarioExiste = true;
+                    createUserSession($rs, $userType);
+                }
             }
 
         } catch(PDOException $e){
             echo "<strong>Inserção não realizada!</strong><br>" . $e->getMessage();
-            $foiCadastrado = false;
-        } catch (Exception $e) {
-            echo "Não foi possível inserir!<br>".$e->getMessage();
-            $foiCadastrado = false;
+            $usuarioExiste = false;
         }
     }
 ?>
@@ -70,11 +74,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kepler | Entrar</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Boxicons CDN -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
     <header>
-        <div class="return-page-btn">↩</div>
+        <div class="return-page-btn">&crarr;</div>
         <h2>Vem para a &nbsp</h2>
         <img id="logo" src="../../assets/logo.png" alt="logo do kepler">
     </header>
@@ -94,15 +99,23 @@
             <form action="../entrar/" method="POST">
                 <h1>Entrar:</h1>
                 <span>Entre com sua conta pessoal:</span>
+                <?php if(isset($_POST['entrarSubmit']) && !$usuarioExiste){
+                    echo "<div class='error-message'>Usuário ou senha incorretos!</div>";
+                } ?>
                 <input type="email" name="entrarEmail" placeholder="Email" required/>
                 <input type="password" name="entrarSenha" placeholder="Senha" required/>
-                <input type="radio" name="entrarUserType" value="Aluno" required/>
-                <input type="radio" name="entrarUserType" value="Professor" required/>
-                <input type="radio" name="entrarUserType" value="Instituição" required/>
+                <div class="userType-inputs">
+                    <label>
+                        <input type="radio" name="entrarUserType" value="aluno" required/> Aluno
+                    </label>
+                    <label>
+                        <input type="radio" name="entrarUserType" value="professor" required/> Professor
+                    </label>
+                    <label>
+                        <input type="radio" name="entrarUserType" value="instituição" required/> Instituição
+                    </label>
+                </div>
                 <a href="#">Esqueceu sua senha?</a>
-                <?php if(isset($_POST['entrarSubmit']) && !$foiCadastrado){
-                    echo "Usuário ou senha incorretos";
-                } ?>
                 <input type="submit" class="submit-btn" value="Entrar" name='entrarSubmit'>
             </form>
         </div>
@@ -124,6 +137,34 @@
     <footer>
         <p>Kepler | SGE © 2024</p>
     </footer>
-    <script src="script.js"></script>
+
+    <!-- Modal -->
+    <div class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title"><?php echo "Login feito com sucesso"; ?></h1>
+                <div class="btn-closeModal" aria-label="Close">X</div>
+            </div>
+            <div class="modal-body">
+                <?php
+                    if(isset($_POST['entrarSubmit']) && $usuarioExiste == true){
+                        echo "Bem vindo ".$rs['nome'].", nossa equipe do Kepler esteve te aguardando. <br>Sendo novo por aqui ou não, em poucos segundos você será redirecionado para a próxima página!";
+                        echo "</br> Informações de login".implode(" - ", $rs);
+                    } 
+                ?>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js">
+        <?php 
+            if(isset($_POST['entrarSubmit']) && $usuarioExiste){
+                echo 'showModal()';
+                echo "\n";
+                echo 'redirectAfterTimeout("'.$urlToRedirect.'", 8000)';
+            } 
+        ?>
+    </script>
+
 </body>
 </html>
