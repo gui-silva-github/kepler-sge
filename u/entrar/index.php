@@ -1,8 +1,11 @@
 <?php
+    // Importing the connection, select's query and session
+
     include('../../php/ConexaoDB.php');
     include('../../php/dao/userDAO.php');
     include('../../php/SessionManager.php');
 
+    // Sending user to certain URL
     function getRedirectLoginURL($userType){
         if ($userType == 'aluno'){
             return '../aluno/';
@@ -25,6 +28,7 @@
         try{
 
             $rs = selectUserByEmail($con, "instituicao", $email);
+            // if there's no one in the db, sign up
             if ($rs == false){
                 $stmt = $con->prepare($sql);
                 $stmt->bindParam(':nome', $nome);
@@ -33,6 +37,7 @@
                 $stmt->bindParam(':senha', $senha);
     
                 if ($stmt->execute()){
+                    // changing the value of the flag "sign up"
                     $foiCadastrado = true;
                 }
             }else{
@@ -56,7 +61,9 @@
 
         if($rs != false){
             if($senha == $rs['senha']){
+                // changing the value of the flag "existence"
                 $usuarioExiste = true;
+                // creating session by $rs data and $userType catched by input radio 
                 createUserSession($rs, $userType);
             }
         }
@@ -163,9 +170,11 @@
 
     <script src="script.js"></script>
     <?php 
+        // display modal with PHP setting with JS
         if(isset($_POST['cadastarSubmit']) && $foiCadastrado == true){
             echo '<script>showModal()</script>';
         }
+        // changing URL with PHP setting with JS
         if(isset($_POST['entrarSubmit']) && $usuarioExiste == true){
             echo '<script>window.location.href = "'.getRedirectLoginURL($userType).'"</script>';
         }
