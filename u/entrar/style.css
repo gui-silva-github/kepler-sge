@@ -94,6 +94,7 @@ a {
 	padding: 12px 45px;
 	letter-spacing: 1px;
 	text-transform: uppercase;
+	cursor: pointer;
 	transition: transform 80ms ease-in;
 }
 
@@ -335,6 +336,7 @@ footer a {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
 	color: #fff;
+	transition: .5s;
 }
 
 .modal.active{
@@ -371,4 +373,24 @@ footer a {
 .modal .modal-body{
 	display: flex;
 	justify-content: center;
+	gap: 10px;
+	padding: 0.5rem;
+}
+
+.modal .modal-body p{
+	margin: 0;
+}
+
+#closeModal-btn{
+	padding: 10px 40px;
+    background: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+    border-radius: 20px;
+	cursor: pointer;
+	transition: .5s;
+}
+#closeModal-btn:hover{
+	background: #fff;
+    color: #222;
 }

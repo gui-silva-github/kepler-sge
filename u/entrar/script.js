@@ -16,23 +16,12 @@ signInButton.addEventListener('click', () => {
 const historyBackBtn = document.querySelector('.return-page-btn');
 historyBackBtn.addEventListener('click', () => history.back());
 
-// showLoginModal
+// Mostrar modal pós-cadastro
 
 const modal = document.querySelector('.modal');
+const closeModalBtn = document.querySelector('#closeModal-btn');
+closeModalBtn.addEventListener('click', () =>{window.location.href = "../entrar/";});
 
 function showModal() {
 	modal.classList.add("active");
-
-	modalHeader.children[1].addEventListener('click', () =>{
-		modal.classList.remove("active");
-	});
-}
-
-// redirectAfterTime function
-
-function redirectAfterTimeout(url, time) {
-
-    setTimeout(() => {
-        window.location.href = url;
-    }, time);
 }
