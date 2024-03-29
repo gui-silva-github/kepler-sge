@@ -7,4 +7,5 @@
         $_SESSION['senha'] = $rs['senha'];
         $_SESSION['userType'] = $userType;
     }
+    
 ?>
