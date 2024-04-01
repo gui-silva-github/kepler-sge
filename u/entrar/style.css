@@ -152,6 +152,7 @@ input {
 	position: relative;
 	overflow: hidden;
 	height: 78%;
+	max-height: fit-content;
 	width: 768px;
 	max-width: 100%;
 }
@@ -393,4 +394,33 @@ footer a {
 #closeModal-btn:hover{
 	background: #fff;
     color: #222;
+}
+
+/* Responsividade tela de login */
+
+@media (max-width: 800px) {
+	header h2{
+		display: none;
+	}
+
+	.container{
+		width: 90%;
+	}
+
+	.sign-in-container{
+		left: 0;
+    	width: 100%;
+	}
+
+	.overlay-container{
+		display: none;
+	}
+
+	.userType-inputs{
+		flex-wrap: wrap;
+	}
+
+	.return-page-btn{
+		left: -40px;
+	}
 }
