@@ -21,7 +21,7 @@
         $nome = $_POST['cadastrarNome'];
         $cnpj = $_POST['cadastrarCNPJ'];
         $email = $_POST['cadastrarEmail'];
-        $senha = $_POST['cadastarSenha'];
+        $senha = password_hash($_POST['cadastarSenha'], PASSWORD_BCRYPT);
         $sql = "INSERT INTO instituicoes (nome, cnpj, email, senha) VALUES (:nome, :cnpj, :email, :senha)";
         $foiCadastrado = false;
 
@@ -60,7 +60,7 @@
         $rs = selectUserByEmail($con, $userType, $email);
 
         if($rs != false){
-            if($senha == $rs['senha']){
+            if(password_verify($senha, $rs['senha'])){
                 // changing the value of the flag "existence"
                 $usuarioExiste = true;
                 // creating session by $rs data and $userType catched by input radio 
@@ -88,7 +88,7 @@
     </header>
     <div class="container" id="container">
         <div class="form-container sign-up-container">
-            <form action="../entrar/" method="POST">
+            <form autocomplete="off" action="../entrar/" method="POST">
                 <h1>Cadastar Instituição:</h1>
                 <span>Utilize um email e CNPJ para se registrar:</span>
                 <?php if(isset($_POST['cadastarSubmit']) && !$foiCadastrado){
@@ -102,7 +102,7 @@
             </form>
         </div>
         <div class="form-container sign-in-container">
-            <form action="../entrar/" method="POST">
+            <form autocomplete="off" action="../entrar/" method="POST">
                 <h1>Entrar:</h1>
                 <span>Entre com sua conta pessoal:</span>
                 <?php if(isset($_POST['entrarSubmit']) && !$usuarioExiste){
