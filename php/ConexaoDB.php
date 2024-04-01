@@ -5,7 +5,7 @@
         $dbUser = 'keplerbd';
         $dbPass = 'M+-6Xb%m';
         /*
-        $host = 'leadsconsulting.com.br';
+        $host = 'localhost';
         $database = 'leads_kepler';
         $dbUser = 'leads_kepler';
         $dbPass = 'batatinh@123';
