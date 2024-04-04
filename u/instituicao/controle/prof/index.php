@@ -49,9 +49,10 @@
         <!-- Bootstrap CDN -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous" defer></script>
-        <!-- Custom CSS -->
-        <link rel="stylesheet" href="../../style.css">
+        <!-- Custom -->
+        <link rel="stylesheet" href="../../css/instituicao-global.css">
         <link rel="stylesheet" href="style.css">
+        <script type="module" src="../../js/global-script.js"></script>
         
         <?php
             if (empty($_SESSION)) {
@@ -63,6 +64,7 @@
     <section class="side-menu">
         <div class="side-menu-logo">
             <img src="../../../../assets/logo.png" alt="Logo do kepler">
+            <div class="side-menu-close-btn"><i class='bx bx-x'></i></div>
         </div>
         <nav class="menus">
             <ul class="menu">
@@ -85,8 +87,9 @@
         </nav>
     </section> <!-- side-menu -->
 
-    <main class="main-dashboard">
+    <main class="main">
         <header class="header-dashboard">
+            <div class="side-menu-btn"><i class='bx bx-menu-alt-left'></i></div>
             <ul class="nav-bar">
                 <li class="nav-item">
                     <a href="https://github.com/gui-silva-github/kepler-sge" target="_blank"><i class='bx bxl-github'></i></a>
@@ -139,7 +142,7 @@
             </form>
         </section>
         
-        <footer class="footer-dashboard">
+        <footer class="footer-section">
             <div class="footer-content">
                 <div class="footer-text">
                     <p>Copyright &copy; 2024 - <a href="/">Kepler</a></p>
@@ -147,6 +150,6 @@
             </div>
         </footer> <!-- footer-dashboard -->
 
-    </main> <!-- main-dashboard -->
+    </main> <!-- main -->
 </body>
 </html>
