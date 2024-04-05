@@ -43,7 +43,7 @@
             <ul class="menu">
                 <div class="menu-name">Controle Escolar</div>
                 <li class="menu-item"><a href="./controle/prof/"><i class='bx bxs-user-detail'></i> Professores</a></li>
-                <li class="menu-item"><a href=""><i class='bx bxs-user-account'></i> Alunos</a></li>
+                <li class="menu-item"><a href="./controle/alunos/"><i class='bx bxs-user-account'></i> Alunos</a></li>
                 <li class="menu-item"><a href=""><i class='bx bx-book-bookmark'></i> Diciplinas</a></li>
                 <li class="menu-item"><a href=""><i class='bx bx-search' ></i> Consultar</a></li>
             </ul>

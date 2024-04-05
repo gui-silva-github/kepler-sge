@@ -6,26 +6,26 @@
     session_start();
     if (!empty($_SESSION)){
 
-        if (isset($_POST['cadProf'])){
-            $nome = $_POST['profNome'];
-            $cpf = $_POST['profCPF'];
-            $email = $_POST['profEmail'];
-            $senha = password_hash($_POST['profSenha'], PASSWORD_BCRYPT);
-            // usar password_verify(string $password, string $hash), para descriptografar
-            $salario = $_POST['profSalario'];
-            $cargo = $_POST['profCargo'];
+        if (isset($_POST['cadAluno'])){
+            $nome = $_POST['cadAlunoNome'];
+            $cpf = $_POST['cadAlunoCPF'];
+            $ra = $_POST['cadAlunoRA'];
+            $email = $_POST['cadAlunoEmail'];
+            $senha = password_hash($_POST['cadAlunoSenha'], PASSWORD_BCRYPT);
+            $idade = $_POST['cadAlunoIdade'];
+            $dtNasc = $_POST['cadAlunoDtNasc'];
 
-            $rs = selectUserByEmail($con, "professor", $email);
-            if ($rs == false){
-                $sql = "INSERT INTO professores (cpf, nome, email, senha, salario, formacao, id_instituicao) VALUES (:cpf, :nome, :email, :senha, :salario, :formacao, :id_inst)";
+            if (!selectUserByEmail($con, "aluno", $email)){
+                $sql = "INSERT INTO alunos(cpf, ra, nome, email, senha, idade, dt_nasc, id_instituicao) VALUES (:cpf, :ra, :nome, :email, :senha, :idade, :dtNasc, :id_inst)";
 
                 $stmt = $con->prepare($sql);
                 $stmt->bindParam(':cpf', $cpf);
+                $stmt->bindParam(':ra', $ra);
                 $stmt->bindParam(':nome', $nome);
                 $stmt->bindParam(':email', $email);
                 $stmt->bindParam(':senha', $senha);
-                $stmt->bindParam(':salario', $salario);
-                $stmt->bindParam(':formacao', $cargo);
+                $stmt->bindParam(':idade', $idade);
+                $stmt->bindParam(':dtNasc', $dtNasc);
                 $stmt->bindParam(':id_inst', $_SESSION['id']);
                 $stmt->execute();
 
@@ -74,8 +74,8 @@
             </ul>
             <ul class="menu">
                 <div class="menu-name">Controle Escolar</div>
-                <li class="menu-item active"><a href=""><i class='bx bxs-user-detail'></i> Professores</a></li>
-                <li class="menu-item"><a href="../alunos/"><i class='bx bxs-user-account'></i> Alunos</a></li>
+                <li class="menu-item"><a href="../prof/"><i class='bx bxs-user-detail'></i> Professores</a></li>
+                <li class="menu-item active"><a href=""><i class='bx bxs-user-account'></i> Alunos</a></li>
                 <li class="menu-item"><a href=""><i class='bx bx-book-bookmark'></i> Diciplinas</a></li>
                 <li class="menu-item"><a href=""><i class='bx bx-search' ></i> Consultar</a></li>
             </ul>
@@ -104,44 +104,71 @@
             </ul>
         </header>
 
-        <section class="register-teacher">
-            <div class="title">Cadastrar Professor</div>
+        <section class="register-student">
+            <div class="title">Cadastrar Aluno</div>
             <?php
-                if (isset($_POST['cadProf']) && $foiCadastrado == false){
+                if (isset($_POST['cadAluno']) && $foiCadastrado == false){
+                    echo "<div class='error-message'>Aluno já existe!</div>";
+                }else if (isset($_POST['cadAluno']) && $foiCadastrado == true){
+                    echo "<div class='sucess-message'>Aluno cadastrado!</div>";
+                }
+            ?>
+            <form autocomplete="off" action="./" method="POST">
+                <div class="input-box">
+                    <input type="text" name="cadAlunoNome" id="cadAlunoNome" required>
+                    <label for="cadAlunoNome">Nome:</label>
+                </div>
+                <div class="input-box">
+                    <input type="text" name="cadAlunoCPF" id="cadAlunoCPF" required>
+                    <label for="cadAlunoCPF">CPF:</label>
+                </div>
+                <div class="input-box">
+                    <input type="text" name="cadAlunoRA" id="cadAlunoRA" required>
+                    <label for="cadAlunoRA">RA:</label>
+                </div>
+                <div class="input-box">
+                    <input type="email" name="cadAlunoEmail" id="cadAlunoEmail" required>
+                    <label for="cadAlunoEmail">Email:</label>
+                </div>
+                <div class="input-box">
+                    <input type="password" name="cadAlunoSenha" id="cadAlunoSenha" required>
+                    <label for="cadAlunoSenha">Senha:</label>
+                </div>
+                <div class="input-box">
+                    <input type="text" name="cadAlunoIdade" id="cadAlunoIdade" required>
+                    <label for="cadAlunoIdade">Idade:</label>
+                </div>
+                <div class="input-box">
+                    <input type="date" name="cadAlunoDtNasc" id="cadAlunoDtNasc">
+                    <label for="cadAlunoDtNasc">Data de Nascimento:</label>
+                </div>
+                <input type="submit" value="Cadastrar Aluno" name="cadAluno">
+            </form>
+        </section> <!-- register-student -->
+        
+        <section class="register-enrollment">
+            <div class="title">Cadastrar Matricula</div>
+            <?php
+                if (isset($_POST['cadMatr']) && $foiCadastrado == false){
                     echo "<div class='error-message'>Professor já existe!</div>";
-                }else if (isset($_POST['cadProf']) && $foiCadastrado == true){
+                }else if (isset($_POST['cadMatr']) && $foiCadastrado == true){
                     echo "<div class='sucess-message'>Professor cadastrado!</div>";
                 }
             ?>
             <form autocomplete="off" action="./" method="POST">
                 <div class="input-box">
-                    <input type="text" name="profNome" id="profNome" required>
-                    <label for="profNome">Nome:</label>
+                    <input type="text" name="cadMatrAluno" id="cadMatrAluno" required>
+                    <label for="cadMatrAluno">RA do Aluno:</label>
                 </div>
                 <div class="input-box">
-                    <input type="text" name="profCPF" id="profCPF" required>
-                    <label for="profNome">CPF:</label>
+                    <input type="text" name="cadMatrDisciplina" id="cadMatrDisciplina" required>
+                    <label for="cadMatrDisciplina">Nome da Disciplina:</label>
                 </div>
-                <div class="input-box">
-                    <input type="email" name="profEmail" id="profEmail" required>
-                    <label for="profNome">Email:</label>
-                </div>
-                <div class="input-box">
-                    <input type="password" name="profSenha" id="profSenha" required>
-                    <label for="profNome">Senha:</label>
-                </div>
-                <div class="input-box">
-                    <input type="text" name="profSalario" id="profSalario" required>
-                    <label for="profNome">Salário:</label>
-                </div>
-                <div class="input-box">
-                    <input type="text" name="profCargo" id="profCargo" required>
-                    <label for="profNome">Cargo:</label>
-                </div>
-                <input type="submit" value="Cadastrar Professor" name="cadProf">
+                <input type="hidden" name="cadMatrData" id="cadMatrData" required>
+                <input type="submit" value="Cadastrar Matricula" name="cadMatr">
             </form>
         </section>
-        
+
         <footer class="footer-section">
             <div class="footer-content">
                 <div class="footer-text">
