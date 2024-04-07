@@ -76,13 +76,13 @@
                 <div class="menu-name">Controle Escolar</div>
                 <li class="menu-item active"><a href=""><i class='bx bxs-user-detail'></i> Professores</a></li>
                 <li class="menu-item"><a href="../alunos/"><i class='bx bxs-user-account'></i> Alunos</a></li>
-                <li class="menu-item"><a href=""><i class='bx bx-book-bookmark'></i> Diciplinas</a></li>
-                <li class="menu-item"><a href=""><i class='bx bx-search' ></i> Consultar</a></li>
+                <li class="menu-item"><a href="../disciplinas/"><i class='bx bx-book-bookmark'></i> Disciplinas</a></li>
+                <li class="menu-item"><a href="../consultar/"><i class='bx bx-search' ></i> Consultar</a></li>
             </ul>
             <ul class="menu">
                 <div class="menu-name">Outros</div>
                 <li class="menu-item"><a href="../../"><i class='bx bx-home' ></i> Página Inicial</a></li>
-                <li class="menu-item"><a href=""><i class='bx bx-exit' ></i> Sair</a></li>
+                <li class="menu-item"><a href="../entrar/"><i class='bx bx-exit' ></i> Sair</a></li>
             </ul>
         </nav>
     </section> <!-- side-menu -->
@@ -104,43 +104,95 @@
             </ul>
         </header>
 
-        <section class="register-teacher">
-            <div class="title">Cadastrar Professor</div>
-            <?php
-                if (isset($_POST['cadProf']) && $foiCadastrado == false){
-                    echo "<div class='error-message'>Professor já existe!</div>";
-                }else if (isset($_POST['cadProf']) && $foiCadastrado == true){
-                    echo "<div class='sucess-message'>Professor cadastrado!</div>";
-                }
-            ?>
-            <form autocomplete="off" action="./" method="POST">
-                <div class="input-box">
-                    <input type="text" name="profNome" id="profNome" required>
-                    <label for="profNome">Nome:</label>
-                </div>
-                <div class="input-box">
-                    <input type="text" name="profCPF" id="profCPF" required>
-                    <label for="profCPF">CPF:</label>
-                </div>
-                <div class="input-box">
-                    <input type="email" name="profEmail" id="profEmail" required>
-                    <label for="profEmail">Email:</label>
-                </div>
-                <div class="input-box">
-                    <input type="password" name="profSenha" id="profSenha" required>
-                    <label for="profSenha">Senha:</label>
-                </div>
-                <div class="input-box">
-                    <input type="text" name="profSalario" id="profSalario" required>
-                    <label for="profSalario">Salário:</label>
-                </div>
-                <div class="input-box">
-                    <input type="text" name="profFormacao" id="profFormacao" required>
-                    <label for="profFormacao">Formação:</label>
-                </div>
-                <input type="submit" value="Cadastrar Professor" name="cadProf">
-            </form>
-        </section>
+        <article class="div-flex">
+
+            <section class="register-teacher">
+                <div class="title">Cadastrar Professor</div>
+                <?php
+                    if (isset($_POST['cadProf']) && $foiCadastrado == false){
+                        echo "<div class='error-message'>Professor já existe!</div>";
+                    }else if (isset($_POST['cadProf']) && $foiCadastrado == true){
+                        echo "<div class='sucess-message'>Professor cadastrado!</div>";
+                    }
+                ?>
+                <form autocomplete="off" action="./" method="POST">
+                    <div class="input-box">
+                        <input type="text" name="profNome" id="profNome" required>
+                        <label for="profNome">Nome:</label>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" name="profCPF" id="profCPF" required>
+                        <label for="profCPF">CPF:</label>
+                    </div>
+                    <div class="input-box">
+                        <input type="email" name="profEmail" id="profEmail" required>
+                        <label for="profEmail">Email:</label>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" name="profSenha" id="profSenha" required>
+                        <label for="profSenha">Senha:</label>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" name="profSalario" id="profSalario" required>
+                        <label for="profSalario">Salário:</label>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" name="profFormacao" id="profFormacao" required>
+                        <label for="profFormacao">Formação:</label>
+                    </div>
+                    <input type="submit" value="Cadastrar Professor" name="cadProf">
+                </form>
+            </section>
+
+            <section class="register-teacher">
+                <div class="title">Editar Professor</div>
+                <form autocomplete="off" action="./" method="POST">
+                    <div class="input-box">
+                        <input type="text" name="profNomeU" id="profNome2" required>
+                        <label for="profNome2">Nome:</label>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" name="profCPFU" id="profCPF2" required>
+                        <label for="profCPF2">CPF:</label>
+                    </div>
+                    <div class="input-box">
+                        <input type="email" name="profEmailU" id="profEmail2" required>
+                        <label for="profEmail2">Email:</label>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" name="profSenhaU" id="profSenha2" required>
+                        <label for="profSenha2">Senha:</label>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" name="profSalarioU" id="profSalario2" required>
+                        <label for="profSalario2">Salário:</label>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" name="profFormacaoU" id="profFormacao2" required>
+                        <label for="profFormacao2">Formação:</label>
+                    </div>
+                    <input type="submit" value="Editar Professor" name="editProf">
+                </form>
+            </section>
+
+            <section class="register-teacher">
+                <div class="title">Excluir Professor</div>
+                <form autocomplete="off" action="./" method="POST">
+                    <div class="input-box">
+                        <input type="text" name="profCPFD" id="profCPF3" required>
+                        <label for="profCPF3">CPF:</label>
+                    </div>
+                    <input type="submit" value="Excluir Professor" name="deleteProf">
+                </form>
+            </section>
+
+            <section class="register-teacher">
+
+                <a href="table.php">Ver tabela de professores</a>
+
+            </section>
+
+        </article>
         
         <footer class="footer-section">
             <div class="footer-content">
