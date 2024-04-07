@@ -1,7 +1,7 @@
 <?php
 
     include('../../../../php/ConexaoDB.php');
-    include('../../../../php/dao/userDAO.php');
+    include('../../../../php/dao/instituicaoDAO.php');
     include('../../../../php/SessionManager.php');
 
     session_start();
@@ -33,37 +33,19 @@
     }
 
     function selectProfessores($con, $idInstituicao){
+        $rset = selectAllProfessores($con, $idInstituicao);
 
-        $sql = "SELECT * FROM professores WHERE id_instituicao = :idInstituicao";
-
-        try {
-
-            $stmt = $con->prepare($sql);
-
-            $stmt->bindParam(':idInstituicao', $idInstituicao);
-
-            $stmt->execute();
-            
-            $rset = $stmt->fetchAll();
-
-            for ($i=0;$i<sizeof($rset);$i++){
-                echo "<tr><td>".$rset[$i]['id']."</td>";
-                echo "<td>".$rset[$i]['cpf']."</td>";
-                echo "<td>".$rset[$i]['nome']."</td>";
-                echo "<td>".$rset[$i]['email']."</td>";
-                echo "<td>".$rset[$i]['senha']."</td>";
-                echo "<td>".$rset[$i]['salario']."</td>";
-                echo "<td>".$rset[$i]['formacao']."</td>";
-                echo "<td>".$rset[$i]['id_instituicao']."</td>";
-                echo "<td>".innerJoinProfessores($con, $idInstituicao)['nome']."</td></tr>";
-            }
-
-        } catch(PDOException $e){
-
-            echo "<strong>Não foi possível consultar a instituição de id $idInstituicao!</strong><br>" . $e->getMessage();
-
+        for ($i=0;$i<sizeof($rset);$i++){
+            echo "<tr><td>".$rset[$i]['id']."</td>";
+            echo "<td>".$rset[$i]['cpf']."</td>";
+            echo "<td>".$rset[$i]['nome']."</td>";
+            echo "<td>".$rset[$i]['email']."</td>";
+            echo "<td>".$rset[$i]['senha']."</td>";
+            echo "<td>".$rset[$i]['salario']."</td>";
+            echo "<td>".$rset[$i]['formacao']."</td>";
+            echo "<td>".$rset[$i]['id_instituicao']."</td>";
+            echo "<td>".innerJoinProfessores($con, $idInstituicao)['nome']."</td></tr>";
         }
-
     }
 
 ?>

@@ -1,11 +1,13 @@
 <?php
     include('../../../../php/ConexaoDB.php');
-    include('../../../../php/dao/userDAO.php');
     include('../../../../php/SessionManager.php');
+    include('../../../../php/dao/userDAO.php');
+    include('../../../../php/dao/instituicaoDAO.php');
 
     session_start();
     if (!empty($_SESSION)){
-
+        
+        //cadastro de professores
         if (isset($_POST['cadProf'])){
             $nome = $_POST['profNome'];
             $cpf = $_POST['profCPF'];
@@ -34,6 +36,9 @@
                 $foiCadastrado = false;
             }
         }
+
+    }else{
+        header("Location: /u/entrar/");
     }
 ?>
 
@@ -52,13 +57,8 @@
         <!-- Custom -->
         <link rel="stylesheet" href="../../css/instituicao-global.css">
         <link rel="stylesheet" href="style.css">
-        <script type="module" src="../../js/global-script.js"></script>
-        
-        <?php
-            if (empty($_SESSION)) {
-                echo '<script> window.location.href = "../../../entrar/" </script>';
-            }
-        ?>
+        <script type="module" src="../../js/global-script.js" defer></script>
+        <script src="script.js" defer></script>
 </head>
 <body>
     <section class="side-menu">
@@ -88,6 +88,7 @@
     </section> <!-- side-menu -->
 
     <main class="main">
+
         <header class="header-dashboard">
             <div class="side-menu-btn"><i class='bx bx-menu-alt-left'></i></div>
             <ul class="nav-bar">
@@ -144,54 +145,44 @@
                 </form>
             </section>
 
-            <section class="register-teacher">
-                <div class="title">Editar Professor</div>
-                <form autocomplete="off" action="./" method="POST">
-                    <div class="input-box">
-                        <input type="text" name="profNomeU" id="profNome2" required>
-                        <label for="profNome2">Nome:</label>
-                    </div>
-                    <div class="input-box">
-                        <input type="text" name="profCPFU" id="profCPF2" required>
-                        <label for="profCPF2">CPF:</label>
-                    </div>
-                    <div class="input-box">
-                        <input type="email" name="profEmailU" id="profEmail2" required>
-                        <label for="profEmail2">Email:</label>
-                    </div>
-                    <div class="input-box">
-                        <input type="password" name="profSenhaU" id="profSenha2" required>
-                        <label for="profSenha2">Senha:</label>
-                    </div>
-                    <div class="input-box">
-                        <input type="text" name="profSalarioU" id="profSalario2" required>
-                        <label for="profSalario2">Salário:</label>
-                    </div>
-                    <div class="input-box">
-                        <input type="text" name="profFormacaoU" id="profFormacao2" required>
-                        <label for="profFormacao2">Formação:</label>
-                    </div>
-                    <input type="submit" value="Editar Professor" name="editProf">
-                </form>
+            <section class="teacher-table">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">CPF</th>
+                            <th scope="col">Salário</th>
+                            <th scope="col">Formação</th>
+
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <?php
+                            $profsRset = selectAllProfessores($con, $_SESSION['id']);
+                            
+                            for($i=0; $i<sizeof($profsRset); $i++){
+                                echo '<tr>';
+                                echo '<th scope="row">'.$profsRset[$i]['id'].'</th>';
+                                echo "<td>".$profsRset[$i]['nome']."</td>";
+                                echo "<td>".$profsRset[$i]['email']."</td>";
+                                echo "<td>".$profsRset[$i]['cpf']."</td>";
+                                echo "<td>".$profsRset[$i]['salario']."</td>";
+                                echo "<td>".$profsRset[$i]['formacao']."</td>";
+                                echo '<td><form action="./updateProf.php" method="GET"><input type="hidden" name="profId" value="'.$profsRset[$i]['id'].'"><button type="submit"><i class="bx bx-edit-alt update-teacher-table-btn"></i></button></form></td>';
+                                echo "<td><i class='bx bx-trash delete-teacher-table-btn'></i></td>";
+                                echo "</tr>";
+                            }
+                        ?>
+                    </tbody>
+                </table>
+                <a href="table.php">Ver tabela completa de professores</a>
             </section>
-
-            <section class="register-teacher">
-                <div class="title">Excluir Professor</div>
-                <form autocomplete="off" action="./" method="POST">
-                    <div class="input-box">
-                        <input type="text" name="profCPFD" id="profCPF3" required>
-                        <label for="profCPF3">CPF:</label>
-                    </div>
-                    <input type="submit" value="Excluir Professor" name="deleteProf">
-                </form>
-            </section>
-
-            <section class="register-teacher">
-
-                <a href="table.php">Ver tabela de professores</a>
-
-            </section>
-
+            
         </article>
         
         <footer class="footer-section">

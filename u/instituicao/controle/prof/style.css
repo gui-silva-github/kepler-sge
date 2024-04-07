@@ -81,6 +81,19 @@ section.register-teacher form{
 
 /* Table php */
 
+.teacher-table{
+    overflow: scroll !important;
+}
+
+.update-teacher-table-btn{
+    color: rgb(70, 185, 85) !important;
+    cursor: pointer;
+}
+.delete-teacher-table-btn{
+    color: rgb(185, 70, 70) !important;
+    cursor: pointer;
+}
+
 table tr td{
     vertical-align: middle;
     
