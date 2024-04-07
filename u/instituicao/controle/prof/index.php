@@ -13,7 +13,7 @@
             $senha = password_hash($_POST['profSenha'], PASSWORD_BCRYPT);
             // usar password_verify(string $password, string $hash), para descriptografar
             $salario = $_POST['profSalario'];
-            $cargo = $_POST['profCargo'];
+            $cargo = $_POST['profFormacao'];
 
             $rs = selectUserByEmail($con, "professor", $email);
             if ($rs == false){
@@ -120,23 +120,23 @@
                 </div>
                 <div class="input-box">
                     <input type="text" name="profCPF" id="profCPF" required>
-                    <label for="profNome">CPF:</label>
+                    <label for="profCPF">CPF:</label>
                 </div>
                 <div class="input-box">
                     <input type="email" name="profEmail" id="profEmail" required>
-                    <label for="profNome">Email:</label>
+                    <label for="profEmail">Email:</label>
                 </div>
                 <div class="input-box">
                     <input type="password" name="profSenha" id="profSenha" required>
-                    <label for="profNome">Senha:</label>
+                    <label for="profSenha">Senha:</label>
                 </div>
                 <div class="input-box">
                     <input type="text" name="profSalario" id="profSalario" required>
-                    <label for="profNome">Salário:</label>
+                    <label for="profSalario">Salário:</label>
                 </div>
                 <div class="input-box">
-                    <input type="text" name="profCargo" id="profCargo" required>
-                    <label for="profNome">Cargo:</label>
+                    <input type="text" name="profFormacao" id="profFormacao" required>
+                    <label for="profFormacao">Formação:</label>
                 </div>
                 <input type="submit" value="Cadastrar Professor" name="cadProf">
             </form>
