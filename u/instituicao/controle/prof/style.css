@@ -70,3 +70,24 @@ section.register-teacher form{
     padding: 4px;
     border-radius: 8px;
 }
+
+/* Section Show Table */
+
+.showTableHTML a{
+    color: var(--secondary);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Table php */
+
+table tr td{
+    vertical-align: middle;
+    
+}
+
+td button{
+    margin: 5px;
+}
+
+
