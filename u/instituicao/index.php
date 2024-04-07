@@ -44,13 +44,13 @@
                 <div class="menu-name">Controle Escolar</div>
                 <li class="menu-item"><a href="./controle/prof/"><i class='bx bxs-user-detail'></i> Professores</a></li>
                 <li class="menu-item"><a href="./controle/alunos/"><i class='bx bxs-user-account'></i> Alunos</a></li>
-                <li class="menu-item"><a href=""><i class='bx bx-book-bookmark'></i> Diciplinas</a></li>
-                <li class="menu-item"><a href=""><i class='bx bx-search' ></i> Consultar</a></li>
+                <li class="menu-item"><a href="./controle/disciplinas/"><i class='bx bx-book-bookmark'></i> Disciplinas</a></li>
+                <li class="menu-item"><a href="./controle/consultar/"><i class='bx bx-search' ></i> Consultar</a></li>
             </ul>
             <ul class="menu">
                 <div class="menu-name">Outros</div>
                 <li class="menu-item"><a href="../../"><i class='bx bx-home' ></i> Página Inicial</a></li>
-                <li class="menu-item"><a href=""><i class='bx bx-exit' ></i> Sair</a></li>
+                <li class="menu-item"><a href="../entrar/"><i class='bx bx-exit' ></i> Sair</a></li>
             </ul>
         </nav>
     </section> <!-- side-menu -->
