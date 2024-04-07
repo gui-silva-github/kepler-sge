@@ -16,7 +16,8 @@
 }
 
 section.register-student,
-section.register-enrollment{
+section.register-enrollment,
+section.register-table{
     width: fit-content;
 }
 
