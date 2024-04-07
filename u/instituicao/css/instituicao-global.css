@@ -135,7 +135,7 @@ a{
     position: relative;
     width: 100%;
     min-height: 100vh;
-    padding: 0 2rem;
+    padding: 0 2rem 80px 2rem !important;
     overflow-y: scroll !important;
     margin-left: var(--side-menu-width);
 }
@@ -156,6 +156,13 @@ li.nav-item{
     font-size: 1.8rem;
     cursor: pointer;
     padding: 12px;
+}
+
+.div-flex{
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 20px;
+    flex-shrink: 0;
 }
 
 .main section {
