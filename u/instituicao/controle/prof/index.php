@@ -79,10 +79,10 @@
                 <li class="menu-item"><a href="../disciplinas/"><i class='bx bx-book-bookmark'></i> Disciplinas</a></li>
                 <li class="menu-item"><a href="../consultar/"><i class='bx bx-search' ></i> Consultar</a></li>
             </ul>
-            <ul class="menu">
+            <ul class="menu">   
                 <div class="menu-name">Outros</div>
-                <li class="menu-item"><a href="../../"><i class='bx bx-home' ></i> Página Inicial</a></li>
-                <li class="menu-item"><a href="../entrar/"><i class='bx bx-exit' ></i> Sair</a></li>
+                <li class="menu-item"><a href="../../../../"><i class='bx bx-home' ></i> Página Inicial</a></li>
+                <li class="menu-item"><a href="../../../entrar/"><i class='bx bx-exit' ></i> Sair</a></li>
             </ul>
         </nav>
     </section> <!-- side-menu -->
