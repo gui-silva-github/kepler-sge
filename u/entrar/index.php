@@ -5,17 +5,6 @@
     include('../../php/dao/userDAO.php');
     include('../../php/SessionManager.php');
 
-    // Sending user to certain URL
-    function getRedirectLoginURL($userType){
-        if ($userType == 'aluno'){
-            return '../aluno/';
-        }else if($userType == 'professor'){
-            return '../professor/';
-        }else{
-            return '../instituicao/';
-        }
-    }
-
     // se for um cadastro
     if (isset($_POST['cadastarSubmit'])){
         $nome = $_POST['cadastrarNome'];
@@ -68,6 +57,13 @@
             }
         }
     }
+
+    // changing URL with PHP setting with JS
+
+    if(isset($_POST['entrarSubmit']) && $usuarioExiste == true){
+        header("Location: ../$userType/index.php");
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -169,15 +165,16 @@
     </div>
 
     <script src="script.js"></script>
-    <?php 
-        // display modal with PHP setting with JS
-        if(isset($_POST['cadastarSubmit']) && $foiCadastrado == true){
-            echo '<script>showModal()</script>';
-        }
-        // changing URL with PHP setting with JS
-        if(isset($_POST['entrarSubmit']) && $usuarioExiste == true){
-            echo '<script>window.location.href = "'.getRedirectLoginURL($userType).'"</script>';
-        }
+
+    <?php
+    
+    // display modal with PHP setting with JS
+
+    if(isset($_POST['cadastarSubmit']) && $foiCadastrado == true){
+        echo '<script>showModal()</script>';
+    }
+            
     ?>
+
 </body>
 </html>
