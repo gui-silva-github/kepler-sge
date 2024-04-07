@@ -105,77 +105,79 @@
                 </li>
             </ul>
         </header>
-
-        <section class="register-student">
-            <div class="title">Cadastrar Aluno</div>
-            <?php
-                if (isset($_POST['cadAluno']) && $foiCadastrado == false){
-                    echo "<div class='error-message'>Aluno já existe!</div>";
-                }else if (isset($_POST['cadAluno']) && $foiCadastrado == true){
-                    echo "<div class='sucess-message'>Aluno cadastrado!</div>";
-                }
-            ?>
-            <form autocomplete="off" action="./" method="POST">
-                <div class="input-box">
-                    <input type="text" name="cadAlunoNome" id="cadAlunoNome" required>
-                    <label for="cadAlunoNome">Nome:</label>
-                </div>
-                <div class="input-box">
-                    <input type="text" name="cadAlunoCPF" id="cadAlunoCPF" required>
-                    <label for="cadAlunoCPF">CPF:</label>
-                </div>
-                <div class="input-box">
-                    <input type="text" name="cadAlunoRA" id="cadAlunoRA" required>
-                    <label for="cadAlunoRA">RA:</label>
-                </div>
-                <div class="input-box">
-                    <input type="email" name="cadAlunoEmail" id="cadAlunoEmail" required>
-                    <label for="cadAlunoEmail">Email:</label>
-                </div>
-                <div class="input-box">
-                    <input type="password" name="cadAlunoSenha" id="cadAlunoSenha" required>
-                    <label for="cadAlunoSenha">Senha:</label>
-                </div>
-                <div class="input-box">
-                    <input type="text" name="cadAlunoIdade" id="cadAlunoIdade" required>
-                    <label for="cadAlunoIdade">Idade:</label>
-                </div>
-                <div class="input-box">
-                    <input type="date" name="cadAlunoDtNasc" id="cadAlunoDtNasc">
-                    <label for="cadAlunoDtNasc">Data de Nascimento:</label>
-                </div>
-                <input type="submit" value="Cadastrar Aluno" name="cadAluno">
-            </form>
-        </section> <!-- register-student -->
         
-        <section class="register-enrollment">
-            <div class="title">Cadastrar Matricula</div>
-            <?php
-                if (isset($_POST['cadMatr']) && $foiCadastrado == false){
-                    echo "<div class='error-message'>Professor já existe!</div>";
-                }else if (isset($_POST['cadMatr']) && $foiCadastrado == true){
-                    echo "<div class='sucess-message'>Professor cadastrado!</div>";
-                }
-            ?>
-            <form autocomplete="off" action="./" method="POST">
-                <div class="input-box">
-                    <input type="text" name="cadMatrAluno" id="cadMatrAluno" required>
-                    <label for="cadMatrAluno">RA do Aluno:</label>
-                </div>
-                <div class="input-box">
-                    <input type="text" name="cadMatrDisciplina" id="cadMatrDisciplina" required>
-                    <label for="cadMatrDisciplina">Nome da Disciplina:</label>
-                </div>
-                <input type="hidden" name="cadMatrData" id="cadMatrData" required>
-                <input type="submit" value="Cadastrar Matricula" name="cadMatr">
-            </form>
-        </section>
-
-        <section class="register-table">
-
-            <a href="table.php">Ver tabela de alunos</a>
-
-        </section>
+        <article class="div-flex">
+            <section class="register-student">
+                <div class="title">Cadastrar Aluno</div>
+                <?php
+                    if (isset($_POST['cadAluno']) && $foiCadastrado == false){
+                        echo "<div class='error-message'>Aluno já existe!</div>";
+                    }else if (isset($_POST['cadAluno']) && $foiCadastrado == true){
+                        echo "<div class='sucess-message'>Aluno cadastrado!</div>";
+                    }
+                ?>
+                <form autocomplete="off" action="./" method="POST">
+                    <div class="input-box">
+                        <input type="text" name="cadAlunoNome" id="cadAlunoNome" required>
+                        <label for="cadAlunoNome">Nome:</label>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" name="cadAlunoCPF" id="cadAlunoCPF" required>
+                        <label for="cadAlunoCPF">CPF:</label>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" name="cadAlunoRA" id="cadAlunoRA" required>
+                        <label for="cadAlunoRA">RA:</label>
+                    </div>
+                    <div class="input-box">
+                        <input type="email" name="cadAlunoEmail" id="cadAlunoEmail" required>
+                        <label for="cadAlunoEmail">Email:</label>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" name="cadAlunoSenha" id="cadAlunoSenha" required>
+                        <label for="cadAlunoSenha">Senha:</label>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" name="cadAlunoIdade" id="cadAlunoIdade" required>
+                        <label for="cadAlunoIdade">Idade:</label>
+                    </div>
+                    <div class="input-box">
+                        <input type="date" name="cadAlunoDtNasc" id="cadAlunoDtNasc">
+                        <label for="cadAlunoDtNasc">Data de Nascimento:</label>
+                    </div>
+                    <input type="submit" value="Cadastrar Aluno" name="cadAluno">
+                </form>
+            </section> <!-- register-student -->
+            
+            <section class="register-enrollment">
+                <div class="title">Cadastrar Matricula</div>
+                <?php
+                    if (isset($_POST['cadMatr']) && $foiCadastrado == false){
+                        echo "<div class='error-message'>Professor já existe!</div>";
+                    }else if (isset($_POST['cadMatr']) && $foiCadastrado == true){
+                        echo "<div class='sucess-message'>Professor cadastrado!</div>";
+                    }
+                ?>
+                <form autocomplete="off" action="./" method="POST">
+                    <div class="input-box">
+                        <input type="text" name="cadMatrAluno" id="cadMatrAluno" required>
+                        <label for="cadMatrAluno">RA do Aluno:</label>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" name="cadMatrDisciplina" id="cadMatrDisciplina" required>
+                        <label for="cadMatrDisciplina">Nome da Disciplina:</label>
+                    </div>
+                    <input type="hidden" name="cadMatrData" id="cadMatrData" required>
+                    <input type="submit" value="Cadastrar Matricula" name="cadMatr">
+                </form>
+            </section>
+    
+            <section class="register-table">
+    
+                <a href="table.php">Ver tabela de alunos</a>
+    
+            </section>
+        </article>
 
         <footer class="footer-section">
             <div class="footer-content">
