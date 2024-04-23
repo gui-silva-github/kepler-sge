@@ -51,7 +51,7 @@
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -61,6 +61,9 @@
 
      <!--Bootstrap 5 icons CDN-->
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+     <!-- DataTables CSS -->
+     <link rel="stylesheet" href="//cdn.datatables.net/2.0.5/css/dataTables.dataTables.min.css">
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -78,11 +81,11 @@
 
         </div>
 
-        <div class="row">
+        <div class="">
 
-            <div class="col-12">
+            <div class="">
 
-                <table class="table table-striped table-hover mt-3 text-center table-bordered">
+                <table class="table table-striped table-hover mt-3 text-center table-bordered" id="professores">
 
                     <thead>
 
@@ -118,10 +121,25 @@
         </div>
 
     </section>
+
+    <script src="../../js/jquery/jquery.js"></script>
+    <script src="//cdn.datatables.net/2.0.5/js/dataTables.min.js"></script>
+
+    <script>
+
+    let professores = new DataTable('#professores', {
+       
+        language: {
+            url: '//cdn.datatables.net/plug-ins/2.0.5/i18n/pt-BR.json',
+        },
+    });
+
+    </script>
+
     
     
      <!-- Option 1: Bootstrap Bundle with Popper -->
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
+    
 </body>
 </html>
