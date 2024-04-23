@@ -49,6 +49,8 @@
         <!-- Boxicons CDN -->
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <!-- Bootstrap CDN -->
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="js/bootstrap.bundle.min.js">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous" defer></script>
         <!-- Custom -->
@@ -159,13 +161,47 @@
                     }
                 ?>
                 <form autocomplete="off" action="./" method="POST">
-                    <div class="input-box">
-                        <input type="text" name="cadMatrAluno" id="cadMatrAluno" required>
+                    <div class="">
                         <label for="cadMatrAluno">RA do Aluno:</label>
+                        <select>
+                            <option value="0">Selecione um RA</option>
+                            <?php
+
+                                $sql = "SELECT ra FROM alunos";
+
+                                $stm = $con->prepare($sql);
+                            
+                                $stm->execute();
+                            
+                                $linha = $stm->fetchAll();
+                            
+                                for ($i = 0; $i<sizeof($linha); $i++){
+                                    echo '<option value="'.$linha[$i]['id'].'">'.$linha[$i]['ra'].'</option>';
+                                }   
+
+                            ?>
+                        </select>
                     </div>
-                    <div class="input-box">
-                        <input type="text" name="cadMatrDisciplina" id="cadMatrDisciplina" required>
+                    <div class="">
                         <label for="cadMatrDisciplina">Nome da Disciplina:</label>
+                        <select>
+                        <option value="0">Selecione uma disciplina</option>
+                            <?php
+
+                                $sql = "SELECT nome FROM disciplinas";
+
+                                    $stm = $con->prepare($sql);
+                                
+                                    $stm->execute();
+                                
+                                    $linha = $stm->fetchAll();
+                                
+                                    for ($i = 0; $i<sizeof($linha); $i++){
+                                        echo '<option value="'.$linha[$i]['id'].'">'.$linha[$i]['nome'].'</option>';
+                                    }   
+
+                            ?>
+                        </select>
                     </div>
                     <input type="hidden" name="cadMatrData" id="cadMatrData" required>
                     <input type="submit" value="Cadastrar Matricula" name="cadMatr">
