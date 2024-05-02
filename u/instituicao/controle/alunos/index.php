@@ -74,7 +74,7 @@
             <ul class="menu">
                 <div class="menu-name">Instituição</div>
                 <li class="menu-item"><a href="../../"><i class='bx bxs-dashboard'></i> Dashboard</a></li>
-                <li class="menu-item"><a href=""><i class='bx bxs-cog'></i> Configurações</a></li>
+                <li class="menu-item"><a href="../configuracoes/"><i class='bx bxs-cog'></i> Configurações</a></li>
             </ul>
             <ul class="menu">
                 <div class="menu-name">Controle Escolar</div>
@@ -166,10 +166,14 @@
                         <select>
                             <option value="0">Selecione um RA</option>
                             <?php
+                                
+                                $id = $_SESSION['id'];
 
-                                $sql = "SELECT ra FROM alunos";
+                                $sql = "SELECT ra FROM alunos WHERE id_instituicao = :id";
 
                                 $stm = $con->prepare($sql);
+
+                                $stm->bindParam(":id", $id);
                             
                                 $stm->execute();
                             
@@ -188,9 +192,13 @@
                         <option value="0">Selecione uma disciplina</option>
                             <?php
 
-                                $sql = "SELECT nome FROM disciplinas";
+                                    $id = $_SESSION['id'];
+
+                                    $sql = "SELECT nome FROM disciplinas WHERE id_inst = :id";
 
                                     $stm = $con->prepare($sql);
+
+                                    $stm->bindParam(":id", $id);
                                 
                                     $stm->execute();
                                 
