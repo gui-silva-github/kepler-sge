@@ -70,7 +70,7 @@
             <ul class="menu">
                 <div class="menu-name">Instituição</div>
                 <li class="menu-item"><a href="../../"><i class='bx bxs-dashboard'></i> Dashboard</a></li>
-                <li class="menu-item"><a href=""><i class='bx bxs-cog'></i> Configurações</a></li>
+                <li class="menu-item"><a href="../configuracoes/"><i class='bx bxs-cog'></i> Configurações</a></li>
             </ul>
             <ul class="menu">
                 <div class="menu-name">Controle Escolar</div>
