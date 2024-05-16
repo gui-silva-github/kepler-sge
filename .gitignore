@@ -1,4 +1,4 @@
 # Ignora arquivo de conexão com host, usuário e senha
-php/ConexaoDB.php
+.php/ConexaoDB.php
 
-sql/
+.sql/

@@ -1,30 +1,23 @@
 <?php
+    // Importing the connection, select's query and session
+
     include('../../php/ConexaoDB.php');
     include('../../php/dao/userDAO.php');
     include('../../php/SessionManager.php');
-
-    function getRedirectLoginURL($userType){
-        if ($userType == 'aluno'){
-            return '../aluno/';
-        }else if($userType == 'professor'){
-            return '../professor/';
-        }else{
-            return '../instituicao/';
-        }
-    }
 
     // se for um cadastro
     if (isset($_POST['cadastarSubmit'])){
         $nome = $_POST['cadastrarNome'];
         $cnpj = $_POST['cadastrarCNPJ'];
         $email = $_POST['cadastrarEmail'];
-        $senha = $_POST['cadastarSenha'];
+        $senha = password_hash($_POST['cadastarSenha'], PASSWORD_BCRYPT);
         $sql = "INSERT INTO instituicoes (nome, cnpj, email, senha) VALUES (:nome, :cnpj, :email, :senha)";
         $foiCadastrado = false;
 
         try{
 
             $rs = selectUserByEmail($con, "instituicao", $email);
+            // if there's no one in the db, sign up
             if ($rs == false){
                 $stmt = $con->prepare($sql);
                 $stmt->bindParam(':nome', $nome);
@@ -33,6 +26,7 @@
                 $stmt->bindParam(':senha', $senha);
     
                 if ($stmt->execute()){
+                    // changing the value of the flag "sign up"
                     $foiCadastrado = true;
                 }
             }else{
@@ -55,12 +49,21 @@
         $rs = selectUserByEmail($con, $userType, $email);
 
         if($rs != false){
-            if($senha == $rs['senha']){
+            if(password_verify($senha, $rs['senha'])){
+                // changing the value of the flag "existence"
                 $usuarioExiste = true;
+                // creating session by $rs data and $userType catched by input radio 
                 createUserSession($rs, $userType);
             }
         }
     }
+
+    // changing URL with PHP setting with JS
+
+    if(isset($_POST['entrarSubmit']) && $usuarioExiste == true){
+        header("Location: ../$userType/index.php");
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -83,7 +86,7 @@
     </header>
     <div class="container" id="container">
         <div class="form-container sign-up-container">
-            <form action="../entrar/" method="POST">
+            <form autocomplete="off" action="../entrar/" method="POST">
                 <h1>Cadastar Instituição:</h1>
                 <span>Utilize um email e CNPJ para se registrar:</span>
                 <?php if(isset($_POST['cadastarSubmit']) && !$foiCadastrado){
@@ -97,7 +100,7 @@
             </form>
         </div>
         <div class="form-container sign-in-container">
-            <form action="../entrar/" method="POST">
+            <form autocomplete="off" action="../entrar/" method="POST">
                 <h1>Entrar:</h1>
                 <span>Entre com sua conta pessoal:</span>
                 <?php if(isset($_POST['entrarSubmit']) && !$usuarioExiste){
@@ -164,13 +167,16 @@
     </div>
 
     <script src="script.js"></script>
-    <?php 
-        if(isset($_POST['cadastarSubmit']) && $foiCadastrado == true){
-            echo '<script>showModal()</script>';
-        }
-        if(isset($_POST['entrarSubmit']) && $usuarioExiste == true){
-            echo '<script>window.location.href = "'.getRedirectLoginURL($userType).'"</script>';
-        }
+
+    <?php
+    
+    // display modal with PHP setting with JS
+
+    if(isset($_POST['cadastarSubmit']) && $foiCadastrado == true){
+        echo '<script>showModal()</script>';
+    }
+            
     ?>
+
 </body>
 </html>
