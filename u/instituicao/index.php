@@ -77,7 +77,7 @@
         <?php
             if (!empty($_SESSION)){
                 echo "<h4>ID da Instituição: <span style='color: var(--secondary)'>" . $_SESSION['id'] . "</span></h4>";
-                echo "<h3>Instituição: <span style='color: var(--secondary)'>" . $_SESSION['email'] ."</span></h3>";
+                echo "<h3>Instituição: <span style='color: var(--secondary)'>" . $_SESSION['nome'] ."</span></h3>";
             }    
         ?>
         </div>
