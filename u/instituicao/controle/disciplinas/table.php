@@ -1,10 +1,9 @@
 <?php
 
     include('../../../../php/ConexaoDB.php');
-    include('../../../../php/dao/userDAO.php');
     include('../../../../php/SessionManager.php');
 
-    session_start();
+    $conexao = new ConexaoDB();
 
     function innerJoinDisciplinas($con){
 
@@ -118,7 +117,7 @@
 
                         echo 
                         "<tbody id='data'>".
-                        selectDisciplinas($con).
+                        selectDisciplinas($conexao->getConnection()).
                         "</tbody>";
                         
                     ?>

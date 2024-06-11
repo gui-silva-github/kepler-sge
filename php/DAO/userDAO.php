@@ -1,8 +1,5 @@
 <?php
-    
-    // This is a function that will return the $rs (select in the database) based in "aluno", "professor" or "instituicao"
 
-    // In this function, we will receive the $con (make a connection with leads_db), $userType (type of user like above) and email (parameter to consult something in the database)
     function selectUserByEmail($con, $userType, $email){
 
         if ($userType == 'aluno'){

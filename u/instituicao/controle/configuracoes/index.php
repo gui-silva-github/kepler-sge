@@ -1,9 +1,7 @@
 <?php
      include('../../../../php/ConexaoDB.php');
-     include('../../../../php/dao/userDAO.php');
      include('../../../../php/SessionManager.php');
 
-    session_start();
 ?>
 
 <!DOCTYPE html>
@@ -56,7 +54,7 @@
     </section> <!-- side-menu -->
 
     <section class="main">
-        <header class="header-dashboard">
+        <  class="header-dashboard">
             <div class="side-menu-btn"><i class='bx bx-menu-alt-left'></i></div>
             <ul class="nav-bar">
                 <li class="nav-item">
@@ -71,11 +69,6 @@
                 </li>
             </ul>
         </header>
-        <?php
-            if (!empty($_SESSION)){
-                var_dump($_SESSION);
-            }    
-        ?>
         <footer class="footer-section">
             <div class="footer-content">
                 <div class="footer-text">

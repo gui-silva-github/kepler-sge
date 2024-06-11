@@ -1,17 +1,17 @@
 <?php
-    try{
-        $host = 'db4free.net';
-        $database = 'keplerbd';
-        $dbUser = 'keplerbd';
-        $dbPass = 'M+-6Xb%m';
-        /*
-        $host = 'localhost';
-        $database = 'leads_kepler';
-        $dbUser = 'leads_kepler';
-        $dbPass = 'batatinh@123';
-        */
-        $con = new PDO('mysql:host='.$host.';dbname='.$database, $dbUser, $dbPass);
-    }catch(PDOException $e){
-        echo "<strong>Não foi possivel se conectar!</strong><br>" . $e->getMessage();
+    class ConexaoDB{
+        private $host = 'db4free.net';
+        private $database = 'keplerbd';
+        private $dbUser = 'keplerbd';
+        private $dbPass = 'M+-6Xb%m';
+
+        public function getConnection(){
+            try{
+                return new PDO('mysql:host='.$this->host.';dbname='.$this->database, $this->dbUser, $this->dbPass);
+            }catch(PDOException $e){
+                echo "<strong>Não foi possivel se conectar!</strong><br>" . $e->getMessage();
+                return null;
+            }
+        }
     }
 ?>

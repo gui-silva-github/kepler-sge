@@ -196,7 +196,7 @@ li.nav-item{
     align-items: center;
 }
 
-/* Responsividade side-menu */
+/* Responsividade side menu */
 
 @media (max-width: 800px) {
     :root{

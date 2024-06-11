@@ -1,10 +1,20 @@
 <?php
     include('../../../../php/ConexaoDB.php');
-    include('../../../../php/dao/userDAO.php');
     include('../../../../php/SessionManager.php');
+    include('../../../../php/DAO/disciplinaDAO.php');
 
+    if(!empty($_SESSION['id'])){ 
+        $conexao = new ConexaoDB();
+        $discDAO = new DisciplinaDAO($conexao->getConnection());
+        $allDisc = $discDAO->selectAllDisciplinas();
+    }else{
+        exit;
+    }
+
+    
+    
     function selectDisciplina($con, $nome){
-
+    
         $sql = "SELECT * FROM disciplinas WHERE nome=:nome limit 1";
 
         try{
@@ -24,8 +34,6 @@
         }
 
     }
-
-    session_start();
     if (!empty($_SESSION)){
 
         if (isset($_POST['cadDisciplina'])){
@@ -34,16 +42,17 @@
             $qtd = $_POST['cadQtd'];
             $desc = $_POST['cadDesc'];
 
-            $rs = selectDisciplina($con, $nome);
+            $rs = selectDisciplina($conexao->getConnection(), $nome);
 
                 if ($rs == false){
-                $sql = "INSERT INTO disciplinas(id_prof, nome, qtd_aulas, descricao) VALUES (:id_prof, :nome, :qtd, :descri)";
+                $sql = "INSERT INTO disciplinas(id_prof, nome, qtd_aulas, descricao, id_inst) VALUES (:id_prof, :nome, :qtd, :descri, :id_inst)";
 
                 $stmt = $con->prepare($sql);
                 $stmt->bindParam(':id_prof', $id_prof);
                 $stmt->bindParam(':nome', $nome);
                 $stmt->bindParam(':qtd', $qtd);
                 $stmt->bindParam(':descri', $desc);
+                $stmt->bindParam(':id_inst', $_SESSION['id']);
                 $stmt->execute();
 
                 $foiCadastrado = true;
@@ -51,6 +60,9 @@
                     $foiCadastrado = false;
                 }
         }
+    }else{
+        header("location: /u/entrar/");
+        exit;
     }
 ?>
 
@@ -151,19 +163,41 @@
             </form>
         </section> <!-- register-student -->
 
-        <section class="register-table">
+        <section class="diciplinas-table">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">QTD Aulas</th>
+                        <th scope="col">Descrição</th>
+                        <th scope="col">ID Prof.</th>
+                        <th scope="col">ID Inst.</th>
 
-            <a href="table.php">Ver tabela de disciplinas</a>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
 
-        </section>
+                <tbody>
+                    <?php foreach($allDisc as $disc){ ?>
+                    <tr>
+                        <th scope="row"><?=$disc['id'] ?></th>
+                        <td><?=$disc['nome'] ?></td>
+                        <td><?=$disc['qtd_aulas'] ?></td>
+                        <td><?=$disc['descricao'] ?></td>
+                        <td><?=$disc['id_prof'] ?></td>
+                        <td><?=$disc['id_inst'] ?></td>
+                        <td><form action="./updateProf.php" method="GET"><input type="hidden" name="profId" value="'.$profsRset[$i]['id'].'"><button type="submit"><i class="bx bx-edit-alt update-teacher-table-btn"></i></button></form></td>
+                        <td><i class='bx bx-trash delete-teacher-table-btn'></i></td>
 
-        <footer class="footer-section">
-            <div class="footer-content">
-                <div class="footer-text">
-                    <p>Copyright &copy; 2024 - <a href="/">Kepler</a></p>
-                </div>
-            </div>
-        </footer> <!-- footer-dashboard -->
+                    </tr>
+                    <?php } ?>
+
+                </tbody>
+            </table>
+            <a href="table.php">Ver tabela completa de alunos</a>
+        </section> <!-- diciplinas table -->
 
     </main> <!-- main -->
 </body>

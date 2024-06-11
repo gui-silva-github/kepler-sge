@@ -1,17 +1,18 @@
 <?php
-    require_once '../../php/ConexaoDB.php';
-    require_once '../../php/SessionManager.php';
-    require_once '../../php/DAO/instituicaoDAO.php';
-    require_once '../../php/Dashboard.php';
+    include ('../../php/ConexaoDB.php');
+    include ('../../php/SessionManager.php');
+    include ('../../php/Dashboard.php');
+    include ('../../php/DAO/alunoDAO.php');
 
-if (empty($_SESSION['id'])) {
-    header('Location: ../entrar/');
-    exit;
-}else{
-    $conexao = new ConexaoDB();
-    $instituicaoDAO = new instituicaoDAO($conexao->getConnection());
-}
-
+    if (!empty($_SESSION['id'])) {
+        $conexao = new ConexaoDB();
+        $alunoDAO = new alunoDAO($conexao->getConnection());
+        
+        
+    }else{
+        header("Location: /u/entrar/");
+        exit;
+    }
 ?>
 
 <!DOCTYPE html>
@@ -27,8 +28,8 @@ if (empty($_SESSION['id'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous" defer></script>
     <!-- Custom -->
-    <link rel="stylesheet" href="./css/instituicao-global.css">
-    <script type="module" src="./js/global-script.js" defer></script>
+    <link rel="stylesheet" href="css/instituicao-global.css">
+    <script type="module" src="js/global-script.js" defer></script>
 </head>
 <body>
     <section class="side-menu">
@@ -52,7 +53,7 @@ if (empty($_SESSION['id'])) {
             <ul class="menu">
                 <div class="menu-name">Outros</div>
                 <li class="menu-item"><a href="../../"><i class='bx bx-home' ></i> Página Inicial</a></li>
-                <li class="menu-item"><a href="../entrar/index.php"><i class='bx bx-exit' ></i> Sair</a></li>
+                <li class="menu-item"><a href="../entrar/"><i class='bx bx-exit' ></i> Sair</a></li>
             </ul>
         </nav>
     </section> <!-- side-menu -->
@@ -73,7 +74,7 @@ if (empty($_SESSION['id'])) {
                 </li>
             </ul>
         </header>
-        
+
         <div style="margin-bottom: 2em; margin-top: -2.7em; text-align: center;">
         <?php
             if (!empty($_SESSION)){
@@ -87,9 +88,9 @@ if (empty($_SESSION['id'])) {
 
             <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
             <div style="height: 300px; display: flex; margin-bottom: 1em; gap: 5%; padding: 1.5em;">
-                
+
                 <h3 style="color: white; align-self: center; text-align: center;">Cadastros Totais</h3>
-                
+
                 <script type="text/javascript">
                 google.charts.load('current', {'packages':['corechart']});
                 google.charts.setOnLoadCallback(drawChart);
@@ -98,9 +99,9 @@ if (empty($_SESSION['id'])) {
 
                 var data = google.visualization.arrayToDataTable([
                 ['Controle', 'Total'],
-                ['Professores', <?= $instituicaoDAO->selectAllProfessores($_SESSION['id']) ?>],
-                ['Alunos', <?= $instituicaoDAO->selectAllAlunos($_SESSION['id']) ?>],
-                ['Turmas',  <?= $instituicaoDAO->getTotalTurmas($con, $_SESSION['id']) ?>]
+                ['Professores', <?= getTotalProfessores($con, $_SESSION['id']) ?>],
+                ['Alunos', <?= getTotalAlunos($con, $_SESSION['id']) ?>],
+                ['Turmas',  <?= getTotalTurmas($con, $_SESSION['id']) ?>]
                 ]);
 
                 var options = {
@@ -141,7 +142,7 @@ if (empty($_SESSION['id'])) {
                 <div id="columnchart_material" style="width: 45%;"></div>
 
             </div>
-            
+
             <div style="height: 300px; display: flex; margin-top: -1.9em; margin-bottom: 1em; gap: 5%; padding: 1.5em;">
                 <script type="text/javascript">
                 google.charts.load('current', {'packages':['corechart']});
@@ -173,9 +174,9 @@ if (empty($_SESSION['id'])) {
         </div>
 
         <div style="background: linear-gradient(to right, var(--secondary) 0%, var(--primary) 50%); border-radius: 30px; height: 300px; display: flex; margin-bottom: 1em; gap: 5%; padding: 1.5em;">
-            
+
             <h3 style="color: white; align-self: center; text-align: center;">Salários</h3>
-            
+
             <script type="text/javascript">
             google.charts.load('current', {'packages':['corechart']});
             google.charts.setOnLoadCallback(drawChart);

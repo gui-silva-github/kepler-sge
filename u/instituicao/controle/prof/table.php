@@ -1,11 +1,14 @@
 <?php
 
     include('../../../../php/ConexaoDB.php');
-    include('../../../../php/dao/instituicaoDAO.php');
+    include('../../../../php/DAO/instituicaoDAO.php');
+    include('../../../../php/DAO/profDAO.php');
     include('../../../../php/SessionManager.php');
 
-    session_start();
-
+    $conn = new ConexaoDB();
+    $instituicaoDAO = new instituicaoDAO($conn->getConnection());
+    $profDAO = new profDAO($conn->getConnection());
+    
     function innerJoinProfessores($con, $idInstituicao){
 
         $sql = "SELECT instituicoes.nome FROM instituicoes INNER JOIN professores ON instituicoes.id = professores.id_instituicao WHERE id_instituicao = :idInstituicao";
@@ -33,7 +36,8 @@
     }
 
     function selectProfessores($con, $idInstituicao){
-        $rset = selectAllProfessores($con, $idInstituicao);
+        $profDAO = new profDAO($con);
+        $rset = $profDAO->selectAllProfs($idInstituicao);
 
         for ($i=0;$i<sizeof($rset);$i++){
             echo "<tr><td>".$rset[$i]['id']."</td>";
@@ -109,7 +113,7 @@
 
                         echo 
                         "<tbody id='data'>".
-                        selectProfessores($con, $_SESSION['id']).
+                            selectProfessores($conn->getConnection(), $_SESSION['id']).
                         "</tbody>";
                         
                     ?>

@@ -1,39 +1,36 @@
 <?php
     include('../../../../php/ConexaoDB.php');
     include('../../../../php/SessionManager.php');
-    include('../../../../php/dao/userDAO.php');
-    include('../../../../php/dao/instituicaoDAO.php');
+    include('../../../../php/DAO/profDAO.php');
+    include('../../../../php/Model/Professor.php');
 
-    session_start();
-    
+    $conexao = new ConexaoDB();
+    $professorDAO = new ProfDAO($conexao->getConnection());
+
     // atualizando de fato informações do professor
     if (isset($_POST['updateProf'])){
-        var_dump($_POST);
+
         $profSenha = password_hash($_POST['profSenha'], PASSWORD_BCRYPT);
+        $profMap = [
+            'id' => $_POST['profId'],
+            'cpf' => $_POST['profCPF'],
+            'nome' => $_POST['profNome'],
+            'email' => $_POST['profEmail'],
+            'senha' => $profSenha,
+            'salario' => $_POST['profSalario'],
+            'formacao' => $_POST['profFormacao']
+        ];
 
-        $sql = "UPDATE professores SET cpf=:cpf, nome=:nome, email=:email, senha=:senha, salario=:salario, formacao=:formacao WHERE id = :id";
-        $stmt = $con->prepare($sql);
-        $stmt->bindParam(':nome', $_POST['profNome']);
-        $stmt->bindParam(':cpf', $_POST['profCPF']);
-        $stmt->bindParam(':email', $_POST['profEmail']);
-        $stmt->bindParam(':senha', $profSenha);
-        $stmt->bindParam(':salario', $_POST['profSalario']);
-        $stmt->bindParam(':formacao', $_POST['profFormacao']);
-        $stmt->bindParam(':id', $_POST['profId']);
-
-        if ($stmt->execute()){
+        if ($professorDAO->updateProf($profMap)){
             header("Location: ../prof/");
         }
     }else{
 
         // atribuindo inicialmente as informações
-        if (!empty($_SESSION) && !empty($_GET['profId'])){
+        if (!empty($_SESSION['id']) && !empty($_GET['profId'])){
             $profId = $_GET['profId'];
     
-            $stmt = $con->prepare("SELECT * FROM professores WHERE id = :id limit 1");
-            $stmt->bindParam(':id', $profId);
-            $stmt->execute();
-            $rset = $stmt->fetch();
+            $rset = $professorDAO->selectById($profId);
     
             if ($rset['id_instituicao'] != $_SESSION['id']){
                 header('Location: ../../');

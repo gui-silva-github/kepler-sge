@@ -1,11 +1,17 @@
 <?php
     include('../../../../php/ConexaoDB.php');
-    include('../../../../php/dao/userDAO.php');
     include('../../../../php/SessionManager.php');
+    include('../../../../php/DAO/instituicaoDAO.php');
+    include('../../../../php/DAO/alunoDAO.php');
+    include('../../../../php/DAO/turmaDAO.php');
+    include('../../../../php/Model/Aluno.php'); 
 
-    session_start();
-    if (!empty($_SESSION)){
-
+    if (!empty($_SESSION['id'])){
+        $conexao = new ConexaoDB();
+        $instituicaoDAO = new instituicaoDAO($conexao->getConnection());
+        $alunoDAO = new alunoDAO($conexao->getConnection());
+        $turmaDAO = new turmaDAO($conexao->getConnection());
+        
         if (isset($_POST['cadAluno'])){
             $nome = $_POST['cadAlunoNome'];
             $cpf = $_POST['cadAlunoCPF'];
@@ -14,28 +20,25 @@
             $senha = password_hash($_POST['cadAlunoSenha'], PASSWORD_BCRYPT);
             $idade = $_POST['cadAlunoIdade'];
             $dtNasc = $_POST['cadAlunoDtNasc'];
+            $aluno = ['nome'=>$nome, 'cpf'=>$cpf, 'ra'=>$ra, 'email'=>$email, 'senha'=>$senha, 'idade'=>$idade, 'dtNasc'=> $dtNasc];
 
-                $rs = selectUserByEmail($con, "aluno", $email);
-
-                if ($rs == false){
-                $sql = "INSERT INTO alunos(cpf, ra, nome, email, senha, idade, dt_nasc, id_instituicao) VALUES (:cpf, :ra, :nome, :email, :senha, :idade, :dtNasc, :id_inst)";
-
-                $stmt = $con->prepare($sql);
-                $stmt->bindParam(':cpf', $cpf);
-                $stmt->bindParam(':ra', $ra);
-                $stmt->bindParam(':nome', $nome);
-                $stmt->bindParam(':email', $email);
-                $stmt->bindParam(':senha', $senha);
-                $stmt->bindParam(':idade', $idade);
-                $stmt->bindParam(':dtNasc', $dtNasc);
-                $stmt->bindParam(':id_inst', $_SESSION['id']);
-                $stmt->execute();
+            $rs = $alunoDAO->selectByEmail($email);
+        
+            if ($rs == false){
+                $alunoDAO->insertAluno($aluno);
 
                 $foiCadastrado = true;
-                }else{
-                    $foiCadastrado = false;
-                }
+            }else{
+                $foiCadastrado = false;
+            }
+
         }
+        
+        // rset da tabela de alunos
+        $alunosRset = $alunoDAO->selectAllAlunos($_SESSION['id']);
+    }else{
+        header("Location: /u/entrar/");
+        exit;
     }
 ?>
 
@@ -49,20 +52,12 @@
         <!-- Boxicons CDN -->
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <!-- Bootstrap CDN -->
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="js/bootstrap.bundle.min.js">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous" defer></script>
+        <link rel="stylesheet" href="../../css/bootstrap.min.css">
+        <link rel="stylesheet" href="../../js/bootstrap.bundle.min.js">
         <!-- Custom -->
         <link rel="stylesheet" href="../../css/instituicao-global.css">
         <link rel="stylesheet" href="style.css">
         <script type="module" src="../../js/global-script.js"></script>
-        
-        <?php
-            if (empty($_SESSION)) {
-                echo '<script> window.location.href = "../../../entrar/" </script>';
-            }
-        ?>
 </head>
 <body>
     <section class="side-menu">
@@ -154,73 +149,87 @@
             <section class="register-enrollment">
                 <div class="title">Cadastrar Matricula</div>
                 <?php
-                    if (isset($_POST['cadMatr']) && $foiCadastrado == false){
-                        echo "<div class='error-message'>Professor já existe!</div>";
+                    if (isset($_POST['cadMatr']) && !$foiCadastrado){
+                        echo "<div class='error-message'>Aluno e Diciplina já matriculados</div>";
                     }else if (isset($_POST['cadMatr']) && $foiCadastrado == true){
-                        echo "<div class='sucess-message'>Professor cadastrado!</div>";
+                        echo "<div class='sucess-message'>Matricula cadastrada!</div>";
                     }
                 ?>
                 <form autocomplete="off" action="./" method="POST">
-                    <div class="">
-                        <label for="cadMatrAluno">RA do Aluno:</label>
+                    <div>
+                        <label for="cadMatrAluno">RA do Alunos:</label>
                         <select>
                             <option value="0">Selecione um RA</option>
                             <?php
-                                
-                                $id = $_SESSION['id'];
-
-                                $sql = "SELECT ra FROM alunos WHERE id_instituicao = :id";
-
-                                $stm = $con->prepare($sql);
-
-                                $stm->bindParam(":id", $id);
-                            
-                                $stm->execute();
-                            
-                                $linha = $stm->fetchAll();
+                                $linha = $alunoDAO->selectRaByIdInst($_SESSION['id']);
                             
                                 for ($i = 0; $i<sizeof($linha); $i++){
                                     echo '<option value="'.$linha[$i]['id'].'">'.$linha[$i]['ra'].'</option>';
                                 }   
-
                             ?>
                         </select>
                     </div>
-                    <div class="">
+                    <div>
                         <label for="cadMatrDisciplina">Nome da Disciplina:</label>
                         <select>
                         <option value="0">Selecione uma disciplina</option>
-                            <?php
-
-                                    $id = $_SESSION['id'];
-
-                                    $sql = "SELECT nome FROM disciplinas WHERE id_inst = :id";
-
-                                    $stm = $con->prepare($sql);
-
-                                    $stm->bindParam(":id", $id);
-                                
-                                    $stm->execute();
-                                
-                                    $linha = $stm->fetchAll();
-                                
-                                    for ($i = 0; $i<sizeof($linha); $i++){
-                                        echo '<option value="'.$linha[$i]['id'].'">'.$linha[$i]['nome'].'</option>';
-                                    }   
-
-                            ?>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="cadMatrTurma">Selecione uma turma</label>
+                        <select>
+                            <option value="0">Nome da turma</option>
+                    <?php
+                        $linha = $turmaDAO->selectTurmasById($_SESSION['id']);
+                        for ($i = 0; $i<sizeof($linha); $i++){
+                            echo '<option value="'.$linha[$i]['id'].'">'.$linha[$i]['nome'].'</option>';
+                        }
+                    ?>
                         </select>
                     </div>
                     <input type="hidden" name="cadMatrData" id="cadMatrData" required>
                     <input type="submit" value="Cadastrar Matricula" name="cadMatr">
                 </form>
             </section>
-    
-            <section class="register-table">
-    
-                <a href="table.php">Ver tabela de alunos</a>
-    
+
+            <section class="alunos-table">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">CPF</th>
+                            <th scope="col">RA</th>
+                            <th scope="col">Idade</th>
+                            <th scope="col">Data Nasc.</th>
+
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        <?php foreach($alunosRset as $aluno){ ?>
+                        <tr>
+                            <th scope="row"><?=$aluno['id'] ?></th>
+                            <td><?=$aluno['nome'] ?></td>
+                            <td><?=$aluno['email'] ?></td>
+                            <td><?=$aluno['cpf'] ?></td>
+                            <td><?=$aluno['ra'] ?></td>
+                            <td><?=$aluno['idade'] ?></td>
+                            <td><?=$aluno['dt_nasc'] ?></td>
+                            <td><form action="./updateProf.php" method="GET"><input type="hidden" name="profId" value="'.$profsRset[$i]['id'].'"><button type="submit"><i class="bx bx-edit-alt update-teacher-table-btn"></i></button></form></td>
+                            <td><i class='bx bx-trash delete-teacher-table-btn'></i></td>
+
+                        </tr>
+                        <?php } ?>
+
+                    </tbody>
+                </table>
+                <a href="table.php">Ver tabela completa de alunos</a>
             </section>
+        
         </article>
 
         <footer class="footer-section">

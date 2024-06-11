@@ -1,37 +1,34 @@
 <?php
     include('../../../../php/ConexaoDB.php');
     include('../../../../php/SessionManager.php');
-    include('../../../../php/dao/userDAO.php');
-    include('../../../../php/dao/instituicaoDAO.php');
+    include('../../../../php/Model/Professor.php');
+    include('../../../../php/DAO/instituicaoDAO.php');
+    include('../../../../php/DAO/profDAO.php');
 
-    session_start();
-    if (!empty($_SESSION)){
+    if (!empty($_SESSION['id'])){
+        $conexao = new ConexaoDB();
+        $conexao = $conexao->getConnection();
+        $instituicaoDAO = new InstituicaoDAO($conexao);
+        $profDAO = new ProfDAO($conexao);
         
         //cadastro de professores
         if (isset($_POST['cadProf'])){
-            $nome = $_POST['profNome'];
-            $cpf = $_POST['profCPF'];
-            $email = $_POST['profEmail'];
             $senha = password_hash($_POST['profSenha'], PASSWORD_BCRYPT);
-            // usar password_verify(string $password, string $hash), para descriptografar
-            $salario = $_POST['profSalario'];
-            $cargo = $_POST['profFormacao'];
-
-            $rs = selectUserByEmail($con, "professor", $email);
+            
+            $profMap = [
+                'cpf' => $_POST['profCPF'],
+                'nome' => $_POST['profNome'],
+                'email' => $_POST['profEmail'],
+                'senha' => $senha,
+                'salario' => $_POST['profSalario'],
+                'formacao' => $_POST['profFormacao']
+            ];
+            
+            $rs = $profDAO->selectByEmail($_POST['profEmail']);
             if ($rs == false){
-                $sql = "INSERT INTO professores (cpf, nome, email, senha, salario, formacao, id_instituicao) VALUES (:cpf, :nome, :email, :senha, :salario, :formacao, :id_inst)";
-
-                $stmt = $con->prepare($sql);
-                $stmt->bindParam(':cpf', $cpf);
-                $stmt->bindParam(':nome', $nome);
-                $stmt->bindParam(':email', $email);
-                $stmt->bindParam(':senha', $senha);
-                $stmt->bindParam(':salario', $salario);
-                $stmt->bindParam(':formacao', $cargo);
-                $stmt->bindParam(':id_inst', $_SESSION['id']);
-                $stmt->execute();
-
+                $profDAO->insertProf($profMap, $_SESSION['id']);
                 $foiCadastrado = true;
+                
             }else{
                 $foiCadastrado = false;
             }
@@ -39,6 +36,7 @@
 
     }else{
         header("Location: /u/entrar/");
+        exit;
     }
 ?>
 
@@ -110,10 +108,14 @@
             <section class="register-teacher">
                 <div class="title">Cadastrar Professor</div>
                 <?php
-                    if (isset($_POST['cadProf']) && $foiCadastrado == false){
-                        echo "<div class='error-message'>Professor já existe!</div>";
-                    }else if (isset($_POST['cadProf']) && $foiCadastrado == true){
-                        echo "<div class='sucess-message'>Professor cadastrado!</div>";
+                    if(isset($_POST['cadProf'])){
+
+                        if($foiCadastrado){
+                            
+                            echo "<div class='sucess-message'>Professor cadastrado!</div>";
+                        }else{
+                            echo "<div class='error-message'>Professor já existe!</div>";
+                        }
                     }
                 ?>
                 <form autocomplete="off" action="./" method="POST">
@@ -163,7 +165,7 @@
                     <tbody>
 
                         <?php
-                            $profsRset = selectAllProfessores($con, $_SESSION['id']);
+                            $profsRset = $profDAO->selectAllProfs($_SESSION['id']);
                             
                             for($i=0; $i<sizeof($profsRset); $i++){
                                 echo '<tr>';

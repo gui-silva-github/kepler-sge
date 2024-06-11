@@ -1,9 +1,17 @@
 <?php
-    // Importing the connection, select's query and session
+    require_once '../../autoload.php';
+    require_once '../../php/SessionManager.php';
+    require_once '../../php/DAO/instituicaoDAO.php';
+    require_once '../../php/ConexaoDB.php';
 
-    include('../../php/ConexaoDB.php');
-    include('../../php/dao/userDAO.php');
-    include('../../php/SessionManager.php');
+    // se usuário já estiver logado
+    if (!empty($_SESSION['id'])){    
+        header("Location: ../".$_SESSION['userType']."/index.php");
+        exit;
+    } else {
+        $conexao = new ConexaoDB();
+        $instituicaoDAO = new instituicaoDAO($conexao->getConnection());
+    }
 
     // se for um cadastro
     if (isset($_POST['cadastarSubmit'])){
@@ -11,14 +19,13 @@
         $cnpj = $_POST['cadastrarCNPJ'];
         $email = $_POST['cadastrarEmail'];
         $senha = password_hash($_POST['cadastarSenha'], PASSWORD_BCRYPT);
-        $sql = "INSERT INTO instituicoes (nome, cnpj, email, senha) VALUES (:nome, :cnpj, :email, :senha)";
         $foiCadastrado = false;
 
         try{
-
-            $rs = selectUserByEmail($con, "instituicao", $email);
-            // if there's no one in the db, sign up
-            if ($rs == false){
+            $sql = "INSERT INTO instituicoes (nome, cnpj, email, senha) VALUES (:nome, :cnpj, :email, :senha)";
+            
+            $rs = $instituicaoDAO->selectByEmail($email);
+            if ($rs == null){
                 $stmt = $con->prepare($sql);
                 $stmt->bindParam(':nome', $nome);
                 $stmt->bindParam(':cnpj', $cnpj);
@@ -26,7 +33,6 @@
                 $stmt->bindParam(':senha', $senha);
     
                 if ($stmt->execute()){
-                    // changing the value of the flag "sign up"
                     $foiCadastrado = true;
                 }
             }else{
@@ -46,22 +52,24 @@
         $userType = $_POST['entrarUserType'];
         $usuarioExiste = false;
 
-        $rs = selectUserByEmail($con, $userType, $email);
-
-        if($rs != false){
-            if(password_verify($senha, $rs['senha'])){
-                // changing the value of the flag "existence"
-                $usuarioExiste = true;
-                // creating session by $rs data and $userType catched by input radio 
-                createUserSession($rs, $userType);
+        if($userType == 'aluno'){
+            
+        }else if($userType == 'professor'){
+            
+        }else if($userType == 'instituicao'){
+            $rs = $instituicaoDAO->selectByEmail($email);
+            
+            if ($rs != null){
+                if (password_verify($senha, $rs['senha'])){
+                    createUserSession($rs, $userType);
+                    $usuarioExiste = true;
+                    header("Location: ../".$userType);
+                    exit;
+                }
+            }else{
+                $usuarioExiste = false;
             }
         }
-    }
-
-    // changing URL with PHP setting with JS
-
-    if(isset($_POST['entrarSubmit']) && $usuarioExiste == true){
-        header("Location: ../$userType/index.php");
     }
 
 ?>
@@ -74,7 +82,7 @@
     <title>Kepler | Entrar</title>
     <link rel="stylesheet" href="style.css">
     <!--Favicon-->
-    <link rel="shortcut icon" href="..\assets\favicon.png" type="image/x-icon">
+    <link rel="icon" type="image/x-icon" href="../../assets/favicon.png">
     <!-- Boxicons CDN -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
@@ -87,12 +95,12 @@
     <div class="container" id="container">
         <div class="form-container sign-up-container">
             <form autocomplete="off" action="../entrar/" method="POST">
-                <h1>Cadastar Instituição:</h1>
+                <h1>Cadastrar Instituição:</h1>
                 <span>Utilize um email e CNPJ para se registrar:</span>
                 <?php if(isset($_POST['cadastarSubmit']) && !$foiCadastrado){
                     echo "<div class='error-message'>Instituição já cadastrada!</div>";
                 } ?>
-                <input type="text" name="cadastrarNome" placeholder="Nome da Instituição" required/>
+                <input id="cadInput" type="text" name="cadastrarNome" placeholder="Nome da Instituição" required/>
                 <input type="text" name="cadastrarCNPJ" placeholder="CNPJ" required/>
                 <input type="email" name="cadastrarEmail" placeholder="Email" required/>
                 <input type="password" name='cadastarSenha' placeholder="Senha" required/>
@@ -106,7 +114,7 @@
                 <?php if(isset($_POST['entrarSubmit']) && !$usuarioExiste){
                     echo "<div class='error-message'>Usuário ou senha incorretos!</div>";
                 } ?>
-                <input type="email" name="entrarEmail" placeholder="Email" required/>
+                <input id="emailInput" type="email" name="entrarEmail" placeholder="Email" required autofocus/>
                 <input type="password" name="entrarSenha" placeholder="Senha" required/>
                 <div class="userType-inputs">
                     <label>

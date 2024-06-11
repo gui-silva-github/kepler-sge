@@ -1,11 +1,10 @@
 <?php
 
     include('../../../../php/ConexaoDB.php');
-    include('../../../../php/dao/userDAO.php');
     include('../../../../php/SessionManager.php');
 
-    session_start();
-
+    $conexao = new ConexaoDB();
+    
     function innerJoinAlunos($con, $idInstituicao){
 
         $sql = "SELECT instituicoes.nome FROM instituicoes INNER JOIN alunos ON instituicoes.id = alunos.id_instituicao WHERE id_instituicao = :idInstituicao";
@@ -129,7 +128,7 @@
 
                         echo 
                         "<tbody id='data'>".
-                        selectAlunos($con, $_SESSION['id']).
+                        selectAlunos($conexao->getConnection(), $_SESSION['id']).
                         "</tbody>";
                         
                     ?>
