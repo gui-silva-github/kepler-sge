@@ -9,6 +9,7 @@ if (empty($_SESSION['id'])) {
     exit;
 }else{
     $conexao = new ConexaoDB();
+    $con = $conexao->getConnection();
     $instituicaoDAO = new instituicaoDAO($conexao->getConnection());
 }
 
@@ -98,9 +99,9 @@ if (empty($_SESSION['id'])) {
 
                 var data = google.visualization.arrayToDataTable([
                 ['Controle', 'Total'],
-                ['Professores', <?= $instituicaoDAO->selectAllProfessores($_SESSION['id']) ?>],
-                ['Alunos', <?= $instituicaoDAO->selectAllAlunos($_SESSION['id']) ?>],
-                ['Turmas',  <?= $instituicaoDAO->getTotalTurmas($con, $_SESSION['id']) ?>]
+                ['Professores', <?= getTotalProfessores($con, $_SESSION['id']) ?>],
+                ['Alunos', <?= getTotalAlunos($con, $_SESSION['id']) ?>],
+                ['Turmas',  <?= getTotalTurmas($con, $_SESSION['id']) ?>]
                 ]);
 
                 var options = {
