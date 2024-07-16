@@ -2,11 +2,11 @@
   class turmaDAO {
     private $con;
 
-    public_function __construct($pdo){
-      $this->PDO = $con;
+    public function __construct($con){
+      $this->con = $con;
     }
 
-    public_function SelectTurmasById($id){
+    public function SelectTurmasById($id){
       $sql = "SELECT * FROM turmas WHERE id = :id";
 
       try {
