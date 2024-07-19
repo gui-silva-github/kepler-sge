@@ -24,7 +24,7 @@
         try{
             $sql = "INSERT INTO instituicoes (nome, cnpj, email, senha) VALUES (:nome, :cnpj, :email, :senha)";
             
-            $rs = $instituicaoDAO->selectByEmail($email);
+            $rs = $instituicaoDAO->selectByEmail($email, $userType);
             if ($rs == null){
                 $stmt = $con->prepare($sql);
                 $stmt->bindParam(':nome', $nome);
@@ -57,7 +57,7 @@
         }else if($userType == 'professor'){
             
         }else if($userType == 'instituicao'){
-            $rs = $instituicaoDAO->selectByEmail($email);
+            $rs = $instituicaoDAO->selectByEmail($email, $userType);
             
             if ($rs != null){
                 if (password_verify($senha, $rs['senha'])){

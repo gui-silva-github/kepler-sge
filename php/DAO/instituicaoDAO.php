@@ -23,7 +23,7 @@ class InstituicaoDAO{
         }
     }
 
-    public function selectByEmail($email){
+    public function selectByEmail($email,$userType){
         $sql = "SELECT * FROM instituicoes WHERE email = :email";
         
         try{
@@ -43,7 +43,7 @@ class InstituicaoDAO{
         $sql = "INSERT INTO instituicoes (nome, email, senha, cnpj) VALUES (:nome, :email, :senha, :cnpj)";
 
         try{
-            $stmt = $con->prepare($sql);
+            $stmt = $this->con->prepare($sql);
             $stmt->bindParam(':nome', $instituicao->getNome());
             $stmt->bindParam(':email', $instituicao->getEmail());
             $stmt->bindParam(':senha', $instituicao->getSenha());
@@ -53,7 +53,7 @@ class InstituicaoDAO{
             return $stmt->rowCount();
 
         } catch(PDOException $e){
-            echo "<strong>Não foi possível cadastrar $userType!</strong><br>" . $e->getMessage();
+            echo "<strong>Não foi possível cadastrar instituição!</strong><br>" . $e->getMessage();
             return null;
         }
     }
