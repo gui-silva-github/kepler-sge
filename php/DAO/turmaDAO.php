@@ -2,16 +2,16 @@
   class turmaDAO {
     private $conn;
 
-    public function __construct($pdo){
-      $this->conn = $pdo;
+    public function __construct($con){
+      $this->con = $con;
     }
 
-    public function selectTurmasByIdInst($idInst){
-      $sql = "SELECT * FROM turmas WHERE id_inst = :idInst";
-
+    public function SelectTurmasById($id){
+      $sql = "SELECT * FROM turmas WHERE id = :id";
+      
       try {
         $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(':idInst', $idInst);
+        $stmt->bindParam(':idInst', $id);
         $stmt->execute();
 
         return $stmt->fetchAll();
