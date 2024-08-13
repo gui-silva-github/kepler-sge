@@ -9,5 +9,9 @@
         $_SESSION['senha'] = $rs['senha'];
         $_SESSION['userType'] = $userType;
     }
+
+    function destroyUserSession(){
+        session_destroy();
+    }
     
 ?>

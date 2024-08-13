@@ -7,7 +7,15 @@
 if (empty($_SESSION['id'])) {
     header('Location: ../entrar/');
     exit;
+    
 }else{
+    // se for logout:
+    if(!empty($_GET['logout']) && $_GET['logout'] == 'true'){
+        destroyUserSession();
+        header("Refresh:0");
+        exit;
+    }
+    
     $conexao = new ConexaoDB();
     $instituicaoDAO = new instituicaoDAO($conexao->getConnection());
 }
@@ -33,7 +41,7 @@ if (empty($_SESSION['id'])) {
 <body>
     <section class="side-menu">
         <div class="side-menu-logo">
-            <img src="../../assets/logo.png" alt="Logo do kepler">
+            <a href="../../index.php"><img src="../../assets/logo.png" alt="Logo do kepler"></a>
             <div class="side-menu-close-btn"><i class='bx bx-x'></i></div>
         </div>
         <nav class="menus">
@@ -46,13 +54,13 @@ if (empty($_SESSION['id'])) {
                 <div class="menu-name">Controle Escolar</div>
                 <li class="menu-item"><a href="./controle/prof/"><i class='bx bxs-user-detail'></i> Professores</a></li>
                 <li class="menu-item"><a href="./controle/alunos/"><i class='bx bxs-user-account'></i> Alunos</a></li>
-                <li class="menu-item"><a href="./controle/disciplinas/"><i class='bx bx-book-bookmark'></i> Disciplinas</a></li>
-                <li class="menu-item"><a href="./controle/consultar/"><i class='bx bx-search' ></i> Consultar</a></li>
+                <li class="menu-item"><a href="./controle/disciplinas/"><i class='bx bx-book-bookmark'></i> Disciplinas</a>
+                <li class="menu-item"><a href="./controle/turmas/"><i class='bx bx-book-bookmark'></i> Turmas</a></li></li>
             </ul>
             <ul class="menu">
                 <div class="menu-name">Outros</div>
                 <li class="menu-item"><a href="../../"><i class='bx bx-home' ></i> Página Inicial</a></li>
-                <li class="menu-item"><a href="../entrar/index.php"><i class='bx bx-exit' ></i> Sair</a></li>
+                <li class="menu-item"><a href="?logout=true"><i class='bx bx-exit' ></i> Sair</a></li>
             </ul>
         </nav>
     </section> <!-- side-menu -->

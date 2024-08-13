@@ -43,7 +43,7 @@
                 <li class="menu-item"><a href="../prof/"><i class='bx bxs-user-detail'></i> Professores</a></li>
                 <li class="menu-item"><a href="../alunos/"><i class='bx bxs-user-account'></i> Alunos</a></li>
                 <li class="menu-item"><a href="../disciplinas/"><i class='bx bx-book-bookmark'></i> Disciplinas</a></li>
-                <li class="menu-item"><a href="../consultar/"><i class='bx bx-search' ></i> Consultar</a></li>
+                <li class="menu-item"><a href="../turmas/"><i class='bx bx-book-bookmark'></i> Turmas</a></li>
             </ul>
             <ul class="menu">
                 <div class="menu-name">Outros</div>
@@ -54,7 +54,7 @@
     </section> <!-- side-menu -->
 
     <section class="main">
-        <  class="header-dashboard">
+        <div class="header-dashboard">
             <div class="side-menu-btn"><i class='bx bx-menu-alt-left'></i></div>
             <ul class="nav-bar">
                 <li class="nav-item">

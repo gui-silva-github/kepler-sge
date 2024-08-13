@@ -97,6 +97,17 @@ class ProfDAO{
             return false;
         }
     }
+
+    public function deleteProf($idProf) {
+        $sql = "DELETE FROM professores WHERE id = :id";
+        try {
+            $stmt = $this->con->prepare($sql);
+            $stmt->bindParam(':id', $idProf);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            echo "<strong>Não foi possível deletar o professor!</strong>";
+        }
+    }
 }
 
 

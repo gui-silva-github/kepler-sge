@@ -4,6 +4,7 @@
     include('../../../../php/DAO/instituicaoDAO.php');
     include('../../../../php/DAO/alunoDAO.php');
     include('../../../../php/DAO/turmaDAO.php');
+    include('../../../../php/DAO/disciplinaDAO.php');
     include('../../../../php/Model/Aluno.php'); 
 
     if (!empty($_SESSION['id'])){
@@ -11,6 +12,7 @@
         $instituicaoDAO = new instituicaoDAO($conexao->getConnection());
         $alunoDAO = new alunoDAO($conexao->getConnection());
         $turmaDAO = new turmaDAO($conexao->getConnection());
+        $disciplinaDAO = new disciplinaDAO($conexao->getConnection());
         
         if (isset($_POST['cadAluno'])){
             $nome = $_POST['cadAlunoNome'];
@@ -76,7 +78,7 @@
                 <li class="menu-item"><a href="../prof/"><i class='bx bxs-user-detail'></i> Professores</a></li>
                 <li class="menu-item active"><a href=""><i class='bx bxs-user-account'></i> Alunos</a></li>
                 <li class="menu-item"><a href="../disciplinas/"><i class='bx bx-book-bookmark'></i> Disciplinas</a></li>
-                <li class="menu-item"><a href="../consultar/"><i class='bx bx-search' ></i> Consultar</a></li>
+                <li class="menu-item"><a href="../turmas/"><i class='bx bx-book-bookmark'></i> Turmas</a></li>
             </ul>
             <ul class="menu">
                 <div class="menu-name">Outros</div>
@@ -157,34 +159,44 @@
                 ?>
                 <form autocomplete="off" action="./" method="POST">
                     <div>
-                        <label for="cadMatrAluno">RA do Alunos:</label>
+                        <label for="cadMatrAluno">RA do Aluno:</label>
                         <select>
                             <option value="0">Selecione um RA</option>
                             <?php
-                                $linha = $alunoDAO->selectRaByIdInst($_SESSION['id']);
-                            
-                                for ($i = 0; $i<sizeof($linha); $i++){
-                                    echo '<option value="'.$linha[$i]['id'].'">'.$linha[$i]['ra'].'</option>';
+                                $query = $alunoDAO->selectAllAlunos($_SESSION['id']);
+                                for ($i = 0; $i<sizeof($query); $i++){
+                                    $ii=$i+1;
+                                    echo "<option value='".$ii. "'>" . $query[$i]['ra']."</option>";
                                 }   
                             ?>
                         </select>
+                        <?php
+                        ?>
                     </div>
                     <div>
                         <label for="cadMatrDisciplina">Nome da Disciplina:</label>
                         <select>
-                        <option value="0">Selecione uma disciplina</option>
+                            <option value="0">Selecione uma disciplina</option>
+                            <?php
+                                $query = $disciplinaDAO->selectDisciplinasByIdInst($_SESSION['id']);
+                                for($i = 0; $i < sizeof($query); $i++){
+                                    $ii=$i+1;
+                                    echo "<option value='".$ii."'>".$query[$i]['nome']."</option>";
+                                }
+                            ?>
                         </select>
                     </div>
                     <div>
                         <label for="cadMatrTurma">Selecione uma turma</label>
                         <select>
                             <option value="0">Nome da turma</option>
-                    <?php
-                        $linha = $turmaDAO->selectTurmasById($_SESSION['id']);
-                        for ($i = 0; $i<sizeof($linha); $i++){
-                            echo '<option value="'.$linha[$i]['id'].'">'.$linha[$i]['nome'].'</option>';
-                        }
-                    ?>
+                            <?php
+                                $query = $turmaDAO->selectTurmasByIdInst($_SESSION['id']);
+                                for ($i = 0; $i<sizeof($query); $i++){
+                                    $ii=$i+1;
+                                    echo '<option value="'.$ii.'">'.$query[$i]['nome'].'</option>';
+                                }
+                            ?>
                         </select>
                     </div>
                     <input type="hidden" name="cadMatrData" id="cadMatrData" required>

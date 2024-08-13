@@ -9,13 +9,13 @@
     $instituicaoDAO = new instituicaoDAO($conn->getConnection());
     $profDAO = new profDAO($conn->getConnection());
     
-    function innerJoinProfessores($con, $idInstituicao){
+    function innerJoinProfessores($conn, $idInstituicao){
 
         $sql = "SELECT instituicoes.nome FROM instituicoes INNER JOIN professores ON instituicoes.id = professores.id_instituicao WHERE id_instituicao = :idInstituicao";
 
         try {
 
-            $stmt = $con->prepare($sql);
+            $stmt = $conn->prepare($sql);
 
             $stmt->bindParam(':idInstituicao', $idInstituicao);
 

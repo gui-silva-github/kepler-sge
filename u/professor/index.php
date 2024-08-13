@@ -1,57 +1,42 @@
-<?php
-     include('../../../../php/ConexaoDB.php');
-     include('../../../../php/dao/userDAO.php');
-     include('../../../../php/SessionManager.php');
-     include('../../../../php/Dashboard.php');
-
-    session_start();
-?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kepler | Instituição</title>
-    <link rel="shortcut icon" href="../../../../assets/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="../../assets/favicon.png" type="image/x-icon">
     <!-- Boxicons CDN -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <!-- Bootstrap CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous" defer></script>
     <!-- Custom -->
-    <link rel="stylesheet" href="../../css/instituicao-global.css">
-    <script type="module" src="../../js/global-script.js"></script>
-
-    <?php
-            if (empty($_SESSION)) {
-                echo '<script> window.location.href = "../entrar/" </script>';
-            }
-        ?>
+    <link rel="stylesheet" href="./css/instituicao-global.css">
+    <script type="module" src="./js/global-script.js" defer></script>
 </head>
 <body>
-<section class="side-menu">
+    <section class="side-menu">
         <div class="side-menu-logo">
-            <img src="../../../../assets/logo.png" alt="Logo do kepler">
+            <img src="../../assets/logo.png" alt="Logo do kepler">
             <div class="side-menu-close-btn"><i class='bx bx-x'></i></div>
         </div>
         <nav class="menus">
             <ul class="menu">
                 <div class="menu-name">Instituição</div>
-                <li class="menu-item"><a href="../../"><i class='bx bxs-dashboard'></i> Dashboard</a></li>
-                <li class="menu-item"><a href="../configuracoes/"><i class='bx bxs-cog'></i> Configurações</a></li>
+                <li class="menu-item active"><a href=""><i class='bx bxs-dashboard'></i> Dashboard</a></li>
+                <li class="menu-item"><a href="./controle/configuracoes/"><i class='bx bxs-cog'></i> Configurações</a></li>
             </ul>
             <ul class="menu">
                 <div class="menu-name">Controle Escolar</div>
-                <li class="menu-item"><a href="../prof/"><i class='bx bxs-user-detail'></i> Professores</a></li>
-                <li class="menu-item"><a href="../alunos/"><i class='bx bxs-user-account'></i> Alunos</a></li>
-                <li class="menu-item"><a href="../disciplinas/"><i class='bx bx-book-bookmark'></i> Disciplinas</a></li>
-                <li class="menu-item active"><a href="../consultar/"><i class='bx bx-search' ></i> Consultar</a></li>
+                <li class="menu-item"><a href="./controle/prof/"><i class='bx bxs-user-detail'></i> Professores</a></li>
+                <li class="menu-item"><a href="./controle/alunos/"><i class='bx bxs-user-account'></i> Alunos</a></li>
+                <li class="menu-item"><a href="./controle/disciplinas/"><i class='bx bx-book-bookmark'></i> Disciplinas</a>
+                <li class="menu-item"><a href="./controle/turmas/"><i class='bx bx-book-bookmark'></i> Turmas</a></li></li>
             </ul>
             <ul class="menu">
                 <div class="menu-name">Outros</div>
-                <li class="menu-item"><a href="../../../../"><i class='bx bx-home' ></i> Página Inicial</a></li>
-                <li class="menu-item"><a href="../../../entrar/"><i class='bx bx-exit' ></i> Sair</a></li>
+                <li class="menu-item"><a href="../../"><i class='bx bx-home' ></i> Página Inicial</a></li>
+                <li class="menu-item"><a href="#?logout=true"><i class='bx bx-exit' ></i> Sair</a></li>
             </ul>
         </nav>
     </section> <!-- side-menu -->
@@ -72,6 +57,15 @@
                 </li>
             </ul>
         </header>
+
+        <div style="margin-bottom: 2em; margin-top: -2.7em; text-align: center;">
+        <?php
+            if (!empty($_SESSION)){
+                echo "<h4>ID da Instituição: <span style='color: var(--secondary)'>" . $_SESSION['id'] . "</span></h4>";
+                echo "<h3>Instituição: <span style='color: var(--secondary)'>" . $_SESSION['nome'] ."</span></h3>";
+            }    
+        ?>
+        </div>
 
         <footer class="footer-section">
             <div class="footer-content">

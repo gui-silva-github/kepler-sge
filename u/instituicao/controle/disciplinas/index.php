@@ -7,19 +7,20 @@
         $conexao = new ConexaoDB();
         $discDAO = new DisciplinaDAO($conexao->getConnection());
         $allDisc = $discDAO->selectAllDisciplinas();
+        $conn = $conexao->getConnection();
     }else{
         exit;
     }
 
     
     
-    function selectDisciplina($con, $nome){
+    function selectDisciplina($conn, $nome){
     
         $sql = "SELECT * FROM disciplinas WHERE nome=:nome limit 1";
 
         try{
             // statement by php      
-            $stmt = $con->prepare($sql);
+            $stmt = $conn->prepare($sql);
             // parameter in the SQL request
             $stmt->bindParam(':nome', $nome);
             // execution
@@ -47,7 +48,7 @@
                 if ($rs == false){
                 $sql = "INSERT INTO disciplinas(id_prof, nome, qtd_aulas, descricao, id_inst) VALUES (:id_prof, :nome, :qtd, :descri, :id_inst)";
 
-                $stmt = $con->prepare($sql);
+                $stmt = $conn->prepare($sql);
                 $stmt->bindParam(':id_prof', $id_prof);
                 $stmt->bindParam(':nome', $nome);
                 $stmt->bindParam(':qtd', $qtd);
@@ -106,7 +107,7 @@
                 <li class="menu-item"><a href="../prof/"><i class='bx bxs-user-detail'></i> Professores</a></li>
                 <li class="menu-item"><a href="../alunos/"><i class='bx bxs-user-account'></i> Alunos</a></li>
                 <li class="menu-item active"><a href=""><i class='bx bx-book-bookmark'></i> Disciplinas</a></li>
-                <li class="menu-item"><a href="../consultar/"><i class='bx bx-search' ></i> Consultar</a></li>
+                <li class="menu-item"><a href="../turmas/"><i class='bx bx-book-bookmark'></i> Turmas</a></li>
             </ul>
             <ul class="menu">
                 <div class="menu-name">Outros</div>
