@@ -44,10 +44,10 @@ class InstituicaoDAO{
 
         try{
             $stmt = $this->con->prepare($sql);
-            $stmt->bindParam(':nome', $instituicao->getNome());
-            $stmt->bindParam(':email', $instituicao->getEmail());
-            $stmt->bindParam(':senha', $instituicao->getSenha());
-            $stmt->bindParam(':cnpj', $instituicao->getCnpj());
+            $stmt->bindValue(':nome', $instituicao->getNome());
+            $stmt->bindValue(':senha', $instituicao->getSenha());
+            $stmt->bindValue(':email', $instituicao->getEmail());
+            $stmt->bindValue(':cnpj', $instituicao->getCnpj());
             $stmt->execute();
 
             return $stmt->rowCount();

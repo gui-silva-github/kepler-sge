@@ -15,10 +15,12 @@ if (empty($_SESSION['id'])) {
         header("Refresh:0");
         exit;
     }
-    
-    $conexao = new ConexaoDB();
-    $con = $conexao->getConnection();
-    $instituicaoDAO = new instituicaoDAO($conexao->getConnection());
+
+    if ($_SESSION['userType'] === 'instituicao') {
+        $conexao = new ConexaoDB();
+        $con = $conexao->getConnection();
+        $instituicaoDAO = new instituicaoDAO($conexao->getConnection());
+    }
 }
 
 ?>

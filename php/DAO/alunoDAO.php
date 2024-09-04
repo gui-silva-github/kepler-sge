@@ -22,12 +22,13 @@ class alunoDAO{
         }
     }
     
-    public function selectByEmail($email){
-        $sql = "SELECT * FROM alunos WHERE email = :email";
+    public function selectByEmail($email, $idInst){
+        $sql = "SELECT * FROM alunos WHERE email = :email AND id_inst = :idInst";
 
         try{
             $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':email', $email);
+            $stmt->bindValue(':email', $email);
+            $stmt->bindValue(':idInst', $idInst);
             $stmt->execute();
 
             return $stmt->fetch();

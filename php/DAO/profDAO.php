@@ -19,7 +19,7 @@ class ProfDAO{
             
 
         } catch(PDOException $e){
-            echo "<strong>Não foi possível encontrar $userType!</strong><br>" . $e->getMessage();
+            echo "<strong>Não foi possível encontrar registros!</strong><br>" . $e->getMessage();
             return null;
         }
     }

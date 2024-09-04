@@ -10,7 +10,10 @@
         exit;
     } else {
         $conexao = new ConexaoDB();
-        $instituicaoDAO = new instituicaoDAO($conexao->getConnection());
+        $con = $conexao->getConnection();
+        $instituicaoDAO = new instituicaoDAO($con);
+        $professorDAO = new ProfDAO($con);
+        $alunoDAO = new alunoDAO($con);
     }
 
     // se for um cadastro
@@ -19,30 +22,14 @@
         $cnpj = $_POST['cadastrarCNPJ'];
         $email = $_POST['cadastrarEmail'];
         $senha = password_hash($_POST['cadastarSenha'], PASSWORD_BCRYPT);
-        $foiCadastrado = false;
+        $instituicao = new Instituicao(null, $cnpj, $nome, $email, $senha);
 
-        try{
-            $sql = "INSERT INTO instituicoes (nome, cnpj, email, senha) VALUES (:nome, :cnpj, :email, :senha)";
-            
-            $rs = $instituicaoDAO->selectByEmail($email, $userType);
-            if ($rs == null){
-                $stmt = $con->prepare($sql);
-                $stmt->bindParam(':nome', $nome);
-                $stmt->bindParam(':cnpj', $cnpj);
-                $stmt->bindParam(':email', $email);
-                $stmt->bindParam(':senha', $senha);
-    
-                if ($stmt->execute()){
-                    $foiCadastrado = true;
-                }
-            }else{
-                $foiCadastrado = false;
-            }
-
-        } catch(PDOException $e){
-            echo "<strong>Inserção não realizada!</strong><br>" . $e->getMessage();
+        if ($instituicaoDAO->insert($instituicao)) {
+            $foiCadastrado = true;
+        } else {
             $foiCadastrado = false;
         }
+        
     }
 
     // se for um login
@@ -50,23 +37,35 @@
         $email = $_POST['entrarEmail'];
         $senha = $_POST['entrarSenha'];
         $userType = $_POST['entrarUserType'];
+        $nomeInst = $_POST['entrarNomeInstituicao'];
         $usuarioExiste = false;
 
         if($userType == 'aluno'){
-            
+            $rs = $alunoDAO->selectByEmail($email, $nomeInst);
+
+            if ($rs != null && password_verify($senha, $rs['senha'])) {
+                createUserSession($rs, $userType);
+                $usuarioExiste = true;
+                header('Location: ../'.$userType);
+            }
         }else if($userType == 'professor'){
+            $rs = $professorDAO->selectByEmail($email);
+
+            if ($rs != null && password_verify($senha, $rs['senha'])){
+                createUserSession($rs, $userType);
+                $usuarioExiste = true;
+                header('Location: ../'.$userType);
+            }
             
         }else if($userType == 'instituicao'){
             $rs = $instituicaoDAO->selectByEmail($email, $userType);
             
-            if ($rs != null){
-                if (password_verify($senha, $rs['senha'])){
-                    createUserSession($rs, $userType);
-                    $usuarioExiste = true;
-                    header("Location: ../".$userType);
-                    exit;
-                }
-            }else{
+            if ($rs != null && password_verify($senha, $rs['senha'])){
+                createUserSession($rs, $userType);
+                $usuarioExiste = true;
+                header("Location: ../".$userType);
+                exit;
+            } else {
                 $usuarioExiste = false;
             }
         }
@@ -85,6 +84,7 @@
     <link rel="icon" type="image/x-icon" href="../../assets/favicon.png">
     <!-- Boxicons CDN -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="createInput.js"></script>
 </head>
 <body>
     <header>
@@ -111,22 +111,25 @@
             <form autocomplete="off" action="../entrar/" method="POST">
                 <h1>Entrar:</h1>
                 <span>Entre com sua conta pessoal:</span>
-                <?php if(isset($_POST['entrarSubmit']) && !$usuarioExiste){
+                <?php
+                if(isset($_POST['entrarSubmit']) && !$usuarioExiste){
                     echo "<div class='error-message'>Usuário ou senha incorretos!</div>";
-                } ?>
+                }
+                ?>
                 <input id="emailInput" type="email" name="entrarEmail" placeholder="Email" required autofocus/>
                 <input type="password" name="entrarSenha" placeholder="Senha" required/>
                 <div class="userType-inputs">
                     <label>
-                        <input type="radio" name="entrarUserType" value="aluno" required/> Aluno
+                        <input class= "rb-login" type="radio" name="entrarUserType" value="aluno" required/> Aluno
                     </label>
                     <label>
-                        <input type="radio" name="entrarUserType" value="professor" required/> Professor
+                        <input class="rb-login" type="radio" name="entrarUserType" value="professor" required/> Professor
                     </label>
                     <label>
-                        <input type="radio" name="entrarUserType" value="instituicao" required/> Instituição
+                        <input class="rb-login" type="radio" name="entrarUserType" value="instituicao" required/> Instituição
                     </label>
                 </div>
+                <script>createInput();</script>
                 <a href="#">Esqueceu sua senha?</a>
                 <input type="submit" class="submit-btn" value="Entrar" name='entrarSubmit'>
             </form>
@@ -172,9 +175,9 @@
                 <button class="close-modal-btn" id="closeModal-btn">Fechar</button>
             </div>
         </div>
+        <script src="script.js"></script>
     </div>
 
-    <script src="script.js"></script>
 
     <?php
     

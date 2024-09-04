@@ -3,15 +3,15 @@
     private $conn;
 
     public function __construct($con){
-      $this->con = $con;
+      $this->conn = $con;
     }
 
-    public function SelectTurmasById($id){
-      $sql = "SELECT * FROM turmas WHERE id = :id";
+    public function SelectTurmasById($idInst){
+      $sql = "SELECT * FROM turmas WHERE id_inst = :idInst";
       
       try {
         $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(':idInst', $id);
+        $stmt->bindParam(':idInst', $idInst);
         $stmt->execute();
 
         return $stmt->fetchAll();

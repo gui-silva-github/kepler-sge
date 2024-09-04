@@ -23,7 +23,7 @@
                 $foiCadastrado = true;
             }
         }
-        $turmaRset = $turmaDAO->selectTurmasByIdInst($idInst);
+        $turmaRset = $turmaDAO->selectTurmasById($idInst);
     } else {
         header ('Location: /u/entrar/');
         exit;
@@ -138,7 +138,7 @@
                     <tbody>
 
                         <?php
-                            $turmasRset = $turmaDAO->selectTurmasByIdInst($_SESSION['id']);
+                            $turmasRset = $turmaDAO->selectTurmasById($_SESSION['id']);
 
                             for($i=0; $i<sizeof($turmasRset); $i++){
                                 echo '<tr>';

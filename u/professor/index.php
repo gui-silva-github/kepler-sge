@@ -1,3 +1,17 @@
+<?php
+    include ('../../php/ConexaoDB.php');
+    include ('../../php/SessionManager.php');
+    include ('../../php/Dashboard.php');
+    include ('../../php/DAO/professorDAO.php');
+
+    if (!empty($_SESSION['id']) && $_SESSION['userType'] === 'aluno') {
+        $conexao = new ConexaoDB();
+        $alunoDAO = new alunoDAO($conexao->getConnection());        
+    }else{
+        header("Location: ../../");
+        exit;
+    }
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
