@@ -24,7 +24,7 @@
             $dtNasc = $_POST['cadAlunoDtNasc'];
             $aluno = ['nome'=>$nome, 'cpf'=>$cpf, 'ra'=>$ra, 'email'=>$email, 'senha'=>$senha, 'idade'=>$idade, 'dtNasc'=> $dtNasc];
 
-            $rs = $alunoDAO->selectByEmail($email);
+            $rs = $alunoDAO->selectByEmail($email, $_SESSION['id']);
         
             if ($rs == false){
                 $alunoDAO->insertAluno($aluno);
@@ -191,7 +191,7 @@
                         <select>
                             <option value="0">Nome da turma</option>
                             <?php
-                                $query = $turmaDAO->selectTurmasByIdInst($_SESSION['id']);
+                                $query = $turmaDAO->selectTurmasById($_SESSION['id']);
                                 for ($i = 0; $i<sizeof($query); $i++){
                                     $ii=$i+1;
                                     echo '<option value="'.$ii.'">'.$query[$i]['nome'].'</option>';
