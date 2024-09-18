@@ -160,7 +160,7 @@
                 <form autocomplete="off" action="./" method="POST">
                     <div>
                         <label for="cadMatrAluno">RA do Aluno:</label>
-                        <select>
+                        <select required>
                             <option value="0">Selecione um RA</option>
                             <?php
                                 $query = $alunoDAO->selectAllAlunos($_SESSION['id']);
@@ -170,12 +170,10 @@
                                 }   
                             ?>
                         </select>
-                        <?php
-                        ?>
                     </div>
                     <div>
                         <label for="cadMatrDisciplina">Nome da Disciplina:</label>
-                        <select>
+                        <select required>
                             <option value="0">Selecione uma disciplina</option>
                             <?php
                                 $query = $disciplinaDAO->selectDisciplinasByIdInst($_SESSION['id']);
@@ -188,7 +186,7 @@
                     </div>
                     <div>
                         <label for="cadMatrTurma">Selecione uma turma</label>
-                        <select>
+                        <select required>
                             <option value="0">Nome da turma</option>
                             <?php
                                 $query = $turmaDAO->selectTurmasById($_SESSION['id']);
