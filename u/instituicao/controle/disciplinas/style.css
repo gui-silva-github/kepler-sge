@@ -1,3 +1,8 @@
+button{
+    border: 0;
+    background: transparent;
+}
+
 .error-message,
 .sucess-message{
     color: var(--bg-color);
@@ -76,4 +81,8 @@ section.register-enrollment form{
     background: var(--secondary);
     padding: 4px;
     border-radius: 8px;
+}
+
+.diciplinas-table{
+    margin-top: 20px;
 }
