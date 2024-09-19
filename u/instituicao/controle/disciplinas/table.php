@@ -1,7 +1,7 @@
 <?php
 
-require $_SERVER['DOCUMENT_ROOT'].'/vendor/autoload.php';
-require $_SERVER['DOCUMENT_ROOT'].'/php/SessionManager.php';
+require '../../../../vendor/autoload.php';
+require '../../../../php/SessionManager.php';
 
 use Kepler\Utils\ConexaoDB;
 

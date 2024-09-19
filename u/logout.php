@@ -1,5 +1,6 @@
 <?php
-require_once '../php/SessionManager.php';
+require '../../vendor/autoload.php';
+require '../../php/SessionManager.php';
 
 destroyUserSession();
 
