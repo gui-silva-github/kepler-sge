@@ -1,13 +1,13 @@
 <?php
-    include('../../../../php/ConexaoDB.php');
-    include('../../../../php/SessionManager.php');
-    include('../../../../php/Model/Professor.php');
-    include('../../../../php/DAO/instituicaoDAO.php');
-    include('../../../../php/DAO/profDAO.php');
+    require $_SERVER['DOCUMENT_ROOT'].'/vendor/autoload.php';
+    require $_SERVER['DOCUMENT_ROOT'].'/php/SessionManager.php';
+    
+    use Kepler\Utils\ConexaoDB;
+    use Kepler\DAO\InstituicaoDAO;
+    use Kepler\DAO\ProfDAO;
 
     if (!empty($_SESSION['id'])){
-        $conexao = new ConexaoDB();
-        $conexao = $conexao->getConnection();
+        $conexao = ConexaoDB::getConnection();
         $instituicaoDAO = new InstituicaoDAO($conexao);
         $profDAO = new ProfDAO($conexao);
         $confirm = '<script>function show_confirm(){return confirm("Deletar professor?");}</script>';
@@ -33,7 +33,7 @@
             }else{
                 $foiCadastrado = false;
             }
-            var_dump($_POST['profIdDel']);
+            
             if (isset($_POST['profIdDel']) && $profDAO->selectById($_POST['profIdDel']) !== false) {
                 $prof = $profDAO->selectById($_POST['profIdDel']);
                 $profName = $prof['nome'];
@@ -175,11 +175,6 @@
                     <tbody>
 
                         <?php
-                        if (isset($profDel) && $profDel === true) {
-                            echo "<div class='sucess-message'>Professor deletado!</div>";
-                        }else if (isset($profDel) && $profDel==false) {
-                            echo "<div class='error-message'>Não foi possível deletar!</div>";
-                        }
                             $profsRset = $profDAO->selectAllProfs($_SESSION['id']);
                             
                             for($i=0; $i<sizeof($profsRset); $i++){

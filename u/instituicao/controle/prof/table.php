@@ -1,13 +1,15 @@
 <?php
 
-    include('../../../../php/ConexaoDB.php');
-    include('../../../../php/DAO/instituicaoDAO.php');
-    include('../../../../php/DAO/profDAO.php');
-    include('../../../../php/SessionManager.php');
+require $_SERVER['DOCUMENT_ROOT'].'/vendor/autoload.php';
+require $_SERVER['DOCUMENT_ROOT'].'/php/SessionManager.php';
 
-    $conn = new ConexaoDB();
-    $instituicaoDAO = new instituicaoDAO($conn->getConnection());
-    $profDAO = new profDAO($conn->getConnection());
+use Kepler\Utils\ConexaoDB;
+use Kepler\DAO\InstituicaoDAO;
+use Kepler\DAO\ProfDAO;
+
+    $conn = ConexaoDB::getConnection();
+    $instituicaoDAO = new InstituicaoDAO($conn);
+    $profDAO = new ProfDAO($conn);
     
     function innerJoinProfessores($conn, $idInstituicao){
 
@@ -113,7 +115,7 @@
 
                         echo 
                         "<tbody id='data'>".
-                            selectProfessores($conn->getConnection(), $_SESSION['id']).
+                            selectProfessores($conn, $_SESSION['id']).
                         "</tbody>";
                         
                     ?>

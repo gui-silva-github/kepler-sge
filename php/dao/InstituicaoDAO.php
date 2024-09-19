@@ -1,10 +1,14 @@
 <?php
 
+namespace Kepler\DAO;
+use PDO;
+use PDOException;
+
 class InstituicaoDAO{
     private PDO $con;
 
     public function __construct($pdo){
-        $this->con= $pdo;
+        $this->con = $pdo;
     }
 
     public function selectAllAlunos($idInstituicao){
@@ -23,7 +27,7 @@ class InstituicaoDAO{
         }
     }
 
-    public function selectByEmail($email,$userType){
+    public function selectByEmail($email){
         $sql = "SELECT * FROM instituicoes WHERE email = :email";
         
         try{
@@ -34,7 +38,7 @@ class InstituicaoDAO{
             return $stmt->fetch();
 
         } catch(PDOException $e){
-            echo "<strong>Não foi possível consultar $userType!</strong><br>" . $e->getMessage();
+            echo "<strong>Não foi possível consultar</strong><br>" . $e->getMessage();
             return null;
         }
     }
@@ -44,10 +48,10 @@ class InstituicaoDAO{
 
         try{
             $stmt = $this->con->prepare($sql);
-            $stmt->bindValue(':nome', $instituicao->getNome());
-            $stmt->bindValue(':senha', $instituicao->getSenha());
-            $stmt->bindValue(':email', $instituicao->getEmail());
-            $stmt->bindValue(':cnpj', $instituicao->getCnpj());
+            $stmt->bindParam(':nome', $instituicao->getNome());
+            $stmt->bindParam(':email', $instituicao->getEmail());
+            $stmt->bindParam(':senha', $instituicao->getSenha());
+            $stmt->bindParam(':cnpj', $instituicao->getCnpj());
             $stmt->execute();
 
             return $stmt->rowCount();

@@ -1,5 +1,9 @@
 <?php
 
+namespace Kepler\DAO;
+use PDO;
+use PDOException;
+
 class ProfDAO{
     private PDO $con;
 
@@ -19,7 +23,7 @@ class ProfDAO{
             
 
         } catch(PDOException $e){
-            echo "<strong>Não foi possível encontrar registros!</strong><br>" . $e->getMessage();
+            echo "<strong>Não foi possível encontrar!</strong><br>" . $e->getMessage();
             return null;
         }
     }

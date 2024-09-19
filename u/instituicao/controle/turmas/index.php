@@ -1,11 +1,13 @@
 <?php
-    include('../../../../php/ConexaoDB.php');
-    include('../../../../php/SessionManager.php');
-    include('../../../../php/DAO/turmaDAO.php');
+
+require $_SERVER['DOCUMENT_ROOT'].'/vendor/autoload.php';
+require $_SERVER['DOCUMENT_ROOT'].'/php/SessionManager.php';
+
+use Kepler\Utils\ConexaoDB;
+use Kepler\DAO\TurmaDAO;
 
     if (!empty($_SESSION['id'])){
-        $conn = new ConexaoDB();
-        $conn = $conn->getConnection();
+        $conn = ConexaoDB::getConnection();
         $turmaDAO = new TurmaDAO($conn);
         $idInst = $_SESSION['id'];
         if (isset($_POST['cadTurma'])) {
@@ -23,7 +25,7 @@
                 $foiCadastrado = true;
             }
         }
-        $turmaRset = $turmaDAO->selectTurmasById($idInst);
+        $turmasRset = $turmaDAO->selectTurmasByIdInst($_SESSION['id']);
     } else {
         header ('Location: /u/entrar/');
         exit;
@@ -138,8 +140,6 @@
                     <tbody>
 
                         <?php
-                            $turmasRset = $turmaDAO->selectTurmasById($_SESSION['id']);
-
                             for($i=0; $i<sizeof($turmasRset); $i++){
                                 echo '<tr>';
                                 echo '<th scope="row">'.$turmasRset[$i]['id'].'</th>';

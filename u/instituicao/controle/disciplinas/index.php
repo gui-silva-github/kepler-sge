@@ -1,13 +1,15 @@
 <?php
-    include('../../../../php/ConexaoDB.php');
-    include('../../../../php/SessionManager.php');
-    include('../../../../php/DAO/disciplinaDAO.php');
+require $_SERVER['DOCUMENT_ROOT'].'/vendor/autoload.php';
+require $_SERVER['DOCUMENT_ROOT'].'/php/SessionManager.php';
+
+use Kepler\Utils\ConexaoDB;
+use Kepler\DAO\DisciplinaDAO;
 
     if(!empty($_SESSION['id'])){ 
-        $conexao = new ConexaoDB();
-        $discDAO = new DisciplinaDAO($conexao->getConnection());
-        $allDisc = $discDAO->selectAllDisciplinas();
-        $conn = $conexao->getConnection();
+        $conexao = ConexaoDB::getConnection();
+        $discDAO = new DisciplinaDAO($conexao);
+        $allDisc = $discDAO->selectDisciplinasByIdInst($_SESSION['id']);
+        $conn = $conexao;
     }else{
         exit;
     }
@@ -43,7 +45,7 @@
             $qtd = $_POST['cadQtd'];
             $desc = $_POST['cadDesc'];
 
-            $rs = selectDisciplina($conexao->getConnection(), $nome);
+            $rs = selectDisciplina($conexao, $nome);
 
                 if ($rs == false){
                 $sql = "INSERT INTO disciplinas(id_prof, nome, qtd_aulas, descricao, id_inst) VALUES (:id_prof, :nome, :qtd, :descri, :id_inst)";
@@ -173,7 +175,6 @@
                         <th scope="col">QTD Aulas</th>
                         <th scope="col">Descrição</th>
                         <th scope="col">ID Prof.</th>
-                        <th scope="col">ID Inst.</th>
 
                         <th scope="col"></th>
                         <th scope="col"></th>
@@ -188,7 +189,6 @@
                         <td><?=$disc['qtd_aulas'] ?></td>
                         <td><?=$disc['descricao'] ?></td>
                         <td><?=$disc['id_prof'] ?></td>
-                        <td><?=$disc['id_inst'] ?></td>
                         <td><form action="./updateProf.php" method="GET"><input type="hidden" name="profId" value="'.$profsRset[$i]['id'].'"><button type="submit"><i class="bx bx-edit-alt update-teacher-table-btn"></i></button></form></td>
                         <td><i class='bx bx-trash delete-teacher-table-btn'></i></td>
 

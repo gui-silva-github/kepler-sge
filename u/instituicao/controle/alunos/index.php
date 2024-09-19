@@ -1,18 +1,20 @@
 <?php
-    include('../../../../php/ConexaoDB.php');
-    include('../../../../php/SessionManager.php');
-    include('../../../../php/DAO/instituicaoDAO.php');
-    include('../../../../php/DAO/alunoDAO.php');
-    include('../../../../php/DAO/turmaDAO.php');
-    include('../../../../php/DAO/disciplinaDAO.php');
-    include('../../../../php/Model/Aluno.php'); 
+
+require $_SERVER['DOCUMENT_ROOT'].'/vendor/autoload.php';
+require $_SERVER['DOCUMENT_ROOT'].'/php/SessionManager.php';
+
+use Kepler\Utils\ConexaoDB;
+use Kepler\DAO\InstituicaoDAO;
+use Kepler\DAO\DisciplinaDAO;
+use Kepler\DAO\AlunoDAO;
+use Kepler\DAO\TurmaDAO;
 
     if (!empty($_SESSION['id'])){
-        $conexao = new ConexaoDB();
-        $instituicaoDAO = new instituicaoDAO($conexao->getConnection());
-        $alunoDAO = new alunoDAO($conexao->getConnection());
-        $turmaDAO = new turmaDAO($conexao->getConnection());
-        $disciplinaDAO = new disciplinaDAO($conexao->getConnection());
+        $conexao = ConexaoDB::getConnection();
+        $instituicaoDAO = new InstituicaoDAO($conexao);
+        $alunoDAO = new AlunoDAO($conexao);
+        $turmaDAO = new TurmaDAO($conexao);
+        $disciplinaDAO = new DisciplinaDAO($conexao);
         
         if (isset($_POST['cadAluno'])){
             $nome = $_POST['cadAlunoNome'];
@@ -24,7 +26,7 @@
             $dtNasc = $_POST['cadAlunoDtNasc'];
             $aluno = ['nome'=>$nome, 'cpf'=>$cpf, 'ra'=>$ra, 'email'=>$email, 'senha'=>$senha, 'idade'=>$idade, 'dtNasc'=> $dtNasc];
 
-            $rs = $alunoDAO->selectByEmail($email, $_SESSION['id']);
+            $rs = $alunoDAO->selectByEmail($email);
         
             if ($rs == false){
                 $alunoDAO->insertAluno($aluno);
@@ -160,7 +162,7 @@
                 <form autocomplete="off" action="./" method="POST">
                     <div>
                         <label for="cadMatrAluno">RA do Aluno:</label>
-                        <select required>
+                        <select>
                             <option value="0">Selecione um RA</option>
                             <?php
                                 $query = $alunoDAO->selectAllAlunos($_SESSION['id']);
@@ -170,10 +172,12 @@
                                 }   
                             ?>
                         </select>
+                        <?php
+                        ?>
                     </div>
                     <div>
                         <label for="cadMatrDisciplina">Nome da Disciplina:</label>
-                        <select required>
+                        <select>
                             <option value="0">Selecione uma disciplina</option>
                             <?php
                                 $query = $disciplinaDAO->selectDisciplinasByIdInst($_SESSION['id']);
@@ -186,10 +190,10 @@
                     </div>
                     <div>
                         <label for="cadMatrTurma">Selecione uma turma</label>
-                        <select required>
+                        <select>
                             <option value="0">Nome da turma</option>
                             <?php
-                                $query = $turmaDAO->selectTurmasById($_SESSION['id']);
+                                $query = $turmaDAO->selectTurmasByIdInst($_SESSION['id']);
                                 for ($i = 0; $i<sizeof($query); $i++){
                                     $ii=$i+1;
                                     echo '<option value="'.$ii.'">'.$query[$i]['nome'].'</option>';

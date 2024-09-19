@@ -1,6 +1,10 @@
 <?php
 
-class alunoDAO{
+namespace Kepler\DAO;
+use PDO;
+use PDOException;
+
+class AlunoDAO{
     private PDO $conn;
 
     public function __construct($pdo){
@@ -22,13 +26,12 @@ class alunoDAO{
         }
     }
     
-    public function selectByEmail($email, $idInst){
-        $sql = "SELECT * FROM alunos WHERE email = :email AND id_inst = :idInst";
+    public function selectByEmail($email){
+        $sql = "SELECT * FROM alunos WHERE email = :email";
 
         try{
             $stmt = $this->conn->prepare($sql);
-            $stmt->bindValue(':email', $email);
-            $stmt->bindValue(':idInst', $idInst);
+            $stmt->bindParam(':email', $email);
             $stmt->execute();
 
             return $stmt->fetch();
@@ -57,6 +60,19 @@ class alunoDAO{
 
         } catch(PDOException $e){
             echo "<strong>Não foi possível cadastrar</strong><br>" . $e->getMessage();
+            return false;
+        }
+    }
+
+    public function selectPresencas ($aluno) {
+        $sql = "SELECT * FROM presencas WHERE id_aluno = :id_aluno";
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id_aluno', $_SESSION['id']);
+
+            return $stmt->fetchAll();
+        } catch (PDOException $e) {
+            echo "<strong>Não foi possível selecionar as presenças!</strong>". $e->getMessage();
             return false;
         }
     }

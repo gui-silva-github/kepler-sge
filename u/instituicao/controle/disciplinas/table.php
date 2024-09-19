@@ -1,9 +1,11 @@
 <?php
 
-    include('../../../../php/ConexaoDB.php');
-    include('../../../../php/SessionManager.php');
+require $_SERVER['DOCUMENT_ROOT'].'/vendor/autoload.php';
+require $_SERVER['DOCUMENT_ROOT'].'/php/SessionManager.php';
 
-    $conexao = new ConexaoDB();
+use Kepler\Utils\ConexaoDB;
+
+    $conexao = ConexaoDB::getConnection();
 
     function innerJoinDisciplinas($con){
 
@@ -117,7 +119,7 @@
 
                         echo 
                         "<tbody id='data'>".
-                        selectDisciplinas($conexao->getConnection()).
+                        selectDisciplinas($conexao).
                         "</tbody>";
                         
                     ?>

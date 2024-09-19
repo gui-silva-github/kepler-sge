@@ -1,13 +1,14 @@
 <?php
-    require_once '../../php/ConexaoDB.php';
-    require_once '../../php/SessionManager.php';
-    require_once '../../php/DAO/instituicaoDAO.php';
-    require_once '../../php/Dashboard.php';
+
+require $_SERVER['DOCUMENT_ROOT'].'/vendor/autoload.php';
+    require $_SERVER['DOCUMENT_ROOT'].'/php/SessionManager.php';
+
+use Kepler\Utils\ConexaoDB;
+use Kepler\DAO\InstituicaoDAO;
 
 if (empty($_SESSION['id'])) {
     header('Location: ../entrar/');
     exit;
-    
 }else{
     // se for logout:
     if(!empty($_GET['logout']) && $_GET['logout'] == 'true'){
@@ -15,12 +16,8 @@ if (empty($_SESSION['id'])) {
         header("Refresh:0");
         exit;
     }
-
-    if ($_SESSION['userType'] === 'instituicao') {
-        $conexao = new ConexaoDB();
-        $con = $conexao->getConnection();
-        $instituicaoDAO = new instituicaoDAO($conexao->getConnection());
-    }
+    
+    $instituicaoDAO = new InstituicaoDAO(ConexaoDB::getConnection());
 }
 
 ?>
@@ -115,7 +112,7 @@ if (empty($_SESSION['id'])) {
                 ]);
 
                 var options = {
-                title: '(%)',
+                title: 'Cadastros (%)',
                 is3D: true,
                 };
 
@@ -139,7 +136,7 @@ if (empty($_SESSION['id'])) {
 
                 var options = {
                 chart: {
-                    title: '(contagem)'
+                    title: 'Cadastros (uni.)'
                 }
                 };
 

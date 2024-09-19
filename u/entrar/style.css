@@ -123,18 +123,11 @@ form {
 }
 
 input {
-	display: flex;
 	background-color: #eee;
 	border: none;
 	padding: 12px 15px;
 	margin: 8px 0;
 	width: 100%;
-}
-
-.form-container form .eye-icon {
-	position: absolute;
-	right: 70px;
-	cursor: pointer;
 }
 
 .userType-inputs{
@@ -248,7 +241,6 @@ input {
     letter-spacing: 1px;
     text-transform: uppercase;
     transition: transform 80ms ease-in;
-	cursor: pointer;
 }
 
 .container.right-panel-active .overlay {
@@ -430,17 +422,5 @@ footer a {
 
 	.return-page-btn{
 		left: -40px;
-	}
-}
-
-@media (max-width: 455px) {
-	.form-container form .eye-icon {
-		top: 178px;
-	}
-}
-
-@media (max-width: 325px) {
-	.form-container form .eye-icon {
-		top: 165px;
 	}
 }

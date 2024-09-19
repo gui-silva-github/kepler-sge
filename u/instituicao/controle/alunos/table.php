@@ -1,9 +1,11 @@
 <?php
 
-    include('../../../../php/ConexaoDB.php');
-    include('../../../../php/SessionManager.php');
+require $_SERVER['DOCUMENT_ROOT'].'/vendor/autoload.php';
+require $_SERVER['DOCUMENT_ROOT'].'/php/SessionManager.php';
 
-    $conexao = new ConexaoDB();
+use Kepler\Utils\ConexaoDB;
+
+    $conexao = ConexaoDB::getConnection();
     
     function innerJoinAlunos($con, $idInstituicao){
 
@@ -128,7 +130,7 @@
 
                         echo 
                         "<tbody id='data'>".
-                        selectAlunos($conexao->getConnection(), $_SESSION['id']).
+                        selectAlunos($conexao, $_SESSION['id']).
                         "</tbody>";
                         
                     ?>

@@ -1,5 +1,9 @@
 <?php
 
+namespace Kepler\DAO;
+use PDO;
+use PDOException;
+
 class DisciplinaDAO{
   private PDO $conn;
 

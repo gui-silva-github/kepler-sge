@@ -1,11 +1,13 @@
 <?php
-    include('../../../../php/ConexaoDB.php');
-    include('../../../../php/SessionManager.php');
-    include('../../../../php/DAO/profDAO.php');
-    include('../../../../php/Model/Professor.php');
 
-    $conexao = new ConexaoDB();
-    $professorDAO = new ProfDAO($conexao->getConnection());
+require $_SERVER['DOCUMENT_ROOT'].'/vendor/autoload.php';
+require $_SERVER['DOCUMENT_ROOT'].'/php/SessionManager.php';
+
+use Kepler\Utils\ConexaoDB;
+use Kepler\DAO\ProfDAO;
+
+    $conexao = ConexaoDB::getConnection();
+    $professorDAO = new ProfDAO($conexao);
 
     // atualizando de fato informações do professor
     if (isset($_POST['updateProf'])){

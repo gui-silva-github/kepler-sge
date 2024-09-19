@@ -1,19 +1,22 @@
 <?php
-    require_once '../../autoload.php';
-    require_once '../../php/SessionManager.php';
-    require_once '../../php/DAO/instituicaoDAO.php';
-    require_once '../../php/ConexaoDB.php';
+    require $_SERVER['DOCUMENT_ROOT'].'/vendor/autoload.php';
+    require $_SERVER['DOCUMENT_ROOT'].'/php/SessionManager.php';
+
+    use Kepler\Utils\ConexaoDB;
+    use Kepler\Model\Instituicao;
+    use Kepler\DAO\InstituicaoDAO;
+    use Kepler\DAO\AlunoDAO;
+    use Kepler\DAO\ProfDAO;
 
     // se usuário já estiver logado
-    if (!empty($_SESSION['id'])){    
+    if (!empty($_SESSION['id'])){
         header("Location: ../".$_SESSION['userType']."/index.php");
         exit;
     } else {
-        $conexao = new ConexaoDB();
-        $con = $conexao->getConnection();
-        $instituicaoDAO = new instituicaoDAO($con);
+        $con = ConexaoDB::getConnection();
+        $instituicaoDAO = new InstituicaoDAO($con);
         $professorDAO = new ProfDAO($con);
-        $alunoDAO = new alunoDAO($con);
+        $alunoDAO = new AlunoDAO($con);
     }
 
     // se for um cadastro
@@ -70,7 +73,6 @@
             }
         }
     }
-
 ?>
 
 <!DOCTYPE html>
