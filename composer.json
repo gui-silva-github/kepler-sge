@@ -1,0 +1,27 @@
+{
+    "name": "kepler/kepler-sge",
+    "type": "project",
+    "version": "1.0.1",
+    "keywords": ["sge", "school", "management", "education"],
+    "description": "Sistema de gerenciamento escolar projetado para simplificar e otimizar processos do gerenciamento escolar e educacional",
+    "autoload": {
+        "psr-4": {
+            "Kepler\\KeplerSge\\": "src/",
+            "Kepler\\Model\\": "php/model/",
+            "Kepler\\DAO\\": "php/dao/",
+            "Kepler\\Utils\\": "php/utils/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Guilherme Silva"
+        },
+        {
+            "name": "Luiz Miguel Xavier de Brito",
+            "email": "mgluiz1781@gmail.com"
+        },
+        {
+            "name": "Matheus Afensor"
+        }
+    ]
+}
