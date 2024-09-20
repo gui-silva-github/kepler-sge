@@ -30,6 +30,13 @@
             <li>Tecnologias</li>
         </ul>
     </li>
+    <li>
+        <a href="#guia-para-devs">Guia para Devs</a>
+        <ul>
+            <li>Instalação</li>
+            <li>Configuração</li>
+        </ul>
+    </li>
 </ul>
 
 <br>
@@ -39,7 +46,7 @@
 
 O Kepler é um sistema de gerenciamento escolar projetado e desenvolvido por **três alunos do terceiro ano do ensino médio**, para simplificar e otimizar processos do gerenciamento escolar e educacional. Combinando tecnologia, eficiência e foco no usuário, o Kepler oferece uma solução completa para escolas, professores, alunos e pais.
 
-![Kepler homepage](https://assets-global.website-files.com/6009ec8cda7f305645c9d91b/61a77a4a6e46e5363fbbde1d_purple-pink.png)
+![Kepler homepage](https://i.ibb.co/WkHDFWW/kepler-homepage.png)
 
 ### O que facitamos?
 * **Gestão de Alunos e Turmas:** Cadastre e gerencie informações detalhadas dos alunos, incluindo histórico acadêmico, presença e notas.
@@ -61,8 +68,44 @@ O Kepler foi desenvolvido e é constituido com populares e avançadas tecnologia
 
 * ![Bootstrap](https://img.shields.io/badge/bootstrap-%238511FA.svg?style=for-the-badge&logo=bootstrap&logoColor=white)
 
-* ![PHP](https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white) ![Laravel](https://img.shields.io/badge/laravel-%23FF2D20.svg?style=for-the-badge&logo=laravel&logoColor=white)
+* ![PHP](https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white)
 
-* ![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white) ![XAMPP](https://img.shields.io/badge/Xampp-F37623?style=for-the-badge&logo=xampp&logoColor=white)
+* ![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white) ![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white)
 
 Tecnologias consistentes e avançadas para prover melhor usabilidade e segurança para sua instituição e seus alunos.
+
+## Guia para Devs
+
+Para contributir com o projeto é necessário um passo a passo a ser seguido:
+
+1. Clonar Repositório:
+```bash
+$ git clone https://github.com/gui-silva-github/kepler-sge.git
+$ cd kepler-sge
+```
+
+2. Instalar Dependências e Atualizar o autoloader
+
+```bash
+$ composer install
+$ composer dump-autoload
+```
+3. Configuarar aquivo env.php
+
+```bash
+$ cp ./env.php.example ./env.php
+```
+Abra de modifique o arquivo 'env.php':
+```php
+define('DB_HOST', 'seu host');
+define('DB_SQUEMA', 'sua tabela');
+define('DB_USER', 'seu user');
+define('DB_PASS', 'sua senha');
+```
+
+4. Inicie o servidor de desenvolvimento:
+
+```bash
+$ php -S localhost:8080
+```
+Ou utilize altenativos como XAMPP entre outros
