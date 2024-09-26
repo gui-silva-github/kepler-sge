@@ -2,6 +2,7 @@
 
 require '../../vendor/autoload.php';
 require '../../php/SessionManager.php';
+  require '../../php/Dashboard.php';
 
 use Kepler\Utils\ConexaoDB;
 use Kepler\DAO\InstituicaoDAO;
@@ -17,6 +18,7 @@ if (empty($_SESSION['id'])) {
         exit;
     }
     
+    $con = ConexaoDB::getConnection();
     $instituicaoDAO = new InstituicaoDAO(ConexaoDB::getConnection());
 }
 

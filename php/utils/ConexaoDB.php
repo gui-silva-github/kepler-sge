@@ -1,7 +1,7 @@
 <?php
 
 namespace Kepler\Utils;
-require $_SERVER['DOCUMENT_ROOT'].'/env.php';
+require_once '../../env.php';
 
 use PDO;
 use PDOException;

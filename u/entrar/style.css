@@ -152,7 +152,6 @@ input {
 	position: relative;
 	overflow: hidden;
 	height: 78%;
-	max-height: fit-content;
 	width: 768px;
 	max-width: 100%;
 }
