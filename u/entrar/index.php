@@ -20,11 +20,11 @@
     }
 
     // se for um cadastro
-    if (isset($_POST['cadastarSubmit'])){
+    if (isset($_POST['cadastrarSubmit'])){
         $nome = $_POST['cadastrarNome'];
         $cnpj = $_POST['cadastrarCNPJ'];
         $email = $_POST['cadastrarEmail'];
-        $senha = password_hash($_POST['cadastarSenha'], PASSWORD_BCRYPT);
+        $senha = password_hash($_POST['cadastrarSenha'], PASSWORD_BCRYPT);
         $instituicao = new Instituicao(null, $cnpj, $nome, $email, $senha);
 
         if ($instituicaoDAO->insert($instituicao)) {
@@ -98,14 +98,14 @@
             <form autocomplete="off" action="../entrar/" method="POST">
                 <h1>Cadastrar Instituição:</h1>
                 <span>Utilize um email e CNPJ para se registrar:</span>
-                <?php if(isset($_POST['cadastarSubmit']) && !$foiCadastrado){
+                <?php if(isset($_POST['cadastrarSubmit']) && !$foiCadastrado){
                     echo "<div class='error-message'>Instituição já cadastrada!</div>";
                 } ?>
                 <input id="cadInput" type="text" name="cadastrarNome" placeholder="Nome da Instituição" required/>
                 <input type="text" name="cadastrarCNPJ" placeholder="CNPJ" required/>
                 <input type="email" name="cadastrarEmail" placeholder="Email" required/>
-                <input type="password" name='cadastarSenha' placeholder="Senha" required/>
-                <input type="submit" class="submit-btn" value="Cadastrar" name='cadastarSubmit'>
+                <input type="password" name='cadastrarSenha' placeholder="Senha" required/>
+                <input type="submit" class="submit-btn" value="Cadastrar" name='cadastrarSubmit'>
             </form>
         </div>
         <div class="form-container sign-in-container">
