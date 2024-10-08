@@ -7,7 +7,7 @@ require '../../php/SessionManager.php';
 use Kepler\Utils\ConexaoDB;
 use Kepler\DAO\InstituicaoDAO;
 
-if (empty($_SESSION['id'])) {
+if (empty($_SESSION['id']) || $_SESSION['userType'] != 'instituicao') {
     header('Location: ../entrar/');
     exit;
 }else{
@@ -19,7 +19,7 @@ if (empty($_SESSION['id'])) {
     }
     
     $con = ConexaoDB::getConnection();
-    $instituicaoDAO = new InstituicaoDAO(ConexaoDB::getConnection());
+    $instituicaoDAO = new InstituicaoDAO($con);
 }
 
 ?>

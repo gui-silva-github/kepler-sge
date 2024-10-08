@@ -5,7 +5,7 @@
     use Kepler\Utils\ConexaoDB;
     use Kepler\DAO\InstituicaoDAO;
     use Kepler\DAO\ProfDAO;
-
+    
     if (!empty($_SESSION['id'])){
         $conexao = ConexaoDB::getConnection();
         $instituicaoDAO = new InstituicaoDAO($conexao);
@@ -27,9 +27,12 @@
             
             $rs = $profDAO->selectByEmail($_POST['profEmail']);
             if ($rs == false){
-                $profDAO->insertProf($profMap, $_SESSION['id']);
-                $foiCadastrado = true;
                 
+                if (!$profDAO->insertProf($profMap, $_SESSION['id'])) {
+                    $foiCadastrado = false;
+                }else{
+                    $foiCadastrado = true;
+                }
             }else{
                 $foiCadastrado = false;
             }
