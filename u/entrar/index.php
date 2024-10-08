@@ -20,11 +20,11 @@
     }
 
     // se for um cadastro
-    if (isset($_POST['cadastrarSubmit'])){
+    if (isset($_POST['cadastarSubmit'])){
         $nome = $_POST['cadastrarNome'];
         $cnpj = $_POST['cadastrarCNPJ'];
         $email = $_POST['cadastrarEmail'];
-        $senha = password_hash($_POST['cadastrarSenha'], PASSWORD_BCRYPT);
+        $senha = password_hash($_POST['cadastarSenha'], PASSWORD_BCRYPT);
         $instituicao = new Instituicao(null, $cnpj, $nome, $email, $senha);
 
         if ($instituicaoDAO->insert($instituicao)) {
@@ -40,17 +40,17 @@
         $email = $_POST['entrarEmail'];
         $senha = $_POST['entrarSenha'];
         $userType = $_POST['entrarUserType'];
-        $nomeInst = $_POST['entrarNomeInstituicao'];
         $usuarioExiste = false;
 
         if($userType == 'aluno'){
-            $rs = $alunoDAO->selectByEmail($email, $nomeInst);
+            $rs = $alunoDAO->selectByEmail($email);
 
             if ($rs != null && password_verify($senha, $rs['senha'])) {
                 createUserSession($rs, $userType);
                 $usuarioExiste = true;
                 header('Location: ../'.$userType);
             }
+            
         }else if($userType == 'professor'){
             $rs = $professorDAO->selectByEmail($email);
 
@@ -98,14 +98,14 @@
             <form autocomplete="off" action="../entrar/" method="POST">
                 <h1>Cadastrar Instituição:</h1>
                 <span>Utilize um email e CNPJ para se registrar:</span>
-                <?php if(isset($_POST['cadastrarSubmit']) && !$foiCadastrado){
+                <?php if(isset($_POST['cadastarSubmit']) && !$foiCadastrado){
                     echo "<div class='error-message'>Instituição já cadastrada!</div>";
                 } ?>
                 <input id="cadInput" type="text" name="cadastrarNome" placeholder="Nome da Instituição" required/>
                 <input type="text" name="cadastrarCNPJ" placeholder="CNPJ" required/>
                 <input type="email" name="cadastrarEmail" placeholder="Email" required/>
-                <input type="password" name='cadastrarSenha' placeholder="Senha" required/>
-                <input type="submit" class="submit-btn" value="Cadastrar" name='cadastrarSubmit'>
+                <input type="password" name='cadastarSenha' placeholder="Senha" required/>
+                <input type="submit" class="submit-btn" value="Cadastrar" name='cadastarSubmit'>
             </form>
         </div>
         <div class="form-container sign-in-container">

@@ -1,7 +1,7 @@
 <?php
 
 namespace Kepler\Utils;
-require '../../env.php';
+require_once dirname(__FILE__) . '/../../env.php';
 
 use PDO;
 use PDOException;
@@ -17,7 +17,7 @@ class ConexaoDB{
         try{
             return new PDO('mysql:host='.$host.';dbname='.$database, $dbUser, $dbPass);
         }catch(PDOException $e){
-            echo "<strong>N達o foi possivel se conectar!</strong><br>" . $e->getMessage();
+            echo "<strong>Não foi possivel se conectar!</strong><br>" . $e->getMessage();
             return null;
         }
     }
