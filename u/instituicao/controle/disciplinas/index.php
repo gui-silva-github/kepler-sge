@@ -197,7 +197,7 @@ use Kepler\DAO\DisciplinaDAO;
 
                 </tbody>
             </table>
-            <a href="table.php">Ver tabela completa de alunos</a>
+            <a href="table.php">Ver tabela completa de disciplinas</a>
         </section> <!-- diciplinas table -->
 
     </main> <!-- main -->
