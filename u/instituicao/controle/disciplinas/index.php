@@ -41,6 +41,7 @@ use Kepler\DAO\DisciplinaDAO;
 
         if (isset($_POST['cadDisciplina'])){
             $id_prof = $_POST['cadIdProfessor'];
+            $id_turma = $_POST['cadIdTurma'];
             $nome = $_POST['cadNome'];
             $qtd = $_POST['cadQtd'];
             $desc = $_POST['cadDesc'];
@@ -48,10 +49,11 @@ use Kepler\DAO\DisciplinaDAO;
             $rs = selectDisciplina($conexao, $nome);
 
                 if ($rs == false){
-                $sql = "INSERT INTO disciplinas(id_prof, nome, qtd_aulas, descricao, id_inst) VALUES (:id_prof, :nome, :qtd, :descri, :id_inst)";
+                $sql = "INSERT INTO disciplinas(id_prof, id_turma, nome, qtd_aulas, descricao, id_inst) VALUES (:id_prof, :id_turma, :nome, :qtd, :descri, :id_inst)";
 
                 $stmt = $conn->prepare($sql);
                 $stmt->bindParam(':id_prof', $id_prof);
+                $stmt->bindParam(':id_turma', $id_turma);
                 $stmt->bindParam(':nome', $nome);
                 $stmt->bindParam(':qtd', $qtd);
                 $stmt->bindParam(':descri', $desc);
@@ -94,10 +96,12 @@ use Kepler\DAO\DisciplinaDAO;
 </head>
 <body>
     <section class="side-menu">
-        <div class="side-menu-logo">
-            <img src="../../../../assets/logo.png" alt="Logo do kepler">
-            <div class="side-menu-close-btn"><i class='bx bx-x'></i></div>
-        </div>
+        <a href="../../../index.html">
+            <div class="side-menu-logo">
+                <img src="../../../../assets/logo.png" alt="Logo do kepler">
+                <div class="side-menu-close-btn"><i class='bx bx-x'></i></div>
+            </div>
+        </a>
         <nav class="menus">
             <ul class="menu">
                 <div class="menu-name">Instituição</div>
@@ -149,6 +153,10 @@ use Kepler\DAO\DisciplinaDAO;
                 <div class="input-box">
                     <input type="text" name="cadIdProfessor" id="cadIdProfessor" required>
                     <label for="cadIdProfessor">ID do Professor:</label>
+                </div>
+                <div class="input-box">
+                    <input type="text" name="cadIdTurma" id="cadIdTurma" required>
+                    <label for="cadIdTurma">ID da Turma:</label>
                 </div>
                 <div class="input-box">
                     <input type="text" name="cadNome" id="cadNome" required>

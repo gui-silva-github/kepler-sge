@@ -74,10 +74,12 @@
 </head>
 <body>
     <section class="side-menu">
-        <div class="side-menu-logo">
-            <img src="../../../../assets/logo.png" alt="Logo do kepler">
-            <div class="side-menu-close-btn"><i class='bx bx-x'></i></div>
-        </div>
+        <a href="../../../index.html">
+            <div class="side-menu-logo">
+                <img src="../../../../assets/logo.png" alt="Logo do kepler">
+                <div class="side-menu-close-btn"><i class='bx bx-x'></i></div>
+            </div>
+        </a>
         <nav class="menus">
             <ul class="menu">
                 <div class="menu-name">Instituição</div>
