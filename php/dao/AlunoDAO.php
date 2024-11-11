@@ -44,14 +44,13 @@ class AlunoDAO{
 
     public function selectById($id){
         $sql = "SELECT * FROM alunos WHERE id = :id";
-
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-
-        return $stmt->fetch();
+        
         try{
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
 
+            return $stmt->fetch();
         } catch(PDOException $e){
             echo "<strong>Não foi possível encontrar</strong><br>" . $e->getMessage();
             return null;
