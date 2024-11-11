@@ -9,7 +9,7 @@ use Kepler\Utils\ConexaoDB;
 
     function innerJoinDisciplinas($con){
 
-        $sql = "SELECT professores.nome FROM professores INNER JOIN disciplinas ON professores.id = disciplinas.id_prof";
+        $sql = "SELECT professores.nome AS nome, turmas.nome AS nome_t FROM professores INNER JOIN disciplinas ON professores.id = disciplinas.id_prof INNER JOIN turmas ON turmas.id = disciplinas.id_turma";
 
         try {
 
@@ -18,9 +18,6 @@ use Kepler\Utils\ConexaoDB;
             $stmt->execute();
             
             $rset = $stmt->fetchAll();
-            foreach ($rset as &$row){
-                implode(",", $row);
-            }
 
             return $rset;
 
@@ -32,26 +29,38 @@ use Kepler\Utils\ConexaoDB;
 
     }
 
-    function selectDisciplinas($con){
+    function selectDisciplinas($con, $id_inst){
 
-        $sql = "SELECT * FROM disciplinas";
+        $sql = "SELECT * FROM disciplinas WHERE id_inst = :id";
 
         try {
 
             $stmt = $con->prepare($sql);
 
+            $stmt->bindParam(':id', $id_inst);
+
             $stmt->execute();
             
             $rset = $stmt->fetchAll();
 
-            for ($i=0;$i<sizeof($rset);$i++){
-                echo "<tr><td>".$rset[$i]['id']."</td>";
-                echo "<td>".$rset[$i]['id_prof']."</td>";
-                echo "<td>".innerJoinDisciplinas($con)[$i]['nome']."</td>";
-                echo "<td>".$rset[$i]['nome']."</td>";
-                echo "<td>".$rset[$i]['qtd_aulas']."</td>";
-                echo "<td>".$rset[$i]['descricao']."</td></tr>";
+            $disciplinasInfo = innerJoinDisciplinas($con);
+
+            $output = '';
+            for ($i = 0; $i < sizeof($rset); $i++) {
+                $professorNome = isset($disciplinasInfo[$i]) ? $disciplinasInfo[$i]['nome'] : 'N/A'; // Verifica se o índice existe
+                $turmaNome = isset($disciplinasInfo[$i]) ? $disciplinasInfo[$i]['nome_t'] : 'N/A'; // Verifica se o índice existe
+    
+                $output .= "<tr><td>" . $rset[$i]['id'] . "</td>";
+                $output .= "<td>" . $rset[$i]['id_prof'] . "</td>";
+                $output .= "<td>" . $professorNome . "</td>";  
+                $output .= "<td>" . $rset[$i]['id_turma'] . "</td>";
+                $output .= "<td>" . $turmaNome . "</td>";  
+                $output .= "<td>" . $rset[$i]['nome'] . "</td>";
+                $output .= "<td>" . $rset[$i]['qtd_aulas'] . "</td>";
+                $output .= "<td>" . $rset[$i]['descricao'] . "</td></tr>";
             }
+    
+            return $output; 
 
         } catch(PDOException $e){
 
@@ -104,9 +113,11 @@ use Kepler\Utils\ConexaoDB;
 
                         <tr>
 
-                            <th>Id</th>
+                            <th>ID</th>
                             <th>ID Professor</th>
                             <th>Professor</th>
+                            <th>ID Turma</th>
+                            <th>Turma</th>
                             <th>Nome da Disciplina</th>
                             <th>Quantidade de Aulas</th>
                             <th>Descrição</th>
@@ -119,7 +130,7 @@ use Kepler\Utils\ConexaoDB;
 
                         echo 
                         "<tbody id='data'>".
-                        selectDisciplinas($conexao).
+                        selectDisciplinas($conexao, $_SESSION['id']).
                         "</tbody>";
                         
                     ?>

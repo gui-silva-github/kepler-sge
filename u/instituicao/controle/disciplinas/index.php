@@ -4,17 +4,19 @@ require '../../../../php/SessionManager.php';
 
 use Kepler\Utils\ConexaoDB;
 use Kepler\DAO\DisciplinaDAO;
+use Kepler\DAO\ProfDAO;
+use Kepler\DAO\TurmaDAO;
 
     if(!empty($_SESSION['id'])){ 
         $conexao = ConexaoDB::getConnection();
         $discDAO = new DisciplinaDAO($conexao);
+        $profDAO = new ProfDAO($conexao);
+        $turmaDAO = new TurmaDAO($conexao);
         $allDisc = $discDAO->selectDisciplinasByIdInst($_SESSION['id']);
         $conn = $conexao;
     }else{
         exit;
     }
-
-    
     
     function selectDisciplina($conn, $nome){
     
@@ -140,7 +142,7 @@ use Kepler\DAO\DisciplinaDAO;
             </ul>
         </header>
 
-        <section class="register-student">
+        <section class="register-disciplinas">
             <div class="title">Cadastrar Disciplina</div>
             <?php
                 if (isset($_POST['cadDisciplina']) && $foiCadastrado == false){
@@ -150,13 +152,31 @@ use Kepler\DAO\DisciplinaDAO;
                 }
             ?>
             <form autocomplete="off" action="./" method="POST">
+                ID do professor:
                 <div class="input-box">
-                    <input type="text" name="cadIdProfessor" id="cadIdProfessor" required>
-                    <label for="cadIdProfessor">ID do Professor:</label>
+                    <select name="cadIdProfessor" id="cadIdProfessor" required>
+                    <option value="0">Selecione um ID</option>
+                    <?php
+                        $query = $profDAO->selectAllProfs($_SESSION['id']);
+                        for ($i = 0; $i<sizeof($query); $i++){
+                            $ii=$i+1;
+                            echo '<option value="'.$ii.'">'.$query[$i]['id'].'</option>';
+                        }
+                    ?>
+                    </select>
                 </div>
-                <div class="input-box">
-                    <input type="text" name="cadIdTurma" id="cadIdTurma" required>
-                    <label for="cadIdTurma">ID da Turma:</label>
+                ID da turma:  
+                <div class="input-box">   
+                <select name="cadIdTurma" id="cadIdTurma" required>
+                <option value="0">Selecione um ID</option>
+                    <?php
+                        $query = $turmaDAO->selectTurmasByIdInst($_SESSION['id']);
+                        for ($i = 0; $i<sizeof($query); $i++){
+                            $ii=$i+1;
+                            echo '<option value="'.$ii.'">'.$query[$i]['id'].'</option>';
+                        }
+                    ?>
+                    </select>
                 </div>
                 <div class="input-box">
                     <input type="text" name="cadNome" id="cadNome" required>
@@ -197,9 +217,13 @@ use Kepler\DAO\DisciplinaDAO;
                         <td><?=$disc['qtd_aulas'] ?></td>
                         <td><?=$disc['descricao'] ?></td>
                         <td><?=$disc['id_prof'] ?></td>
-                        <td><form action="./updateProf.php" method="GET"><input type="hidden" name="profId" value="'.$profsRset[$i]['id'].'"><button type="submit"><i class="bx bx-edit-alt update-teacher-table-btn"></i></button></form></td>
-                        <td><i class='bx bx-trash delete-teacher-table-btn'></i></td>
-
+                        <td><form target="_blank" action="./updateDisciplina.php" method="GET"><input type="hidden" name="disciplinaId" value=<?= $disc['id'] ?>><button type="submit"><i class="bx bx-edit-alt update-disciplina-table-btn"></i></button></form></td>
+                        <td><form action="./deleteDisciplina.php" method="POST" onsubmit="return confirmaExclusao();">
+                                <input type="hidden" name="disciplinaId" value="<?=$disc['id']?>">
+                                <button name="excluir" type="submit">
+                                    <i class='bx bx-trash delete-disciplina-table-btn'></i>
+                                </button>
+                        </form></td>
                     </tr>
                     <?php } ?>
 
@@ -209,5 +233,12 @@ use Kepler\DAO\DisciplinaDAO;
         </section> <!-- diciplinas table -->
 
     </main> <!-- main -->
+
+    <script>
+        function confirmaExclusao() {
+            return window.confirm("Tem certeza de que deseja excluir esta disciplina?");
+        }
+    </script>
+    
 </body>
 </html>

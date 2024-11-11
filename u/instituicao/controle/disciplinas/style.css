@@ -20,22 +20,19 @@ button{
     background-color: rgb(70, 185, 85);
 }
 
-section.register-student,
-section.register-enrollment,
+section.register-disciplinas,
 section.register-table{
     width: fit-content;
 }
 
-section.register-student form,
-section.register-enrollment form{
+section.register-disciplinas form{
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
 }
 
-.register-student .input-box,
-.register-enrollment .input-box{
+.register-disciplinas .input-box{
     width: 100%;
     display: flex;
     align-items: center;
@@ -44,8 +41,7 @@ section.register-enrollment form{
     color: var(--primary);
 }
 
-.register-student .input-box input,
-.register-enrollment .input-box input{
+.register-disciplinas .input-box input{
     width: 100%;
     padding: 2px 10px;
     border: 1px solid #ccc;
@@ -53,8 +49,7 @@ section.register-enrollment form{
     outline: none;
 }
 
-.register-student .input-box label,
-.register-enrollment .input-box label{
+.register-disciplinas .input-box label{
     position: absolute;
     left: 10px;
     transition: .5s;
@@ -73,8 +68,7 @@ section.register-enrollment form{
     color: var(--secondary);
 }
 
-.register-student input[type="submit"],
-.register-enrollment input[type="submit"]{
+.register-disciplinas input[type="submit"]{
     width: 70%;
     border: 0;
     color: var(--bg-color);
@@ -85,4 +79,13 @@ section.register-enrollment form{
 
 .diciplinas-table{
     margin-top: 20px;
+}
+
+.update-disciplina-table-btn{
+    color: rgb(70, 185, 85) !important;
+    cursor: pointer;
+}
+.delete-disciplina-table-btn{
+    color: rgb(185, 70, 70) !important;
+    cursor: pointer;
 }
