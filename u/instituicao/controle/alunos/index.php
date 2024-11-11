@@ -53,11 +53,11 @@ use Kepler\DAO\TurmaDAO;
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Kepler | Instituição</title>
         <link rel="shortcut icon" href="../../../../assets/favicon.png" type="image/x-icon">
-        <!-- Boxicons CDN -->
-        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+         <!-- Boxicons CDN -->
+         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <!-- Bootstrap CDN -->
-        <link rel="stylesheet" href="../../css/bootstrap.min.css">
-        <link rel="stylesheet" href="../../js/bootstrap.bundle.min.js">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous" defer></script>
         <!-- Custom -->
         <link rel="stylesheet" href="../../css/instituicao-global.css">
         <link rel="stylesheet" href="style.css">
@@ -235,8 +235,13 @@ use Kepler\DAO\TurmaDAO;
                             <td><?=$aluno['ra'] ?></td>
                             <td><?=$aluno['idade'] ?></td>
                             <td><?=$aluno['dt_nasc'] ?></td>
-                            <td><form action="./updateProf.php" method="GET"><input type="hidden" name="profId" value="'.$profsRset[$i]['id'].'"><button type="submit"><i class="bx bx-edit-alt update-teacher-table-btn"></i></button></form></td>
-                            <td><i class='bx bx-trash delete-teacher-table-btn'></i></td>
+                            <td><form target="_blank" action="./updateAluno.php" method="GET"><input type="hidden" name="alunoId" value=<?=$aluno['id']?>><button type="submit"><i class="bx bx-edit-alt update-aluno-table-btn"></i></button></form></td>
+                            <td><form action="./deleteAluno.php" method="POST" onsubmit="return confirmaExclusao();">
+                                <input type="hidden" name="alunoId" value="<?=$aluno['id']?>">
+                                <button name="excluir" type="submit">
+                                    <i class='bx bx-trash delete-aluno-table-btn'></i>
+                                </button>
+                            </form></td>
 
                         </tr>
                         <?php } ?>
@@ -257,5 +262,12 @@ use Kepler\DAO\TurmaDAO;
         </footer> <!-- footer-dashboard -->
 
     </main> <!-- main -->
+
+    <script>
+        function confirmaExclusao() {
+            return window.confirm("Tem certeza de que deseja excluir este aluno?");
+        }
+    </script>
+
 </body>
 </html>

@@ -82,3 +82,25 @@ section.register-enrollment form{
     padding: 4px;
     border-radius: 8px;
 }
+
+.alunos-table{
+    overflow: scroll !important;
+}
+
+.update-aluno-table-btn{
+    color: rgb(70, 185, 85) !important;
+    cursor: pointer;
+}
+.delete-aluno-table-btn{
+    color: rgb(185, 70, 70) !important;
+    cursor: pointer;
+}
+
+table tr td{
+    vertical-align: middle;
+    
+}
+
+td button{
+    margin: 5px;
+}
