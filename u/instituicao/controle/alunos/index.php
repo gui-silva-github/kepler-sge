@@ -9,6 +9,8 @@ use Kepler\DAO\DisciplinaDAO;
 use Kepler\DAO\AlunoDAO;
 use Kepler\DAO\TurmaDAO;
 
+$foiCadastrado = '';
+
     if (!empty($_SESSION['id'])){
         $conexao = ConexaoDB::getConnection();
         $instituicaoDAO = new InstituicaoDAO($conexao);
@@ -156,9 +158,9 @@ use Kepler\DAO\TurmaDAO;
                 <div class="title">Cadastrar Matricula</div>
                 <?php
                     if (isset($_POST['cadMatr']) && !$foiCadastrado){
-                        echo "<div class='error-message'>Aluno e Diciplina já matriculados</div>";
+                        echo "<div class='error-message'>Aluno e Disciplina já matriculados</div>";
                     }else if (isset($_POST['cadMatr']) && $foiCadastrado == true){
-                        echo "<div class='sucess-message'>Matricula cadastrada!</div>";
+                        echo "<div class='sucess-message'>Matrícula cadastrada!</div>";
                     }
                 ?>
                 <form autocomplete="off" action="./" method="POST">
