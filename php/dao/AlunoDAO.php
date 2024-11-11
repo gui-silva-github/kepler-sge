@@ -41,6 +41,22 @@ class AlunoDAO{
             return null;
         }
     }
+
+    public function selectById($id){
+        $sql = "SELECT * FROM alunos WHERE id = :id";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+
+        return $stmt->fetch();
+        try{
+
+        } catch(PDOException $e){
+            echo "<strong>Não foi possível encontrar</strong><br>" . $e->getMessage();
+            return null;
+        }
+    }
     
     public function insertAluno($aluno){
         $sql = "INSERT INTO alunos(cpf, ra, nome, email, senha, idade, dt_nasc, id_instituicao) VALUES (:cpf, :ra, :nome, :email, :senha, :idade, :dtNasc, :id_inst)";
@@ -60,6 +76,39 @@ class AlunoDAO{
 
         } catch(PDOException $e){
             echo "<strong>Não foi possível cadastrar</strong><br>" . $e->getMessage();
+            return false;
+        }
+    }
+
+    public function updateAluno($aluno){
+        $sql = "UPDATE alunos SET nome = :nome, email = :email, cpf = :cpf, ra = :ra WHERE id = :id";
+
+        try{
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':nome', $aluno['nome']);
+            $stmt->bindParam(':email', $aluno['email']);
+            $stmt->bindParam(':cpf', $aluno['cpf']);
+            $stmt->bindParam(':ra', $aluno['ra']);
+            $stmt->bindParam(':id', $aluno['id']);
+
+            return $stmt->execute();
+        } catch(PDOException $e){
+            echo "<strong>Não foi possível cadastrar</strong><br>" . $e->getMessage();
+            return false;
+        }
+    }
+
+    public function deleteAluno($id){
+        $sql = "DELETE FROM alunos WHERE id = :id";
+
+        try{
+            $stmt = $this->conn->prepare($sql);
+
+            $stmt->bindParam(':id', $id);
+
+            return $stmt->execute();
+        } catch(PDOException $e){
+            echo "<strong>Não foi possível excluir</strong><br>" . $e->getMessage();
             return false;
         }
     }
