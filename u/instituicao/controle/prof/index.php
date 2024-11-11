@@ -37,15 +37,6 @@
                 $foiCadastrado = false;
             }
             
-            if (isset($_POST['profIdDel']) && $profDAO->selectById($_POST['profIdDel']) !== false) {
-                $prof = $profDAO->selectById($_POST['profIdDel']);
-                $profName = $prof['nome'];
-                echo "<script>confirm('Confirme a exclusão do professor $profName');</script>";
-                $profDAO->deleteProf($_POST['profIdDel']);
-                $profDel = true;
-            }else{
-                $profDel = false;
-            }
         }
         
     }else{
@@ -191,7 +182,7 @@
                                 echo "<td>".$profsRset[$i]['salario']."</td>";
                                 echo "<td>".$profsRset[$i]['formacao']."</td>";
                                 echo '<td><form target="_blank" action="./updateProf.php" method="GET"><input type="hidden" name="profId" value="'.$profsRset[$i]['id'].'"><button type="submit"><i class="bx bx-edit-alt update-teacher-table-btn"></i></button></form></td>';
-                                echo '<td><form action="./" method="POST" ><input type="hidden" name="profIdDel" value="'.$profsRset[$i]['id'].'"><button type="submit" name="excluir"><i class="bx bx-trash delete-teacher-table-btn"></i></button></form>';
+                                echo '<td><form action="./deleteProf.php" method="POST" onsubmit="return confirmaExclusao();"><input type="hidden" name="profId" value="'.$profsRset[$i]['id'].'"><button type="submit" name="excluir"><i class="bx bx-trash delete-teacher-table-btn"></i></button></form>';
                                 echo "</tr>";
                             }
                         ?>
@@ -211,5 +202,13 @@
         </footer> <!-- footer-dashboard -->
 
     </main> <!-- main -->
+
+    
+    <script>
+        function confirmaExclusao() {
+            return window.confirm("Tem certeza de que deseja excluir este professor?");
+        }
+    </script>
+
 </body>
 </html>
