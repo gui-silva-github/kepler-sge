@@ -41,6 +41,56 @@ class DisciplinaDAO{
       return null;
     }
   }
+
+  public function selectById($id){
+        try{
+          $sql = "SELECT * FROM disciplinas WHERE id = :id";
+
+          $stmt = $this->conn->prepare($sql);
+          $stmt->bindParam(':id', $id);
+          $stmt->execute();
+
+          return $stmt->fetch();
+        } catch(PDOException $e){
+            echo "<strong>Não foi possível encontrar</strong><br>" . $e->getMessage();
+            return null;
+        }
+  }
+
+  public function updateDisciplina($disciplina){
+    $sql = "UPDATE disciplinas SET id_prof = :id_prof, id_turma = :id_turma, nome = :nome, qtd_aulas = :qtd_aulas, descricao = :descricao WHERE id = :id";
+
+    try{
+      $stmt = $this->conn->prepare($sql);
+      $stmt->bindParam(':id_prof', $disciplina['id_prof']);
+      $stmt->bindParam(':id_turma', $disciplina['id_turma']);
+      $stmt->bindParam(':nome', $disciplina['nome']);
+      $stmt->bindParam(':qtd_aulas', $disciplina['aulas']);
+      $stmt->bindParam(':descricao', $disciplina['descricao']);
+      $stmt->bindParam(':id', $disciplina['id']);
+
+      return $stmt->execute();
+
+    } catch(PDOException $e){
+      echo "<strong>Não foi possível encontrar a disciplina!</strong><br>" . $e->getMessage();
+      return null;
+    }
+  }
+
+  public function deleteDisciplina($id){
+    $sql = "DELETE FROM disciplinas WHERE id = :id";
+
+    try{
+      $stmt = $this->conn->prepare($sql);
+
+      $stmt->bindParam(':id', $id);
+
+      return $stmt->execute();
+    } catch(PDOException $e){
+        echo "<strong>Não foi possível excluir</strong><br>" . $e->getMessage();
+        return false;
+    }
+  }
 }
 
 ?>
