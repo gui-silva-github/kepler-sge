@@ -27,13 +27,13 @@ use PDOException;
       }
     }
 
-    public function insertTurma($turma, $idInst) {
+    public function insertTurma($nome, $qtdAulas, $descTurma, $idInst) {
       $sql = "INSERT INTO turmas(nome, qtd_aulas, descricao, id_inst) VALUES (:nome, :qtdAulas, :descricao, :idInst)";
       try {
         $stmt = $this->con->prepare($sql);
-        $stmt->bindParam(':nome', $turma['nome']);
-        $stmt->bindParam(':qtdAulas', $turma['qtd_aulas']);
-        $stmt->bindParam(':descricao', $turma['descricao']);
+        $stmt->bindParam(':nome', $nome);
+        $stmt->bindParam(':qtdAulas', $qtdAulas);
+        $stmt->bindParam(':descricao', $descTurma);
         $stmt->bindParam(':idInst', $idInst);
 
         return $stmt->execute();
