@@ -6,10 +6,13 @@ require '../../../../php/SessionManager.php';
 use Kepler\Utils\ConexaoDB;
 use Kepler\DAO\TurmaDAO;
 
+$foiCadastrado = '';
+
     if (!empty($_SESSION['id'])){
         $conn = ConexaoDB::getConnection();
         $turmaDAO = new TurmaDAO($conn);
         $idInst = $_SESSION['id'];
+        
         if (isset($_POST['cadTurma'])) {
             $nome = $_POST['turmaName'];
             $qtdAulas = $_POST['qtdAulas'];
@@ -18,11 +21,11 @@ use Kepler\DAO\TurmaDAO;
 
             $rs = $turmaDAO->selectTurmaByNome($nome);
 
-            if ($rs === false) {
-                $foiCadastrado = false;
-            } else {
+            if ($rs === null || empty($rs)) {
                 $turmaDAO->insertTurma($nome, $qtdAulas, $descTurma, $idInst);
                 $foiCadastrado = true;
+            } else {
+                $foiCadastrado = false;
             }
         }
         $turmasRset = $turmaDAO->selectTurmasByIdInst($_SESSION['id']);
@@ -99,7 +102,7 @@ use Kepler\DAO\TurmaDAO;
 
         <article class="div-flex">
 
-            <section class="register-teacher">
+            <section class="register-class">
                 <div class="title">Cadastrar Turma</div>
                 <?php
                     if(isset($_POST['cadTurma'])){
@@ -149,15 +152,22 @@ use Kepler\DAO\TurmaDAO;
                                 echo "<td>".$turmasRset[$i]['qtd_aulas']."</td>";
                                 echo "<td>".$turmasRset[$i]['descricao']."</td>";
                                 echo '<td><form target="_blank" action="./updateTurma.php" method="GET"><input type="hidden" name="turmaId" value="'.$turmasRset[$i]['id'].'"><button type="submit"><i class="bx bx-edit-alt update-teacher-table-btn"></i></button></form></td>';
-                                echo '<td><form action="./" method="POST" ><input type="hidden" name="profId" value="'.$turmasRset[$i]['id'].'"><button type="submit" name="excluir"><i class="bx bx-trash delete-teacher-table-btn"></i></button0></form>';
+                                echo '<td><form action="./deleteTurma.php" method="POST" onsubmit="return confirmaExclusao();"><input type="hidden" name="turmaId" value="'.$turmasRset[$i]['id'].'"><button type="submit" name="excluir"><i class="bx bx-trash delete-teacher-table-btn"></i></button></form>';
                                 echo "</tr>";
                             }
                         ?>
                     </tbody>
                 </table>
-                <a href="table.php">Ver tabela completa de Turmas</a>
+                <a href="table.php">Ver tabela completa de turmas</a>
             </section>
         </article>
     </main>
+
+    <script>
+        function confirmaExclusao() {
+            return window.confirm("Tem certeza de que deseja excluir esta turma?");
+        }
+    </script>
+
 </body>
 </html>
