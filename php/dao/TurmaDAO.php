@@ -16,10 +16,10 @@ use PDOException;
       
       try {
         $stmt = $this->con->prepare($sql);
-        $stmt->bindParam(':idInst', $id);
+        $stmt->bindParam(':id', $id);
         $stmt->execute();
 
-        return $stmt->fetchAll();
+        return $stmt->fetch();
         
       } catch(PDOException $e) {
         echo '<strong>Não foi possível encontrar</strong><br>'. $e->getMessage();
@@ -27,18 +27,18 @@ use PDOException;
       }
     }
 
-    public function insertTurma($nome, $qtdAulas, $descricao, $idInst) {
+    public function insertTurma($turma, $idInst) {
       $sql = "INSERT INTO turmas(nome, qtd_aulas, descricao, id_inst) VALUES (:nome, :qtdAulas, :descricao, :idInst)";
       try {
         $stmt = $this->con->prepare($sql);
-        $stmt->bindParam(':nome', $nome);
-        $stmt->bindParam(':qtdAulas', $qtdAulas);
-        $stmt->bindParam(':descricao', $descricao);
+        $stmt->bindParam(':nome', $turma['nome']);
+        $stmt->bindParam(':qtdAulas', $turma['qtd_aulas']);
+        $stmt->bindParam(':descricao', $turma['descricao']);
         $stmt->bindParam(':idInst', $idInst);
 
         return $stmt->execute();
       } catch (PDOException $e) {
-        echo "<strong>Não foi possível cadastrar turma</strong>" . $e->getMessage();
+        echo "<strong>Não foi possível cadastrar turma!</strong>" . $e->getMessage();
         return false;
       }
     }
@@ -48,7 +48,10 @@ use PDOException;
       try {
         $stmt = $this->con->prepare($sql);
         $stmt->bindParam(':nome', $nome);
-        return $stmt->execute();
+        $stmt->execute();
+        
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result ? $result : null; 
       } catch (PDOException $e) {
         echo "<strong>Não foi possível encontrar turma</strong>" . $e->getMessage();
         return false;
@@ -65,6 +68,25 @@ use PDOException;
         echo "<strong>Não foi possível deletar turma</strong>" . $e->getMessage();
         return false;
       }
+    }
+
+    public function updateTurma($turma){
+
+      $sql = "UPDATE turmas SET nome = :nome, qtd_aulas = :qtd_aulas, descricao = :descricao WHERE id = :id";
+        try{
+          $stmt = $this->con->prepare($sql);
+          $stmt->bindParam(':nome', $turma['nome']);
+          $stmt->bindParam(':qtd_aulas', $turma['qtd_aulas']);
+          $stmt->bindParam(':descricao', $turma['descricao']);
+          $stmt->bindParam(':id', $turma['id']);
+
+          return $stmt->execute();
+
+        } catch(PDOException $e){
+          echo "<strong>Não foi possível encontrar a turma!</strong><br>" . $e->getMessage();
+          return null;
+        }
+
     }
 
     public function selectTurmasByIdInst($idInst){
