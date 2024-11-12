@@ -57,7 +57,8 @@ if (empty($_SESSION['id']) || $_SESSION['userType'] != 'instituicao') {
                 <li class="menu-item"><a href="./controle/prof/"><i class='bx bxs-user-detail'></i> Professores</a></li>
                 <li class="menu-item"><a href="./controle/alunos/"><i class='bx bxs-user-account'></i> Alunos</a></li>
                 <li class="menu-item"><a href="./controle/disciplinas/"><i class='bx bx-book-bookmark'></i> Disciplinas</a>
-                <li class="menu-item"><a href="./controle/turmas/"><i class='bx bx-book-bookmark'></i> Turmas</a></li></li>
+                <li class="menu-item"><a href="./controle/turmas/"><i class='bx bxs-school'></i> Turmas</a></li></li>
+                <li class="menu-item"><a href="./controle/matriculas/"><i class='bx bxs-graduation'></i> Matrículas</a></li></li>
             </ul>
             <ul class="menu">
                 <div class="menu-name">Outros</div>
