@@ -25,6 +25,21 @@ class AlunoDAO{
             return null;
         }
     }
+
+    public function selectAllAlunosRa($id){
+        $sql = "SELECT * FROM alunos WHERE id_instituicao = :idInstituicao ORDER BY id DESC";
+
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':idInstituicao', $id);
+            $stmt->execute();
+            return $stmt->fetchAll();
+
+        } catch(PDOException $e){
+            echo $e->getMessage();
+            return null;
+        }
+    }
     
     public function selectByEmail($email){
         $sql = "SELECT * FROM alunos WHERE email = :email";
