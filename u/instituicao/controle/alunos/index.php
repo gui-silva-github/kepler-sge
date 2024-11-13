@@ -7,9 +7,11 @@ use Kepler\Utils\ConexaoDB;
 use Kepler\DAO\InstituicaoDAO;
 use Kepler\DAO\DisciplinaDAO;
 use Kepler\DAO\AlunoDAO;
+use Kepler\DAO\MatriculaDAO;
 use Kepler\DAO\TurmaDAO;
 
 $foiCadastrado = '';
+$foiCadastrada = '';
 
     if (!empty($_SESSION['id'])){
         $conexao = ConexaoDB::getConnection();
@@ -17,6 +19,7 @@ $foiCadastrado = '';
         $alunoDAO = new AlunoDAO($conexao);
         $turmaDAO = new TurmaDAO($conexao);
         $disciplinaDAO = new DisciplinaDAO($conexao);
+        $matriculaDAO = new MatriculaDAO($conexao);
         
         if (isset($_POST['cadAluno'])){
             $nome = $_POST['cadAlunoNome'];
@@ -38,6 +41,24 @@ $foiCadastrado = '';
                 $foiCadastrado = false;
             }
 
+        }
+
+        if(isset($_POST['cadMatr'])){
+            $ra = $_POST['cadMatrRa'];
+            $turma = $_POST['cadMatrTurma'];
+
+            $matriculaMap = [
+                'id_aluno' => $ra,
+                'id_turma' => $turma
+            ];
+
+            $rs = $matriculaDAO->insertMatricula($matriculaMap, $_SESSION['id']);
+
+            if ($rs == false){
+                $foiCadastrada = false;
+            }else{
+                $foiCadastrada = true;
+            }
         }
         
         // rset da tabela de alunos
@@ -158,50 +179,33 @@ $foiCadastrado = '';
             <section class="register-enrollment">
                 <div class="title">Cadastrar Matricula</div>
                 <?php
-                    if (isset($_POST['cadMatr']) && !$foiCadastrado){
-                        echo "<div class='error-message'>Aluno e Disciplina já matriculados</div>";
-                    }else if (isset($_POST['cadMatr']) && $foiCadastrado == true){
+                    if (isset($_POST['cadMatr']) && !$foiCadastrada){
+                        echo "<div class='error-message'>Aluno e Disciplina já matriculados!</div>";
+                    }else if (isset($_POST['cadMatr']) && $foiCadastrada == true){
                         echo "<div class='sucess-message'>Matrícula cadastrada!</div>";
                     }
                 ?>
                 <form autocomplete="off" action="./" method="POST">
                     <div>
-                        <label for="cadMatrAluno">RA do Aluno:</label>
-                        <select>
+                        <label for="cadMatrRa">RA do Aluno:</label>
+                        <select name="cadMatrRa" id="cadMatrRa">
                             <option value="0">Selecione um RA</option>
                             <?php
                                 $query = $alunoDAO->selectAllAlunos($_SESSION['id']);
                                 for ($i = 0; $i<sizeof($query); $i++){
-                                    $ii=$i+1;
-                                    echo "<option value='".$ii. "'>" . $query[$i]['ra']."</option>";
+                                    echo "<option value='".$query[$i]['id']. "'>" . $query[$i]['ra']."</option>";
                                 }   
-                            ?>
-                        </select>
-                        <?php
-                        ?>
-                    </div>
-                    <div>
-                        <label for="cadMatrDisciplina">Nome da Disciplina:</label>
-                        <select>
-                            <option value="0">Selecione uma disciplina</option>
-                            <?php
-                                $query = $disciplinaDAO->selectDisciplinasByIdInst($_SESSION['id']);
-                                for($i = 0; $i < sizeof($query); $i++){
-                                    $ii=$i+1;
-                                    echo "<option value='".$ii."'>".$query[$i]['nome']."</option>";
-                                }
                             ?>
                         </select>
                     </div>
                     <div>
                         <label for="cadMatrTurma">Selecione uma turma</label>
-                        <select>
+                        <select name="cadMatrTurma" id="cadMatrTurma">
                             <option value="0">Nome da turma</option>
                             <?php
                                 $query = $turmaDAO->selectTurmasByIdInst($_SESSION['id']);
                                 for ($i = 0; $i<sizeof($query); $i++){
-                                    $ii=$i+1;
-                                    echo '<option value="'.$ii.'">'.$query[$i]['nome'].'</option>';
+                                    echo '<option value="'.$query[$i]['id'].'">'.$query[$i]['nome'].'</option>';
                                 }
                             ?>
                         </select>
