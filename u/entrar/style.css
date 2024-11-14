@@ -111,6 +111,10 @@ a {
 	border-color: #FFFFFF;
 }
 
+.ghost {
+	cursor: pointer;
+}
+
 form {
 	background-color: #FFFFFF;
 	display: flex;

@@ -2,9 +2,8 @@
 require '../../vendor/autoload.php';
 require '../../php/SessionManager.php';
 
-use Kepler\Utils\ConexaoDB;
-use Kepler\DAO\AlunoDAO;
-
+use Kepler\Model\Disciplinas;
+use Kepler\u\aluno\AlunoFunctions;
 if (empty($_SESSION['id'])) {
     header('Location: ../entrar/');
     exit;
@@ -16,11 +15,8 @@ if (empty($_SESSION['id'])) {
         header("Refresh:0");
         exit;
     }
-
-    $con = ConexaoDB::getConnection();
-    $alunoDAO = new AlunoDAO($con);
 }
-
+$alunoFunctions = new AlunoFunctions;
 ?>
 
 <!DOCTYPE html>
@@ -86,7 +82,8 @@ if (empty($_SESSION['id'])) {
         <?php
             if (!empty($_SESSION)){
                 echo "<h3>Bem vindo <span style='color: var(--secondary)'>" . $_SESSION['nome'] ."</span></h3>";
-            }    
+                $alunoFunctions->setDisciplinasByInst($_SESSION['idInst']);
+            }
         ?>
         </div>
 
@@ -95,20 +92,61 @@ if (empty($_SESSION['id'])) {
             <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
             <div style="height: 300px; display: flex; margin-bottom: 1em; gap: 5%; padding: 1.5em;">
 
-                <h3 style="color: white; align-self: center; text-align: center;"> Totais</h3>
+                <h3 style="color: white; align-self: center; text-align: center;"> Boletim</h3>
 
-                <script type="text/javascript">
-                google.charts.load('current', {'packages':['corechart']});
-                google.charts.setOnLoadCallback(drawChart);
+                <table>
+                    <tr>
+                        <th>Disciplinas</th>
+                        <th colspan="3">1º TRIMESTRE</th>
+                        <th colspan="3">2º TRIMESTRE</th>
+                        <th colspan="3">3º TRIMESTRE</th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th>AV1</th>
+                        <th>AV2</th>
+                        <th>AD</th>
+                        <th>AV1</th>
+                        <th>AV2</th>
+                        <th>AD</th>
+                        <th>AV1</th>
+                        <th>AV2</th>
+                        <th>AD</th>
+                    </tr>
+                    <?php
+                    
+                    $disc = $alunoFunctions->getDisciplina();
 
-                function drawChart() {
+                    if (isset($disc) && !is_null($disc)) {
 
-                var data = google.visualization.arrayToDataTable([
-                ['Controle', 'Total'],
-                ['Professores', <?= getTotalProfessores($con, $_SESSION['id']) ?>],
-                ['Alunos', <?= getTotalAlunos($con, $_SESSION['id']) ?>],
-                ['Turmas',  <?= getTotalTurmas($con, $_SESSION['id']) ?>]
-                ]);
+                        foreach ($disc as $d) {
+                            $alunoFuntions->setNotas($_SESSION['id'], $d['id']);
+                            $notas = $alunoFunctions->getNotas();
+                            echo "<script>alert('oooi')</script>";
+                            var_dump($notas);
+                            if (isset($notas) && !is_null($notas)) {
+                                
+                                foreach ($notas as $nota) {
+                                    echo "<tr>";
+                                    echo "<td>".$d['nome']."</td>";
+                                    echo "</tr>";
+                                }
+                            }
+                        }
+                    }
+
+                    ?>
+                </table>
+                <!--<script type="text/javascript">
+                google.charts.load('current', {'packages':['table']});
+                google.charts.setOnLoadCallback(drawTable);
+
+                function drawTable() {
+
+                var data = google.visualization.DataTable();
+                data.addColumn('string', '');
+                data.addColumn('string', 'Notas');
+                data.addRows();
 
                 var options = {
                 title: '(%)',
@@ -119,99 +157,8 @@ if (empty($_SESSION['id'])) {
 
                 chart.draw(data, options);
                 }
-                </script>
-
-                <div id="piechart" style="width: 45%;"></div>
-
-                <script type="text/javascript">
-                google.charts.load('current', {'packages':['bar']});
-                google.charts.setOnLoadCallback(drawChart);
-
-                function drawChart() {
-                var data = google.visualization.arrayToDataTable([
-                ['Total', 'Professores', 'Alunos', 'Turmas'],
-                ['Cadastros', <?= getTotalProfessores($con, $_SESSION['id']) ?>, <?= getTotalAlunos($con, $_SESSION['id']) ?>, <?= getTotalTurmas($con, $_SESSION['id']) ?>]
-                ]);
-
-                var options = {
-                chart: {
-                    title: '(contagem)'
-                }
-                };
-
-                var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
-
-                chart.draw(data, google.charts.Bar.convertOptions(options));
-                }
-                </script>
-
-                <div id="columnchart_material" style="width: 45%;"></div>
-
+                </script>-->
             </div>
-
-            <div style="height: 300px; display: flex; margin-top: -1.9em; margin-bottom: 1em; gap: 5%; padding: 1.5em;">
-                <script type="text/javascript">
-                google.charts.load('current', {'packages':['corechart']});
-                google.charts.setOnLoadCallback(drawChart);
-
-                function drawChart() {
-                    var data = google.visualization.arrayToDataTable([
-                    ['Controle', 'Total'],
-                    ['Professores',  <?= getTotalProfessores($con, $_SESSION['id']) ?>],
-                    ['Alunos',  <?= getTotalAlunos($con, $_SESSION['id']) ?>],
-                    ['Turmas',  <?= getTotalTurmas($con, $_SESSION['id']) ?>]
-                    ]);
-
-                    var options = {
-                    title: '',
-                    curveType: 'function',
-                    legend: { position: 'bottom' }
-                    };
-
-                    var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-
-                    chart.draw(data, options);
-                }
-                </script>
-
-                <div id="curve_chart" style="width: 100%"></div>
-            </div>
-
-        </div>
-
-        <div style="background: linear-gradient(to right, var(--secondary) 0%, var(--primary) 50%); border-radius: 30px; height: 300px; display: flex; margin-bottom: 1em; gap: 5%; padding: 1.5em;">
-
-            <h3 style="color: white; align-self: center; text-align: center;">Salários</h3>
-
-            <script type="text/javascript">
-            google.charts.load('current', {'packages':['corechart']});
-            google.charts.setOnLoadCallback(drawChart);
-
-            function drawChart() {
-
-            var data = google.visualization.arrayToDataTable([
-            ['Salário', 'Total'],
-            ['Maior', <?= getMaiorSalario($con, $_SESSION['id']) ?>],
-            ['Menor', <?= getMenorSalario($con, $_SESSION['id']) ?>]
-            ]);
-
-            var options = {
-            title: '(maior e menor)',
-            is3D: true,
-            };
-
-            var chart = new google.charts.Bar(document.getElementById('barchart_material'));
-
-            chart.draw(data, google.charts.Bar.convertOptions(options));
-            }
-            </script>
-
-            <div id="barchart_material" style="width: 100%;"></div>
-
-            <h4 style="color: white; align-self: center; text-align: center;">Média salarial:</h4>
-
-            <h3 style="color: var(--secondary); align-self: center; text-align: center;"><?= "R$ " . number_format(round(getMediaSalarial($con, $_SESSION['id']), 2), 2, ",", ".") ?></h3>
-
         </div>
 
         <footer class="footer-section">

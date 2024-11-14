@@ -9,7 +9,8 @@
             "Kepler\\KeplerSge\\": "src/",
             "Kepler\\Model\\": "php/model/",
             "Kepler\\DAO\\": "php/dao/",
-            "Kepler\\Utils\\": "php/utils/"
+            "Kepler\\Utils\\": "php/utils/",
+            "Kepler\\u\\aluno\\": "u/aluno/"
         }
     },
     "authors": [
@@ -21,7 +22,8 @@
             "email": "mgluiz1781@gmail.com"
         },
         {
-            "name": "Matheus Afensor"
+            "name": "Matheus Afensor",
+            "email": "matheusafensor@gmail.com"
         }
     ]
 }
