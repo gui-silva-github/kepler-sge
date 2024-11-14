@@ -1,11 +1,12 @@
 <?php
 
-require '../../vendor/autoload.php';
-require '../../php/SessionManager.php';
-require '../../php/Dashboard.php';
+require '../../../vendor/autoload.php';
+require '../../../php/SessionManager.php';
+require '../../../php/Dashboard.php';
 
 use Kepler\Utils\ConexaoDB;
 use Kepler\DAO\ProfDAO;
+use Kepler\DAO\TurmaDAO;
 
 if (empty($_SESSION['id']) || $_SESSION['userType'] != 'professor') {
     header('Location: ../entrar/');
@@ -17,6 +18,15 @@ if (empty($_SESSION['id']) || $_SESSION['userType'] != 'professor') {
         header("Refresh:0");
         exit;
     }
+
+    $conn = ConexaoDB::getConnection();
+    $turmaDao = new TurmaDAO($conn);
+    $profDao = new ProfDAO($conn);
+    
+    $idInstProf = $profDao->selectById($_SESSION["id"])["id_instituicao"];
+    $turmas = $turmaDao->selectTurmasByIdInst($idInstProf);
+
+    $conn = null;
 }
 
 ?>
@@ -27,32 +37,36 @@ if (empty($_SESSION['id']) || $_SESSION['userType'] != 'professor') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kepler | Instituição</title>
-    <link rel="shortcut icon" href="../../assets/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="../../../assets/favicon.png" type="image/x-icon">
+    
     <!-- Boxicons CDN -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <!-- Bootstrap CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous" defer></script>
+    
     <!-- Custom -->
-    <link rel="stylesheet" href="css/global-profStyle.css">
-    <script type="module" src="js/profScript.js" defer></script>
+    <link rel="stylesheet" href="../css/global-profStyle.css">
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="../js/profScript.js" defer></script>
+    <script type="module" src="script.js" defer></script>
 </head>
 <body>
     <section class="side-menu">
         <div class="side-menu-logo">
-            <img src="../../assets/logo.png" alt="Logo do kepler">
+            <img src="../../../assets/logo.png" alt="Logo do kepler">
             <div class="side-menu-close-btn"><i class='bx bx-x'></i></div>
         </div>
         <nav class="menus">
             <ul class="menu">
                 <div class="menu-name">Professor</div>
-                <li class="menu-item active"><a href=""><i class='bx bxs-dashboard'></i> Dashboard</a></li>
-                <li class="menu-item"><a href="notas/"><i class='bx bxs-package'></i> Atribuir Notas</a></li>
-                <li class="menu-item"><a href="config/"><i class='bx bxs-cog'></i> Configurações</a></li>
+                <li class="menu-item"><a href="../"><i class='bx bxs-dashboard'></i> Dashboard</a></li>
+                <li class="menu-item active"><a href=""><i class='bx bxs-package'></i> Atribuir Notas</a></li>
+                <li class="menu-item"><a href="../config"><i class='bx bxs-cog'></i> Configurações</a></li>
             </ul>
             <ul class="menu">
                 <div class="menu-name">Outros</div>
-                <li class="menu-item"><a href="../../"><i class='bx bx-home' ></i> Página Inicial</a></li>
+                <li class="menu-item"><a href="../../../"><i class='bx bx-home' ></i> Página Inicial</a></li>
                 <li class="menu-item"><a href="?logout=true"><i class='bx bx-exit' ></i> Sair</a></li>
             </ul>
         </nav>
@@ -76,16 +90,22 @@ if (empty($_SESSION['id']) || $_SESSION['userType'] != 'professor') {
         </header>
 
         <div style="margin-bottom: 2em; margin-top: -1rem; text-align: center;">
-        <?php
-            if (!empty($_SESSION)){
-                echo "<h3>Bem Vindo, <span style='color: var(--secondary)'>" . $_SESSION['nome'] ."</span>.</h3>";
-            }
-        ?>
-        
-            <div style="background: linear-gradient(to right, var(--secondary) 0%, var(--primary) 50%); border-radius: 30px;">
-                DashBorad Aqui Para ser feito
-            </div>
+            <h3><span style='color: var(--primary)'>Turmas:</h3>
         </div>
+        
+        <?php foreach($turmas as $turma){ ?>
+        <div class="dropdown">
+            <div class="classroom-name">
+                <div class="d-flex">
+                    <span class="nome"><?=$turma["nome"] ?> &nbsp;-&nbsp;</span>  
+                    <span class="desc"><?=$turma["descricao"] ?></span>
+                </div>
+                <div class="caret"></div>
+            </div>
+
+            <div class="daily-table"></div>
+        </div> <!-- dropdown -->
+        <?php } ?>
 
         <footer class="footer-section">
             <div class="footer-content">
