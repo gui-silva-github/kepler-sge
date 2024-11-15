@@ -7,6 +7,9 @@ require '../../../php/Dashboard.php';
 use Kepler\Utils\ConexaoDB;
 use Kepler\DAO\ProfDAO;
 use Kepler\DAO\TurmaDAO;
+use Kepler\DAO\MatriculaDAO;
+use Kepler\DAO\NotaDAO;
+use Kepler\DAO\DisciplinaDAO;
 
 if (empty($_SESSION['id']) || $_SESSION['userType'] != 'professor') {
     header('Location: ../../entrar/');
@@ -22,11 +25,14 @@ if (empty($_SESSION['id']) || $_SESSION['userType'] != 'professor') {
     $conn = ConexaoDB::getConnection();
     $turmaDao = new TurmaDAO($conn);
     $profDao = new ProfDAO($conn);
+    $matriculaDAO = new MatriculaDAO($conn);
+    $notaDAO = new NotaDAO($conn);
+    $discDAO = new DisciplinaDAO($conn);
     
-    $idInstProf = $profDao->selectById($_SESSION["id"])["id_instituicao"];
-    $turmas = $turmaDao->selectTurmasByIdInst($idInstProf);
+    $idInst = $profDao->selectById($_SESSION["id"])["id_instituicao"];
+    $turmas = $turmaDao->selectTurmasByIdInst($idInst);
 
-    $conn = null;
+    
 }
 
 ?>
@@ -106,13 +112,18 @@ if (empty($_SESSION['id']) || $_SESSION['userType'] != 'professor') {
             <div class="daily-table">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div class="d-flex gap-2">
-                        <select name="disciplinas" id="disc-select">
-                            <option value="matem">Matemática</option>
+                        <select name="disciplinas" id="disc">
+                            <?php 
+                            $disc = $discDAO->getDiscByProfAndClass($_SESSION["id"], $turma["id"]);
+                            foreach ($disc as $d){
+                                echo "<option value=".$d["id"].">".$d['nome']."</option>";
+                            }
+                            ?>
                         </select>
-                        <select name="trimestre" id="disc-trim">
-                            <option value="1">1 trimestre</option>
-                            <option value="2">2 trimestre</option>
+                        <select name="trim" id="disc-trim">
                             <option value="3">3 trimestre</option>
+                            <option value="2">2 trimestre</option>
+                            <option value="1">1 trimestre</option>
                         </select>
                     </div>
                     <span><?=date("d/m/Y")?></span>
@@ -131,14 +142,6 @@ if (empty($_SESSION['id']) || $_SESSION['userType'] != 'professor') {
                         </thead>
                         
                         <tbody>
-                            <tr>
-                                <th scope="row">Luiz</th>
-                                <td>9.2</td>
-                                <td>8</td>
-                                <td>10</td>
-                                <td>9.06</td>
-                                <td>Promovido</td>
-                            </tr>
                         </tbody>
                     </table>
                     <a href="table.php">Tela Cheia</a>
@@ -157,5 +160,8 @@ if (empty($_SESSION['id']) || $_SESSION['userType'] != 'professor') {
         </footer> <!-- footer-dashboard -->
 
     </section> <!-- main -->
+    <script type="module" src="../js/visuNotas.js" defer></script>
 </body>
 </html>
+
+<?php $conn = null ?>
