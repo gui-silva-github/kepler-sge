@@ -45,6 +45,21 @@ class MatriculaDAO{
         }
     }
 
+    public function getMatriculaInnerJoinAlunos($idTurma){
+        $sql = "SELECT alunos.id, alunos.nome FROM matriculas INNER JOIN alunos ON matriculas.id_aluno = alunos.id WHERE id_turma = :id ORDER BY alunos.nome ASC";
+
+        try{
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id', $idTurma);
+            $stmt->execute();
+
+            return $stmt->fetchAll();
+        }catch(PDOException $e){
+            echo "<strong>Não foi possível consultar</strong><br>" . $e->getMessage();
+            return false;
+        }
+    }
+
     public function updateMatricula($matricula){
         $sql = "UPDATE matriculas SET id_aluno = :id_aluno, id_turma = :id_turma WHERE id = :id";
 

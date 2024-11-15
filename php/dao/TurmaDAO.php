@@ -90,7 +90,7 @@ use PDOException;
     }
 
     public function selectTurmasByIdInst($idInst){
-      $sql = "SELECT * FROM turmas WHERE id_inst = :idInst ORDER BY id DESC";
+      $sql = "SELECT * FROM turmas WHERE id_inst = :idInst";
 
       try {
         $stmt = $this->con->prepare($sql);

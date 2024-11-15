@@ -47,7 +47,8 @@ if (empty($_SESSION['id']) || $_SESSION['userType'] != 'professor') {
             <ul class="menu">
                 <div class="menu-name">Professor</div>
                 <li class="menu-item active"><a href=""><i class='bx bxs-dashboard'></i> Dashboard</a></li>
-                <li class="menu-item"><a href="notas/"><i class='bx bxs-package'></i> Atribuir Notas</a></li>
+                <li class="menu-item"><a href="atribuir/"><i class='bx bxs-package'></i> Atribuir Notas</a></li>
+                <li class="menu-item"><a href="notas/"><i class='bx bxs-package'></i> Visualizar Notas</a></li>
                 <li class="menu-item"><a href="config/"><i class='bx bxs-cog'></i> Configurações</a></li>
             </ul>
             <ul class="menu">

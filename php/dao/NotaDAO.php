@@ -2,6 +2,7 @@
 namespace Kepler\DAO;
 use PDO;
 use PDOException;
+use Kepler\Model\Notas;
 
 class NotaDAO {
     private PDO $conn;
@@ -20,6 +21,25 @@ class NotaDAO {
             return $stmt->fetchAll();
         } catch (PDOException $e) {
             echo "Erro ao encontrar notas: ".$e->getMessage();
+        }
+    }
+
+    public function storeNotas($notas){
+        $sql = "INSERT INTO notas(av1, av2, ad, trimestre, id_diciplina, id_aluno, `status`) VALUES(:av1, :av2, :ad, :trimestre, :idDiciplina, :idAluno, :stas)";
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindValue(":av1", $notas->getAv1());
+            $stmt->bindValue(":av2", $notas->getAv2());
+            $stmt->bindValue(":ad", $notas->getAd());
+            $stmt->bindValue(":trimestre", 3);
+            $stmt->bindValue(":idDiciplina", $notas->getIdDisciplina());
+            $stmt->bindValue(":idAluno", $notas->getIdAluno());
+            $stmt->bindValue(":stas", $notas->getStatus());
+
+    
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            echo "Erro ao encontrar notas: ".$e;
         }
     }
     
