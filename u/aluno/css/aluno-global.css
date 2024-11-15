@@ -54,6 +54,11 @@ table {
 th, td {
     padding: 3px;
     border: 1px solid var(--primary);
+    text-align: center;
+}
+
+td.nota {
+    width: 50px;
 }
 
 .side-menu{

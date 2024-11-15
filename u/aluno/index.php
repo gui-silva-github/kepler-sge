@@ -92,7 +92,7 @@ $alunoFunctions = new AlunoFunctions;
             <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
             <div style="height: 300px; display: flex; margin-bottom: 1em; gap: 5%; padding: 1.5em;">
 
-                <h3 style="color: white; align-self: center; text-align: center;"> Boletim</h3>
+                <h3 style="color: white; align-self: center; text-align: center;"> Boletim:</h3>
 
                 <table>
                     <tr>
@@ -103,15 +103,15 @@ $alunoFunctions = new AlunoFunctions;
                     </tr>
                     <tr>
                         <th></th>
-                        <th>AV1</th>
-                        <th>AV2</th>
-                        <th>AD</th>
-                        <th>AV1</th>
-                        <th>AV2</th>
-                        <th>AD</th>
-                        <th>AV1</th>
-                        <th>AV2</th>
-                        <th>AD</th>
+                        <th class='nota'>AV1</th>
+                        <th class='nota'>AV2</th>
+                        <th class='nota'>AD</th>
+                        <th class='nota'>AV1</th>
+                        <th class='nota'>AV2</th>
+                        <th class='nota'>AD</th>
+                        <th class='nota'>AV1</th>
+                        <th class='nota'>AV2</th>
+                        <th class='nota'>AD</th>
                     </tr>
                     <?php
                     
@@ -120,15 +120,13 @@ $alunoFunctions = new AlunoFunctions;
                     if (isset($disc) && !is_null($disc)) {
 
                         foreach ($disc as $d) {
-                            $alunoFuntions->setNotas($_SESSION['id'], $d['id']);
+                            $alunoFunctions->setNotas($_SESSION['id'], $d['id']);
                             $notas = $alunoFunctions->getNotas();
-                            echo "<script>alert('oooi')</script>";
-                            var_dump($notas);
                             if (isset($notas) && !is_null($notas)) {
                                 
                                 foreach ($notas as $nota) {
                                     echo "<tr>";
-                                    echo "<td>".$d['nome']."</td>";
+                                    echo "<td>".$d['nome']."</td><td class='nota'>".$nota['av1']."</td><td class='nota'>".$nota['av2']."</td><td class='nota'>".$nota['ad'].'</td>';
                                     echo "</tr>";
                                 }
                             }
@@ -137,27 +135,6 @@ $alunoFunctions = new AlunoFunctions;
 
                     ?>
                 </table>
-                <!--<script type="text/javascript">
-                google.charts.load('current', {'packages':['table']});
-                google.charts.setOnLoadCallback(drawTable);
-
-                function drawTable() {
-
-                var data = google.visualization.DataTable();
-                data.addColumn('string', '');
-                data.addColumn('string', 'Notas');
-                data.addRows();
-
-                var options = {
-                title: '(%)',
-                is3D: true,
-                };
-
-                var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
-                chart.draw(data, options);
-                }
-                </script>-->
             </div>
         </div>
 
@@ -167,7 +144,7 @@ $alunoFunctions = new AlunoFunctions;
                     <p>Copyright &copy; 2024 - <a href="/">Kepler</a></p>
                 </div>
             </div>
-        </footer> <!-- footer-dashboard -->
+        </footer>
 
     </section> <!-- main -->
 </body>
