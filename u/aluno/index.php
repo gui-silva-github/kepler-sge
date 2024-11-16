@@ -158,7 +158,7 @@ $alunoFunctions = new AlunoFunctions;
                                     }
 
                                     if ($trOpened) {
-                                        for ($i=1; $i <= $count; $i++) { 
+                                        for ($i=1; $i < $count; $i++) { 
                                             echo "<td class='nota></td><td class='nota></td><td class='nota></td>";
                                         }
                                         echo '</tr>';

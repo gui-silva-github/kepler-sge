@@ -201,7 +201,7 @@ div.table-content {
 
 table.boletim {
     width: fit-content;
-    min-height: 400px;
+    min-height: 200px;
 }
 
 /* footer section */
