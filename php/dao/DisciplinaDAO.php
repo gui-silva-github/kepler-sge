@@ -57,6 +57,22 @@ class DisciplinaDAO{
         }
   }
 
+  public function getDiscByProfAndClass($idProf, $idClass){
+    try{
+      $sql = "SELECT * FROM disciplinas WHERE id_prof = :idProf AND id_turma = :idClass";
+
+      $stmt = $this->conn->prepare($sql);
+      $stmt->bindParam(':idProf', $idProf);
+      $stmt->bindParam(':idClass', $idClass);
+      $stmt->execute();
+
+      return $stmt->fetchAll();
+    } catch(PDOException $e){
+        echo "<strong>Não foi possível encontrar</strong><br>" . $e->getMessage();
+        return null;
+    }
+}
+
   public function updateDisciplina($disciplina){
     $sql = "UPDATE disciplinas SET id_prof = :id_prof, id_turma = :id_turma, nome = :nome, qtd_aulas = :qtd_aulas, descricao = :descricao WHERE id = :id";
 

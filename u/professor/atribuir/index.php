@@ -9,6 +9,7 @@ use Kepler\DAO\ProfDAO;
 use Kepler\DAO\TurmaDAO;
 use Kepler\DAO\MatriculaDAO;
 use Kepler\DAO\NotaDAO;
+use Kepler\Model\Notas;
 use Kepler\DAO\DisciplinaDAO;
 
 if (empty($_SESSION['id']) || $_SESSION['userType'] != 'professor') {
@@ -29,10 +30,19 @@ if (empty($_SESSION['id']) || $_SESSION['userType'] != 'professor') {
     $notaDAO = new NotaDAO($conn);
     $discDAO = new DisciplinaDAO($conn);
     
-    $idInst = $profDao->selectById($_SESSION["id"])["id_instituicao"];
-    $turmas = $turmaDao->selectTurmasByIdInst($idInst);
+    $idInstProf = $profDao->selectById($_SESSION["id"])["id_instituicao"];
+    $turmas = $turmaDao->selectTurmasByIdInst($idInstProf);
 
-    
+    if (isset($_POST["atrNota"])){
+        $idAluno = $_POST["aluno"];
+        $idDisc = $_POST["disc"];
+        $av1 = $_POST["notaAV1"];
+        $av2 = $_POST["notaAV2"];
+        $ad = $_POST["notaAD"];
+        $status = $_POST["status"];
+
+        $notaDAO->storeNotas(new Notas(null, $idAluno, $idDisc, $av1, $av2, $ad, $status));
+    }
 }
 
 ?>
@@ -66,9 +76,9 @@ if (empty($_SESSION['id']) || $_SESSION['userType'] != 'professor') {
             <ul class="menu">
                 <div class="menu-name">Professor</div>
                 <li class="menu-item"><a href="../"><i class='bx bxs-dashboard'></i> Dashboard</a></li>
-                <li class="menu-item"><a href="../atribuir/"><i class='bx bxs-package'></i> Atribuir Notas</a></li>
-                <li class="menu-item active"><a href=""><i class='bx bxs-package'></i> Visualizar Notas</a></li>
-                <li class="menu-item"><a href="../config"><i class='bx bxs-cog'></i> Configurações</a></li>
+                <li class="menu-item active"><a href=""><i class='bx bxs-package'></i> Atribuir Notas</a></li>
+                <li class="menu-item"><a href="../notas/"><i class='bx bxs-package'></i> Visualizar Notas</a></li>
+                <li class="menu-item"><a href="../config/"><i class='bx bxs-cog'></i> Configurações</a></li>
             </ul>
             <ul class="menu">
                 <div class="menu-name">Outros</div>
@@ -109,45 +119,68 @@ if (empty($_SESSION['id']) || $_SESSION['userType'] != 'professor') {
                 <div class="caret"></div>
             </div>
 
-            <div class="daily-table">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <div class="d-flex gap-2">
-                        <select name="disciplinas" id="disc">
-                            <?php 
-                            $disc = $discDAO->getDiscByProfAndClass($_SESSION["id"], $turma["id"]);
-                            foreach ($disc as $d){
-                                echo "<option value=".$d["id"].">".$d['nome']."</option>";
-                            }
-                            ?>
-                        </select>
-                        <select name="trim" id="disc-trim">
-                            <option value="3">3 trimestre</option>
-                            <option value="2">2 trimestre</option>
-                            <option value="1">1 trimestre</option>
+            <div class="daily-table" style="text-align: center;">
+                <div class="title">Atribuir Nota:</div>
+
+                <form autocomplete="off" action="./" method="POST">
+                    <div class="d-flex justify-content-between align-items-center gap-3">
+                        <div class="d-flex justify-content-between align-items-center gap-1">
+                            <span>Aluno:</span>
+                            <select name="aluno" id="aluno-select" class="p-2" require>
+                                <?php 
+                                $alunos = $matriculaDAO->getMatriculaInnerJoinAlunos($turma["id"]);
+                                foreach ($alunos as $a){
+                                    echo "<option value=".$a["id"].">".$a['nome']."</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center gap-1">
+                            <span>Matéria:</span>
+                            <select name="disc" id="disc-select" class="p-2" require>
+                                <?php 
+                                $disc = $discDAO->getDiscByProfAndClass($_SESSION["id"], $turma["id"]);
+                                foreach ($disc as $d){
+                                    echo "<option value=".$d["id"].">".$d['nome']."</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+
+                        <div>
+                            <span>Média:</span>
+                            <input type="text" id="inpMedia" style="width: 80px;" disabled>
+                        </div>
+                    </div>
+                    
+                    <div class="input-box">
+                        <input type="number" name="notaAV1" id="notaAV1" min="0" max="10" required>
+                        <label for="notaAV1">Nota da Avaliação 1</label>
+                    </div>
+                    
+                    <div class="input-box">
+                        <input type="number" name="notaAV2" id="notaAV2" min="0" max="10" required>
+                        <label for="notaAV2">Nota da Avaliação 2</label>
+                    </div>
+
+                    <div class="input-box">
+                        <input type="number" name="notaAD" id="notaAD" min="0" max="10" required>
+                        <label for="notaAD">Nota/Média das Atividades:</label>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center gap-2">
+                        <span>Decisão Final: &nbsp;</span>
+                        <select name="status" id="status-select" class="p-2" require>
+                            <option default>Selecione</option>
+                            <option value="Promovido">Promovido</option>
+                            <option value="Reprovado">Reprovado</option>
                         </select>
                     </div>
-                    <span><?=date("d/m/Y")?></span>
-                </div>
-                <section class="alunos-table">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Nome</th>
-                                <th scope="col">AV1</th>
-                                <th scope="col">AV2</th>
-                                <th scope="col">AD</th>
-                                <th scope="col">Média</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        
-                        <tbody>
-                        </tbody>
-                    </table>
-                    <a href="table.php">Tela Cheia</a>
-                </section>
 
-            </div><!-- daily    table -->
+                    <input type="submit" value="Lançar Nota" name="atrNota">
+                </form>
+
+            </div><!-- daily table -->
         </div> <!-- dropdown -->
         <?php } ?>
 
@@ -160,7 +193,6 @@ if (empty($_SESSION['id']) || $_SESSION['userType'] != 'professor') {
         </footer> <!-- footer-dashboard -->
 
     </section> <!-- main -->
-    <script type="module" src="../js/visuNotas.js" defer></script>
 </body>
 </html>
 
