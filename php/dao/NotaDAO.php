@@ -12,11 +12,12 @@ class NotaDAO {
     }
 
     public function selectNotas ($idAluno, $idDisciplina) {
-        $sql = "SELECT * FROM notas WHERE id_aluno = ? AND id_disciplina = ? ORDER BY trimestre ASC";
+        $sql = "SELECT * FROM notas WHERE id_aluno = ? AND id_disciplina = ? ORDER BY id_disciplina ASC, trimestre asc";
         try {
             $stmt = $this->conn->prepare($sql);
             $stmt->bindValue(1, $idAluno);
             $stmt->bindValue(2, $idDisciplina);
+            $stmt->execute();
     
             return $stmt->fetchAll();
         } catch (PDOException $e) {

@@ -9,10 +9,10 @@ class AlunoFunctions {
     private $disciplinas;
     private $notas;
 
-    public function setDisciplinasByInst ($idInst) {
+    public function setDisciplinasByAluno ($aluno) {
         $con = ConexaoDB::getConnection();
         $disciplinaDAO = new DisciplinaDAO($con);
-        $disciplinas = $disciplinaDAO->selectDisciplinasByIdInst($idInst);
+        $disciplinas = $disciplinaDAO->selectDisciplinasByAluno($aluno);
         $this->disciplinas = $disciplinas;
     }
 

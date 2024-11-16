@@ -107,6 +107,19 @@ class DisciplinaDAO{
         return false;
     }
   }
+
+  public function selectDisciplinasByAluno ($aluno) {
+    $sql = "SELECT DISTINCT m.id_turma, m.id_aluno, d.* FROM matriculas m INNER JOIN disciplinas d ON d.id_turma = m.id_turma WHERE m.id_aluno = ?";
+    try {
+      $stmt = $this->conn->prepare($sql);
+      $stmt->bindValue(1, $aluno);
+      $stmt->execute();
+
+      return $stmt->fetchAll();
+    } catch (PDOException $e) {
+      echo "Erro ao selecionar disciplinas pelo aluno: ".$e->getMessage();
+    }
+  }
 }
 
 ?>

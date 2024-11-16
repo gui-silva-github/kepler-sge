@@ -2,8 +2,8 @@
 require '../../vendor/autoload.php';
 require '../../php/SessionManager.php';
 
-use Kepler\Model\Disciplinas;
 use Kepler\u\aluno\AlunoFunctions;
+
 if (empty($_SESSION['id'])) {
     header('Location: ../entrar/');
     exit;
@@ -49,7 +49,7 @@ $alunoFunctions = new AlunoFunctions;
             </ul>
             <ul class="menu">
                 <div class="menu-name">Controle</div>
-                <li class="menu-item"><a href="aluno/controle/boletim/"><i class='bx bxs-user-detail'></i> Boletim</a></li>
+                <li class="menu-item active"><a href="# "><i class='bx bxs-user-detail'></i> Boletim</a></li>
                 <li class="menu-item"><a href="aluno/controle/turmas/"><i class='bx bxs-calendar-check'></i> Minhas turmas</a></li>
                 <li class="menu-item"><a href="aluno/controle/presenca/"><i class='bx bxs-user-account'></i> Presenças</a></li>
             </ul>
@@ -82,59 +82,101 @@ $alunoFunctions = new AlunoFunctions;
         <?php
             if (!empty($_SESSION)){
                 echo "<h3>Bem vindo <span style='color: var(--secondary)'>" . $_SESSION['nome'] ."</span></h3>";
-                $alunoFunctions->setDisciplinasByInst($_SESSION['idInst']);
             }
         ?>
         </div>
 
         <div style="background: linear-gradient(to right, var(--secondary) 0%, var(--primary) 50%); border-radius: 30px;">
 
-            <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
             <div style="height: 300px; display: flex; margin-bottom: 1em; gap: 5%; padding: 1.5em;">
 
                 <h3 style="color: white; align-self: center; text-align: center;"> Boletim:</h3>
+                <div class="table-content">
+                    <table class='boletim'>
+                        <tr>
+                            <th>Disciplinas</th>
+                            <th colspan="3">1º TRIMESTRE</th>
+                            <th colspan="3">2º TRIMESTRE</th>
+                            <th colspan="3">3º TRIMESTRE</th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th class='nota'>AV1</th>
+                            <th class='nota'>AV2</th>
+                            <th class='nota'>AD</th>
+                            <th class='nota'>AV1</th>
+                            <th class='nota'>AV2</th>
+                            <th class='nota'>AD</th>
+                            <th class='nota'>AV1</th>
+                            <th class='nota'>AV2</th>
+                            <th class='nota'>AD</th>
+                        </tr>
+                        <?php
+                        
+                        $alunoFunctions->setDisciplinasByAluno($_SESSION['id']);
+                        $disc = $alunoFunctions->getDisciplina();
 
-                <table>
-                    <tr>
-                        <th>Disciplinas</th>
-                        <th colspan="3">1º TRIMESTRE</th>
-                        <th colspan="3">2º TRIMESTRE</th>
-                        <th colspan="3">3º TRIMESTRE</th>
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <th class='nota'>AV1</th>
-                        <th class='nota'>AV2</th>
-                        <th class='nota'>AD</th>
-                        <th class='nota'>AV1</th>
-                        <th class='nota'>AV2</th>
-                        <th class='nota'>AD</th>
-                        <th class='nota'>AV1</th>
-                        <th class='nota'>AV2</th>
-                        <th class='nota'>AD</th>
-                    </tr>
-                    <?php
-                    
-                    $disc = $alunoFunctions->getDisciplina();
+                        if (isset($disc) && !is_null($disc) && !empty($disc)) {
 
-                    if (isset($disc) && !is_null($disc)) {
+                            foreach ($disc as $d) {
+                                $count = 0;
+                                $alunoFunctions->setNotas($_SESSION['id'], $d['id']);
+                                $notas = $alunoFunctions->getNotas();
 
-                        foreach ($disc as $d) {
-                            $alunoFunctions->setNotas($_SESSION['id'], $d['id']);
-                            $notas = $alunoFunctions->getNotas();
-                            if (isset($notas) && !is_null($notas)) {
-                                
-                                foreach ($notas as $nota) {
-                                    echo "<tr>";
-                                    echo "<td>".$d['nome']."</td><td class='nota'>".$nota['av1']."</td><td class='nota'>".$nota['av2']."</td><td class='nota'>".$nota['ad'].'</td>';
-                                    echo "</tr>";
+                                switch (count($notas)) {
+                                    case 0:
+                                        $count = 3;
+                                        break;
+                                    case 1:
+                                        $count = 2;
+                                        break;
+                                    case 2:
+                                        $count = 1;
+                                        break;
+                                    case 3:
+                                        $count = 0;
+                                        break;
+                                    
+                                    default:
+                                        $count = 0;
+                                        break;
+                                }
+                                if (isset($notas) && !is_null($notas)) {
+                                    
+                                    $trOpened = true;
+
+                                    foreach ($notas as $nota) {
+                                        $print = "<td class='nota'>".$nota['av1']."</td><td class='nota'>".$nota['av2']."</td><td class='nota'>".$nota['ad'].'</td>';
+                                        
+                                        if ($nota['trimestre'] == 1) {
+                                            $print = "<tr><td>".$d['nome']."</td>".$print;
+                                        } else if ($nota['trimestre'] == 3) {
+                                            $print = $print.'</tr>';
+                                            $trOpened = false;
+                                        }
+                                        echo $print;
+                                    }
+
+                                    if ($trOpened) {
+                                        for ($i=1; $i <= $count; $i++) { 
+                                            echo "<td class='nota></td><td class='nota></td><td class='nota></td>";
+                                        }
+                                        echo '</tr>';
+                                    }
                                 }
                             }
+                        } else {
+                            for ($c=0; $c < 10; $c++) { 
+                                echo "<tr><td></td>";
+                                for ($i=0; $i < 3; $i++) { 
+                                    echo "<td class='nota></td><td class='nota></td><td class='nota></td>";
+                                }
+                                echo '</tr>';
+                            }
                         }
-                    }
-
-                    ?>
-                </table>
+                        ?>
+                    </table>
+                </div>
             </div>
         </div>
 

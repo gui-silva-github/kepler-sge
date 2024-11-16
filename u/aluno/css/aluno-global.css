@@ -52,7 +52,7 @@ table {
 }
 
 th, td {
-    padding: 3px;
+    padding: 5px;
     border: 1px solid var(--primary);
     text-align: center;
 }
@@ -192,6 +192,16 @@ li.nav-item{
     font-weight: 800;
     margin-bottom: 1rem;
     color: var(--primary);
+}
+
+div.table-content {
+    overflow-x: auto;
+    max-height: 400px;
+}
+
+table.boletim {
+    width: fit-content;
+    min-height: 400px;
 }
 
 /* footer section */
