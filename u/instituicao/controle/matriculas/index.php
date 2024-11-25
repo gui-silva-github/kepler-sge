@@ -132,7 +132,7 @@
             </ul>
             <ul class="menu">
                 <div class="menu-name">Controle Escolar</div>
-                <li class="menu-item"><a href=""><i class='bx bxs-user-detail'></i> Professores</a></li>
+                <li class="menu-item"><a href="../professores/"><i class='bx bxs-user-detail'></i> Professores</a></li>
                 <li class="menu-item"><a href="../alunos/"><i class='bx bxs-user-account'></i> Alunos</a></li>
                 <li class="menu-item"><a href="../disciplinas/"><i class='bx bx-book-bookmark'></i> Disciplinas</a></li>
                 <li class="menu-item"><a href="../turmas/"><i class='bx bxs-school'></i> Turmas</a></li></li>
